@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout Renders correctly 1`] = `
+<Container
+  className="main"
+  fluid={true}
+  tag="div"
+>
+  <div
+    id="header"
+  >
+    Header
+  </div>
+  <Row
+    className="h-100"
+    tag="div"
+  />
+</Container>
+`;

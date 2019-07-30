@@ -1,0 +1,64 @@
+import React from 'react';
+import { Button, Form, FormGroup, Input, FormFeedback, Label } from 'reactstrap';
+import { useForm } from 'chat-client/shared/hooks';
+
+interface Props {
+  submitForm: () => void;
+  error: string;
+}
+
+interface Values {
+  email?: string;
+  password?: string;
+}
+
+function validate(values: Values) {
+  const errors: Values = {};
+  if (!values.email) {
+    errors.email = 'Warrior! We must know your name for the battle field!';
+  }
+  if (!values.password) {
+    errors.password = 'You must provide this, for passage!';
+  }
+  return errors;
+}
+
+const AuthForm = ({ submitForm, error }: Props) => {
+  const { values, errors, handleSubmit, handleChange } = useForm(submitForm, validate);
+  return (
+    <Form id="login-form" onSubmit={handleSubmit}>
+      <FormGroup>
+        <Label>Email</Label>
+        <Input
+          invalid={errors.email ? true : false}
+          type="email"
+          id="email"
+          placeholder="What do you hail as warrior?"
+          value={values.email || ''}
+          onChange={handleChange}
+        />
+        <FormFeedback id="email-error">{errors.email}</FormFeedback>
+      </FormGroup>
+      <FormGroup>
+        <Label>Password</Label>
+        <Input
+          invalid={errors.password ? true : false}
+          type="password"
+          id="password"
+          placeholder="Speak friend, and enter..."
+          value={values.password || ''}
+          onChange={handleChange}
+        />
+        <FormFeedback>{errors.password}</FormFeedback>
+      </FormGroup>
+      <FormGroup>
+        <Button block color="brand-secondary" id="login-submit" type="submit">
+          ENTER
+        </Button>
+      </FormGroup>
+      {error && <p className="text-center text-danger">{error}</p>}
+    </Form>
+  );
+};
+
+export default AuthForm;

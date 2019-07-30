@@ -1,0 +1,25 @@
+@import "chat-client/shared/styles/_custom-variables.scss";
+
+.authLayoutMain {
+  background-color: $brand-primary;
+}
+
+.authCardMain {
+  background-color: $brand-accent;
+}
+
+.messagesMain {
+  overflow-y: scroll;
+  margin-bottom: 30px;
+}
+
+.bgMain {
+  background-color: $brand-primary;
+}
+
+/* SIDEBAR STYLES */
+
+.sidebarWrapper {
+  color: $brand-accent;
+  background-color: $brand-secondary;
+}

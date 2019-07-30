@@ -5,6 +5,7 @@
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
     "strict": true,
-    "esModuleInterop": true
-  }
+    "esModuleInterop": true,
+  },
+  "include": ["chat-server", "chat-client", "chat-shared"]
 }

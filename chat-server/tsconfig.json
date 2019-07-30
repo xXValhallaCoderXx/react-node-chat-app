@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    // "types": [],
+    "baseUrl": "../",
+    "paths": {
+      "chat-server": ["../"],
+      "chat-shared": ["../"]
+    }
+  }
+}

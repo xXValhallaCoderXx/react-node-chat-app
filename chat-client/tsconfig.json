@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.json",
+  "include": ["./pages/**/*","./shared/**/*"],
+  "compilerOptions": {
+    "jsx": "react",
+    "sourceMap": true,
+    "noImplicitAny": false,
+  }
+}

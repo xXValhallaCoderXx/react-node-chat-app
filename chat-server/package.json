@@ -1,0 +1,45 @@
+{
+  "name": "chat-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpileOnly ./index.ts",
+    "start": "node ../dist-server/chat-server/index.js",
+    "build": "NODE_ENV=production webpack --config ../chat-webpack/server/index.js",
+    "build:tsc": "tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "bad-words": "^3.0.2",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "envalid": "^5.0.0",
+    "express": "^4.16.4",
+    "express-validator": "^6.1.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.5.12",
+    "socket.io": "^2.2.0",
+    "uuid": "^3.3.2",
+    "validator": "^11.0.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/body-parser": "^1.17.0",
+    "@types/cookie-parser": "^1.4.1",
+    "@types/express": "^4.16.1",
+    "@types/jsonwebtoken": "^8.3.2",
+    "@types/lodash": "^4.14.133",
+    "@types/mongoose": "^5.5.3",
+    "@types/node": "^12.0.4",
+    "@types/socket.io": "^2.1.2",
+    "@types/uuid": "^3.4.4",
+    "@types/validator": "^10.11.0",
+    "ts-node-dev": "^1.0.0-pre.39",
+    "typescript": "^3.4.5",
+    "webpack-node-externals": "^1.7.2"
+  }
+}

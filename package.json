@@ -10,7 +10,7 @@
     "chat-client",
     "chat-server",
     "chat-shared",
-    "chat-webpack"
+    "chat-build"
   ],
   "scripts": {
     "client:dev": "yarn workspace chat-client dev",
@@ -22,5 +22,16 @@
     "build": "yarn workspace chat-client build && yarn workspace chat-server build",
     "start": "node ./dist/server.js",
     "test": "yarn client:test && yarn server:test"
+  },
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.16",
+    "jest": "^24.8.0",
+    "jest-extended": "^0.11.2",
+    "prettier": "^1.18.2",
+    "ts-jest": "^24.0.2"
   }
 }
