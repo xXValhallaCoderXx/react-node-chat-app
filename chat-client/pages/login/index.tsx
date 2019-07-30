@@ -2,7 +2,7 @@ import React from 'react';
 import { connect, useStore } from 'react-redux';
 import { AppState } from 'chat-client/config/root-reducer';
 import { Navabar, Layout } from 'chat-client/shared/components';
-import { LoginState, thunkLoginRequest } from './login-dux';
+import { LoginState, loginRequestActionCreator } from './login-dux';
 import LoginView from './login-view';
 
 interface LoginContainerProps {
@@ -14,7 +14,7 @@ const LoginPageContainer = (props: LoginContainerProps) => {
 
   const { error } = store.getState().login;
   async function submitForm(email: string, password: string) {
-    thunkLoginRequest(email, password);
+    loginRequestActionCreator(email, password);
   }
   return <Layout header={<Navabar />} content={<LoginView error={error} submitForm={submitForm} />} />;
 };
@@ -24,7 +24,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = {
-  thunkLoginRequest,
+  loginRequestActionCreator,
 };
 
 export default connect(

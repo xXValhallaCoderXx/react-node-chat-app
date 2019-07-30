@@ -4,14 +4,14 @@ import { useDispatch } from 'react-redux';
 import { Route, Router, Switch } from 'react-router-dom';
 import { createBrowserHistory as createHistory } from 'history';
 import { CONSTANTS } from 'chat-client/shared/constants';
-import { socketActions, chatActions } from 'chat-client/shared/dux';
+// import { socketActions, chatActions } from 'chat-client/shared/dux';
 
 import { LoadingScreen } from 'chat-client/shared/components';
 
 const LazyLogin = lazy(() => import(/* webpackChunkName: "login" */ './pages/login'));
-const LazyRegister = lazy(() => import(/* webpackChunkName: "register" */ './pages/register'));
-const LazyRoom = lazy(() => import(/* webpackChunkName: "room" */ './pages/room-chat'));
-const LazyPaint = lazy(() => import(/* webpackChunkName: "room" */ './pages/room-paint'));
+// const LazyRegister = lazy(() => import(/* webpackChunkName: "register" */ './pages/register'));
+// const LazyRoom = lazy(() => import(/* webpackChunkName: "room" */ './pages/room-chat'));
+// const LazyPaint = lazy(() => import(/* webpackChunkName: "room" */ './pages/room-paint'));
 
 const history = createHistory();
 
@@ -41,9 +41,9 @@ const Application = () => {
       <Switch>
         <Suspense fallback={LoadingUI()}>
           <Route exact path="/" component={LazyLogin} />
-          <Route exact path="/register" component={LazyRegister} />
+          {/* <Route exact path="/register" component={LazyRegister} />
           <Route exact path="/room/:uid" component={LazyRoom} />
-          <Route exact path="/paint/:uid" component={LazyPaint} />
+          <Route exact path="/paint/:uid" component={LazyPaint} /> */}
         </Suspense>
       </Switch>
     </Router>

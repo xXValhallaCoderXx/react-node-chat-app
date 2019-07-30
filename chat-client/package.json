@@ -21,8 +21,8 @@
     "socket.io-client": "^2.2.0"
   },
   "scripts": {
-    "dev": "webpack-dev-server --env.target development --config ../chat-webpack/client/index.js",
-    "build": "webpack --env.target production --config ../chat-webpack/client/index.js",
+    "dev": "webpack-dev-server --env.target development --config ../chat-build/client/index.js",
+    "build": "webpack --env.target production --config ../chat-build/client/index.js",
     "test": "jest"
   },
   "devDependencies": {
