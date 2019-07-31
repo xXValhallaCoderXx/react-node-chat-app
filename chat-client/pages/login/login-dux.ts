@@ -32,17 +32,16 @@ function loginApi(values) {
 function* handleLogin(action) {
   try {
     // To call async functions, use redux-saga's `call()`.
-    console.log("ACTION PAYLOAD: ", action);
     const res = yield call(loginApi, action.payload);
-
     if (res.error) {
       yield put(loginError(res.error));
     } else {
       yield put(loginSuccess(res));
     }
   } catch (err) {
-    if (err instanceof Error) {
-      yield put(loginError(err.stack!));
+    if (err) {
+      // LOG err.stack
+      yield put(loginError(err.response.data.message));
     } else {
       yield put(loginError('An unknown error occured.'));
     }
