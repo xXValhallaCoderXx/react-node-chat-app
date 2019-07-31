@@ -1,11 +1,13 @@
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from '../root-reducer';
 import logger from 'redux-logger';
-import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga'
+import {loginSaga} from "chat-client/pages/login/login-dux";
 // import { socketMiddleware } from 'chat-client/shared/dux/socket';
 
 export default function configureStore() {
-  const store = createStore(rootReducer, applyMiddleware(thunk, logger));
+  const sagaMiddleware = createSagaMiddleware();
+  const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, logger));
 
   // HMR
   if (module.hot) {
@@ -15,5 +17,6 @@ export default function configureStore() {
     });
   }
 
+  sagaMiddleware.run(loginSaga)
   return store;
 }

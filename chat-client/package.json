@@ -17,7 +17,7 @@
     "react-router-dom": "^5.0.0",
     "reactstrap": "^8.0.0",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0",
+    "redux-saga": "^1.0.5",
     "socket.io-client": "^2.2.0"
   },
   "scripts": {
@@ -40,6 +40,7 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.3.5",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "typesafe-actions": "^4.4.2"
   }
 }

@@ -1,110 +1,52 @@
-import axios from 'axios';
-import { ActionCreator, Dispatch } from 'redux';
-import { ThunkAction } from 'redux-thunk';
+import { all, call, put, takeEvery } from 'redux-saga/effects';
+import axios from "axios";
+import { action } from 'typesafe-actions';
+import { Reducer } from 'redux';
 
-import get from 'lodash/get';
-
-const LOGIN_REQUEST = 'LOGIN_REQUEST';
-const LOGIN_API_LOADING = 'LOGIN_API_LOADING';
-const LOGIN_API_ERROR = 'LOGIN_API_ERROR';
-const LOGIN_API_SUCCESS = 'LOGIN_API_SUCCESS';
-
-/* ACTION TYPES */
-
-export interface LoginTypes {
-  email: string;
-  password: string;
+export enum LoginActionTypes {
+  FETCH_REQUEST = '@@login/FETCH_REQUEST',
+  FETCH_SUCCESS = '@@login/FETCH_SUCCESS',
+  FETCH_ERROR = '@@login/FETCH_ERROR',
 }
-
-interface LoginRequestAction {
-  type: typeof LOGIN_API_LOADING;
-}
-
-export interface ThunkLoginRequestAction {
-  type: typeof LOGIN_REQUEST;
-  payload: {
-    email: string;
-    username: string;
-  };
-}
-
-interface LoginErrorAction {
-  type: typeof LOGIN_API_ERROR;
-  payload: string;
-}
-
-interface LoginSuccessAction {
-  type: typeof LOGIN_API_SUCCESS;
-  payload: any;
-}
-
-export type LoginActions = LoginRequestAction | LoginErrorAction | LoginSuccessAction | ThunkLoginRequestAction;
-
-/* THUNK ACTIONS */
-
-// <Promise<Return Type>, State Interface, Type of Param, Type of Action> */
-// export const thunkLoginRequest = (email: string, password: string) => {
-//   return async (dispatch: Dispatch) => {
-//     try {
-//       dispatch(loginRequest());
-//       const response = await axios.post('/api/auth/login', { email, password }, { withCredentials: true });
-//     } catch (err) {
-//       dispatch(loginError(get(err, 'response.data.message', 'Sorry and error occured')));
-//     }
-//   };
-// };
-
-export const loginRequestActionCreator: ActionCreator<
-  ThunkAction<
-    Promise<LoginSuccessAction>, // The type of the last action to be dispatched - will always be promise<T> for async actions
-    any, // The type for the data within the last action
-    null, // The type of the parameter for the nested function
-    LoginSuccessAction // The type of the last action to be dispatched
-  >
-> = ({ email, password }: LoginTypes) => {
-  return async (dispatch: Dispatch) => {
-    const loginRequestAction: LoginRequestAction = {
-      type: 'LOGIN_API_LOADING',
-    };
-    dispatch(loginRequestAction);
-    const response = await axios.post('/api/auth/login', { email, password }, { withCredentials: true });
-    const loginSuccess: LoginSuccessAction = {
-      payload: response,
-      type: 'LOGIN_API_SUCCESS',
-    };
-    return dispatch(loginSuccess);
-  };
-};
-
-/* ACTION CREATORS */
-
-export function loginRequest(): LoginRequestAction {
-  return {
-    type: LOGIN_API_LOADING,
-  };
-}
-
-export function loginError(data: string): LoginErrorAction {
-  return {
-    type: LOGIN_API_ERROR,
-    payload: data,
-  };
-}
-
-export function loginSuccess(data: any): LoginSuccessAction {
-  return {
-    type: LOGIN_API_SUCCESS,
-    payload: data,
-  };
-}
-
-/* STATE */
 
 export interface LoginState {
   loading: boolean;
   error: string;
   success: boolean;
   data: any;
+}
+
+interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export const loginRequest = ({ email, password }: LoginRequest) => action(LoginActionTypes.FETCH_REQUEST, {email, password});
+export const loginSuccess = (data: any) => action(LoginActionTypes.FETCH_SUCCESS, data);
+export const loginError = (message: string) => action(LoginActionTypes.FETCH_ERROR, message);
+
+function loginApi(values) {
+  return axios.post('/api/auth/login', values, { withCredentials: true });
+}
+
+function* handleLogin(action) {
+  try {
+    // To call async functions, use redux-saga's `call()`.
+    console.log("ACTION PAYLOAD: ", action);
+    const res = yield call(loginApi, action.payload);
+
+    if (res.error) {
+      yield put(loginError(res.error));
+    } else {
+      yield put(loginSuccess(res));
+    }
+  } catch (err) {
+    if (err instanceof Error) {
+      yield put(loginError(err.stack!));
+    } else {
+      yield put(loginError('An unknown error occured.'));
+    }
+  }
 }
 
 const initialState: LoginState = {
@@ -114,27 +56,30 @@ const initialState: LoginState = {
   data: {},
 };
 
-export function loginReducer(state = initialState, action: LoginActions): LoginState {
+export const loginReducer: Reducer<LoginState> = (state = initialState, action): LoginState => {
   switch (action.type) {
-    case LOGIN_API_LOADING:
-      return {
-        ...state,
-        loading: true,
-      };
-    case LOGIN_API_ERROR:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    case LOGIN_API_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: '',
-        data: action.payload,
-      };
-    default:
+    case LoginActionTypes.FETCH_REQUEST: {
+      return { ...state, loading: true };
+    }
+    case LoginActionTypes.FETCH_SUCCESS: {
+      return { ...state, loading: false, data: action.payload };
+    }
+    case LoginActionTypes.FETCH_ERROR: {
+      return { ...state, loading: false, error: action.payload };
+    }
+    default: {
       return state;
+    }
   }
+};
+
+// This is our watcher function. We use `take*()` functions to watch Redux for a specific action
+// type, and run our saga, for example the `handleFetch()` saga above.
+function* watchFetchRequest() {
+  yield takeEvery(LoginActionTypes.FETCH_REQUEST, handleLogin);
+}
+
+// We can also use `fork()` here to split our saga into multiple watchers.
+export function* loginSaga() {
+  yield all([call(watchFetchRequest)]);
 }
