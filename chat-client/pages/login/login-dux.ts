@@ -48,7 +48,7 @@ function* handleLogin(action) {
   }
 }
 
-const initialState: LoginState = {
+export const initialState: LoginState = {
   loading: false,
   error: '',
   success: false,
