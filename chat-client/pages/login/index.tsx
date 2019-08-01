@@ -8,12 +8,12 @@ import LoginView from './login-view';
 
 const LoginPageContainer = () => {
   const dispatch = useDispatch();
-  const login = useSelector<AppState, any>(state => state.login);
+  const state = useSelector<AppState, any>(state => state.login);
 
   async function onSubmit({email, password}) {
     dispatch(loginRequest({email, password}));
   }
-  return <Layout header={<Navabar />} content={<LoginView error={login.error} onSubmit={onSubmit} />} />;
+  return <Layout header={<Navabar />} content={<LoginView error={state.error} onSubmit={onSubmit} />} />;
 };
 
 export default LoginPageContainer;
