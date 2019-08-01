@@ -56,7 +56,7 @@ const AuthForm = ({ onSubmit, error }: Props) => {
           ENTER
         </Button>
       </FormGroup>
-      {error && <p className="text-center text-danger">{error}</p>}
+      {error && <p id="login-server-error" className="text-center text-danger">{error}</p>}
     </Form>
   );
 };

@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import LoginForm from './login-form';
 
 describe('Login Form', () => {
-  const wrapper = shallow(<LoginForm error={''} submitForm={jest.fn} />);
+  const wrapper = shallow(<LoginForm error={'Server error'} onSubmit={jest.fn} />);
   // it('Renders correctly', () => {
   //   expect(wrapper).toMatchSnapshot();
   // });
@@ -44,5 +44,9 @@ describe('Login Form', () => {
     });
     expect(wrapper.find('#email-error').contains('Warrior! We must know your name for the battle field!'));
     expect(wrapper.find('#password-error').contains('You must provide this, for passage!'));
+  });
+
+  it('should display server error if "error" prop is passed', () => {
+    expect(wrapper.find('#login-server-error').contains('Server error'));
   });
 });
