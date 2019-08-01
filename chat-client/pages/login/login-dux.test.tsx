@@ -1,5 +1,6 @@
 import { Action } from 'redux';
-import { LoginActionTypes, loginRequest, loginSuccess, loginError, loginReducer, initialState } from './login-dux';
+import {put, call} from "redux-saga/effects";
+import { LoginActionTypes, watchFetchRequest, loginSuccess, loginError, loginReducer, initialState, loginApi } from './login-dux';
 
 describe('Login Actions', () => {
   it('should create an action: loginSuccess', () => {
@@ -43,3 +44,28 @@ describe('Login Reducer', () => {
     });
   });
 });
+
+
+// describe('Login Flow', () => {
+//   it('Fetches the movies successfully', () => {
+//     const data = {
+//       email: "",
+//       password: ""
+//     }
+//     const generator = watchFetchRequest();
+//     expect(generator.next().value)
+//     .toEqual(put(
+//       {type: LoginActionTypes.FETCH_REQUEST, payload: data}
+//      ));
+//     expect(generator.next().value)
+//     .toEqual(call(loginApi, data));
+//     expect(generator.next().value)
+//     .toEqual(put(
+//       {type: LoginActionTypes.FETCH_SUCCESS}
+//     ));
+//     expect(generator.next().value)
+//     .toEqual(put(
+//       {type: 'LOAD_INITIAL_MOVIES', payload: undefined}
+//     ));
+//   });
+// });

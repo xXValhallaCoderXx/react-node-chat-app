@@ -7,10 +7,10 @@ const imageSrc = require('chat-client/shared/images/viking-icon.png');
 
 interface Props {
   error: string;
-  submitForm: any;
+  onSubmit: ({email, password}) => void;
 }
 
-const LoginView = ({ error, submitForm }: Props) => {
+const LoginView = ({ error, onSubmit }: Props) => {
   return (
     <div className="d-flex h-100 justify-content-center align-items-center">
       <Card className="p-5">
@@ -19,7 +19,7 @@ const LoginView = ({ error, submitForm }: Props) => {
         <Row style={{ width: 500 }}>
           <Col>
             <p className="text-center font-weight-bold">Login and start raiding!</p>
-            <LoginForm error={error} submitForm={submitForm} />
+            <LoginForm error={error} onSubmit={onSubmit} />
           </Col>
         </Row>
         <Row className="justify-content-center">

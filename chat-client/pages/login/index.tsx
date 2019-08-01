@@ -10,10 +10,10 @@ const LoginPageContainer = () => {
   const dispatch = useDispatch();
   const login = useSelector<AppState, any>(state => state.login);
 
-  async function submitForm(email: string, password: string) {
-    dispatch(loginRequest({email: "Sam@hotmail.com", password: "1234"}));
+  async function onSubmit({email, password}) {
+    dispatch(loginRequest({email, password}));
   }
-  return <Layout header={<Navabar />} content={<LoginView error={login.error} submitForm={submitForm} />} />;
+  return <Layout header={<Navabar />} content={<LoginView error={login.error} onSubmit={onSubmit} />} />;
 };
 
 export default LoginPageContainer;

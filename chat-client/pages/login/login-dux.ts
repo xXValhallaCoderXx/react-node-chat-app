@@ -25,7 +25,7 @@ export const loginRequest = ({ email, password }: LoginRequest) => action(LoginA
 export const loginSuccess = (data: any) => action(LoginActionTypes.FETCH_SUCCESS, data);
 export const loginError = (message: string) => action(LoginActionTypes.FETCH_ERROR, message);
 
-function loginApi(values) {
+export function loginApi(values) {
   return axios.post('/api/auth/login', values, { withCredentials: true });
 }
 
@@ -74,7 +74,7 @@ export const loginReducer: Reducer<LoginState> = (state = initialState, action):
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
-function* watchFetchRequest() {
+export function* watchFetchRequest() {
   yield takeEvery(LoginActionTypes.FETCH_REQUEST, handleLogin);
 }
 

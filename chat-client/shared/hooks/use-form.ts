@@ -10,7 +10,7 @@ const useForm = (cb, validate) => {
 
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
-      cb();
+      cb(values);
     }
   }, [errors]);
 

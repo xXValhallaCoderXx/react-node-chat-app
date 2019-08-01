@@ -3,7 +3,7 @@ import { Button, Form, FormGroup, Input, FormFeedback, Label } from 'reactstrap'
 import { useForm } from 'chat-client/shared/hooks';
 
 interface Props {
-  submitForm: () => void;
+  onSubmit: ({email, password}) => void;
   error: string;
 }
 
@@ -23,8 +23,8 @@ function validate(values: Values) {
   return errors;
 }
 
-const AuthForm = ({ submitForm, error }: Props) => {
-  const { values, errors, handleSubmit, handleChange } = useForm(submitForm, validate);
+const AuthForm = ({ onSubmit, error }: Props) => {
+  const { values, errors, handleSubmit, handleChange } = useForm(onSubmit, validate);
   return (
     <Form id="login-form" onSubmit={handleSubmit}>
       <FormGroup>
