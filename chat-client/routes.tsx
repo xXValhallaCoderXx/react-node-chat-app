@@ -8,12 +8,12 @@ import { CONSTANTS } from 'chat-client/shared/constants';
 
 import { LoadingScreen } from 'chat-client/shared/components';
 
-const LazyLogin = lazy(() => import(/* webpackChunkName: "login" */ './pages/login'));
-// const LazyRegister = lazy(() => import(/* webpackChunkName: "register" */ './pages/register'));
-// const LazyRoom = lazy(() => import(/* webpackChunkName: "room" */ './pages/room-chat'));
+const LazyLogin = lazy(() => import(/* webpackChunkName: "login" */ './src/login'));
+const LazyRegister = lazy(() => import(/* webpackChunkName: "register" */ './src/register'));
+const LazyRoom = lazy(() => import(/* webpackChunkName: "room" */ './src/chat-room'));
 // const LazyPaint = lazy(() => import(/* webpackChunkName: "room" */ './pages/room-paint'));
 
-const history = createHistory();
+export const history = createHistory();
 
 const Application = () => {
   const dispatch = useDispatch();
@@ -41,9 +41,9 @@ const Application = () => {
       <Switch>
         <Suspense fallback={LoadingUI()}>
           <Route exact path="/" component={LazyLogin} />
-          {/* <Route exact path="/register" component={LazyRegister} />
+          <Route exact path="/register" component={LazyRegister} />
           <Route exact path="/room/:uid" component={LazyRoom} />
-          <Route exact path="/paint/:uid" component={LazyPaint} /> */}
+          {/*  <Route exact path="/paint/:uid" component={LazyPaint} /> */}
         </Suspense>
       </Switch>
     </Router>

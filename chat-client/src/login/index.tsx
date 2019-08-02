@@ -2,18 +2,18 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from 'chat-client/config/root-reducer';
 import { Navabar, Layout } from 'chat-client/shared/components';
-import { loginRequest } from './login-dux';
+import { loginApi } from './login-dux';
 import LoginView from './login-view';
 
 
 const LoginPageContainer = () => {
   const dispatch = useDispatch();
-  const login = useSelector<AppState, any>(state => state.login);
+  const state = useSelector<AppState, any>(state => state.login);
 
   async function onSubmit({email, password}) {
-    dispatch(loginRequest({email, password}));
+    dispatch(loginApi({email, password}));
   }
-  return <Layout header={<Navabar />} content={<LoginView error={login.error} onSubmit={onSubmit} />} />;
+  return <Layout header={<Navabar />} content={<LoginView  error={state.error} onSubmit={onSubmit} />} />;
 };
 
 export default LoginPageContainer;
