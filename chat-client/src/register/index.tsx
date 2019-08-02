@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from 'chat-client/config/root-reducer';
 import { Navabar, Layout } from 'chat-client/shared/components';
@@ -9,10 +9,20 @@ const RegisterPageContainer = () => {
   const dispatch = useDispatch();
   const state = useSelector<AppState, any>(state => state.register);
 
-  async function onSubmit({ email, password }) {
-    dispatch(registerRequest({ email, password }));
+  async function onSubmit({ username, email, password }) {
+    dispatch(registerRequest({ username, email, password }));
   }
-  return <Layout header={<Navabar />} content={<RegisterView error={state.error} onSubmit={onSubmit} />} />;
+
+  useEffect(() => {
+    console.log('HELLO');
+  }, [state.loading]);
+
+  return (
+    <Layout
+      header={<Navabar />}
+      content={<RegisterView loading={state.loading} error={state.error} onSubmit={onSubmit} />}
+    />
+  );
 };
 
 export default RegisterPageContainer;

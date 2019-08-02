@@ -13,7 +13,7 @@ const LoginPageContainer = () => {
   async function onSubmit({email, password}) {
     dispatch(loginRequest({email, password}));
   }
-  return <Layout header={<Navabar />} content={<LoginView error={state.error} onSubmit={onSubmit} />} />;
+  return <Layout header={<Navabar />} content={<LoginView  error={state.error} onSubmit={onSubmit} />} />;
 };
 
 export default LoginPageContainer;

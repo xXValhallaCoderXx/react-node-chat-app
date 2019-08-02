@@ -19,9 +19,10 @@ export interface RegisterState {
 interface RegisterInput {
   email: string;
   password: string;
+  username: string;
 }
 
-export const registerRequest = ({ email, password }: RegisterInput) => action(RegisterActionType.FETCH_REQUEST, {email, password});
+export const registerRequest = ({ email, password, username }: RegisterInput) => action(RegisterActionType.FETCH_REQUEST, {email, password, username});
 export const registerSuccess = (data: any) => action(RegisterActionType.FETCH_SUCCESS, data);
 export const registerError = (message: string) => action(RegisterActionType.FETCH_ERROR, message);
 
@@ -29,7 +30,8 @@ export function registerApi(values) {
   return axios.post('/api/auth/register', values, { withCredentials: true });
 }
 
-function* handleLogin(action) {
+function* handleRegister(action) {
+  console.log("HIT HERE")
   try {
     const res = yield call(registerApi, action.payload);
     if (res.error) {
@@ -72,7 +74,7 @@ export const registerReducer: Reducer<RegisterState> = (state = initialState, ac
 };
 
 export function* watchFetchRequest() {
-  yield takeEvery(RegisterActionType.FETCH_REQUEST, handleLogin);
+  yield takeEvery(RegisterActionType.FETCH_REQUEST, handleRegister);
 }
 
 export function* registerSaga() {

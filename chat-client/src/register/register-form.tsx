@@ -1,10 +1,11 @@
 import React from 'react';
 import { useForm } from 'chat-client/shared/hooks';
-import {Form, FormGroup, Label, Input, FormText, FormFeedback, Button} from "reactstrap";
+import {Form, FormGroup, Label, Input, FormText, FormFeedback, Button, Spinner} from "reactstrap";
 
 interface Props {
   onSubmit: any;
   error: string;
+  loading: boolean;
 }
 
 function validate(values) {
@@ -24,8 +25,9 @@ function validate(values) {
   return errors;
 }
 
-const RegisterForm = ({onSubmit, error}: Props) => {
+const RegisterForm = ({onSubmit, error, loading}: Props) => {
   const { values, errors, handleSubmit, handleChange } = useForm(onSubmit, validate);
+  console.log("VALUES: ", values);
   return (
     <Form onSubmit={handleSubmit}>
       <FormGroup>
@@ -33,7 +35,7 @@ const RegisterForm = ({onSubmit, error}: Props) => {
         <Input
           invalid={errors.username ? true : false}
           type="text"
-          name="username"
+          id="username"
           placeholder="What do you hail as warrior?"
           value={values.username || ''}
           onChange={handleChange}
@@ -46,7 +48,7 @@ const RegisterForm = ({onSubmit, error}: Props) => {
         <Input
           invalid={errors.email ? true : false}
           type="text"
-          name="email"
+          id="email"
           placeholder="Enter your email..."
           value={values.email || ''}
           onChange={handleChange}
@@ -58,7 +60,7 @@ const RegisterForm = ({onSubmit, error}: Props) => {
         <Input
           invalid={errors.password ? true : false}
           type="text"
-          name="password"
+          id="password"
           placeholder="Speak friend, and enter..."
           value={values.password || ''}
           onChange={handleChange}
@@ -70,7 +72,7 @@ const RegisterForm = ({onSubmit, error}: Props) => {
         <Input
           invalid={errors.confirmPassword ? true : false}
           type="text"
-          name="confirmPassword"
+          id="confirmPassword"
           placeholder="Speak friend, and enter..."
           value={values.confirmPassword || ''}
           onChange={handleChange}
@@ -79,7 +81,7 @@ const RegisterForm = ({onSubmit, error}: Props) => {
       </FormGroup>
       <FormGroup>
         <Button block color="brand-secondary" type="submit">
-          {/* {state.loading ? <Spinner size="sm" /> : 'SIGN UP'} */}
+          {loading ? <Spinner size="sm" /> : 'SIGN UP'}
         </Button>
       </FormGroup>
       {error && <p className="text-center text-danger">{error}</p>}
