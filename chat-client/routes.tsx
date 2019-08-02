@@ -13,7 +13,7 @@ const LazyRegister = lazy(() => import(/* webpackChunkName: "register" */ './src
 const LazyRoom = lazy(() => import(/* webpackChunkName: "room" */ './src/chat-room'));
 // const LazyPaint = lazy(() => import(/* webpackChunkName: "room" */ './pages/room-paint'));
 
-const history = createHistory();
+export const history = createHistory();
 
 const Application = () => {
   const dispatch = useDispatch();

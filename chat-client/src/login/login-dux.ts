@@ -1,10 +1,9 @@
-import { all, call, put, takeEvery } from 'redux-saga/effects';
-import axios from "axios";
+import axios from 'axios';
 import { action } from 'typesafe-actions';
 import { Reducer } from 'redux';
 
 export enum LoginActionTypes {
-  FETCH_REQUEST = '@@login/FETCH_REQUEST',
+  FETCH_REQUEST = '@@login/REQUEST',
   FETCH_SUCCESS = '@@login/FETCH_SUCCESS',
   FETCH_ERROR = '@@login/FETCH_ERROR',
 }
@@ -21,32 +20,19 @@ interface LoginRequest {
   password: string;
 }
 
-export const loginRequest = ({ email, password }: LoginRequest) => action(LoginActionTypes.FETCH_REQUEST, {email, password});
+export const loginRequest = () => action(LoginActionTypes.FETCH_REQUEST);
 export const loginSuccess = (data: any) => action(LoginActionTypes.FETCH_SUCCESS, data);
 export const loginError = (message: string) => action(LoginActionTypes.FETCH_ERROR, message);
 
-export function loginApi(values) {
-  return axios.post('/api/auth/login', values, { withCredentials: true });
-}
-
-function* handleLogin(action) {
+export const loginApi = ({ email, password }: LoginRequest) => async (dispatch) => {
+  dispatch(loginRequest());
   try {
-    // To call async functions, use redux-saga's `call()`.
-    const res = yield call(loginApi, action.payload);
-    if (res.error) {
-      yield put(loginError(res.error));
-    } else {
-      yield put(loginSuccess(res));
-    }
-  } catch (err) {
-    if (err) {
-      // LOG err.stack
-      yield put(loginError(err.response.data.message));
-    } else {
-      yield put(loginError('An unknown error occured.'));
-    }
+    const response = await axios.post('/api/auth/login', {email, password}, { withCredentials: true });
+    dispatch(loginSuccess(response))
+  }catch(error) {
+    dispatch(loginError(error.response.data.message))
   }
-}
+};
 
 export const initialState: LoginState = {
   loading: false,
@@ -71,14 +57,3 @@ export const loginReducer: Reducer<LoginState> = (state = initialState, action):
     }
   }
 };
-
-// This is our watcher function. We use `take*()` functions to watch Redux for a specific action
-// type, and run our saga, for example the `handleFetch()` saga above.
-export function* watchFetchRequest() {
-  yield takeEvery(LoginActionTypes.FETCH_REQUEST, handleLogin);
-}
-
-// We can also use `fork()` here to split our saga into multiple watchers.
-export function* loginSaga() {
-  yield all([call(watchFetchRequest)]);
-}

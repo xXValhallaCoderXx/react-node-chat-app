@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from 'chat-client/config/root-reducer';
 import { Navabar, Layout } from 'chat-client/shared/components';
-import { registerRequest } from './register-dux';
+import { registerApi } from './register-dux';
 import RegisterView from './register-view';
 
 const RegisterPageContainer = () => {
@@ -10,11 +10,10 @@ const RegisterPageContainer = () => {
   const state = useSelector<AppState, any>(state => state.register);
 
   async function onSubmit({ username, email, password }) {
-    dispatch(registerRequest({ username, email, password }));
+    dispatch(registerApi({ username, email, password }));
   }
 
   useEffect(() => {
-    console.log('HELLO');
   }, [state.loading]);
 
   return (

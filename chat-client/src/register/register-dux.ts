@@ -1,5 +1,5 @@
-import { all, call, put, takeEvery } from 'redux-saga/effects';
-import axios from "axios";
+import axios from 'axios';
+import { history } from 'chat-client/routes';
 import { action } from 'typesafe-actions';
 import { Reducer } from 'redux';
 
@@ -22,32 +22,20 @@ interface RegisterInput {
   username: string;
 }
 
-export const registerRequest = ({ email, password, username }: RegisterInput) => action(RegisterActionType.FETCH_REQUEST, {email, password, username});
+export const registerRequest = () => action(RegisterActionType.FETCH_REQUEST);
 export const registerSuccess = (data: any) => action(RegisterActionType.FETCH_SUCCESS, data);
 export const registerError = (message: string) => action(RegisterActionType.FETCH_ERROR, message);
 
-export function registerApi(values) {
-  return axios.post('/api/auth/register', values, { withCredentials: true });
-}
-
-function* handleRegister(action) {
-  console.log("HIT HERE")
+export const registerApi = ({ email, password, username }: RegisterInput) => async dispatch => {
+  dispatch(registerRequest());
   try {
-    const res = yield call(registerApi, action.payload);
-    if (res.error) {
-      yield put(registerError(res.error));
-    } else {
-      yield put(registerSuccess(res));
-    }
-  } catch (err) {
-    if (err) {
-      // LOG err.stack
-      yield put(registerError(err.response.data.message));
-    } else {
-      yield put(registerError('An unknown error occured.'));
-    }
+    const response = await axios.post('/api/auth/register', { email, password, username }, { withCredentials: true });
+    dispatch(registerSuccess(response));
+    history.push("/room/123")
+  } catch (error) {
+    dispatch(registerError(error.response.data.message));
   }
-}
+};
 
 export const initialState: RegisterState = {
   loading: false,
@@ -72,11 +60,3 @@ export const registerReducer: Reducer<RegisterState> = (state = initialState, ac
     }
   }
 };
-
-export function* watchFetchRequest() {
-  yield takeEvery(RegisterActionType.FETCH_REQUEST, handleRegister);
-}
-
-export function* registerSaga() {
-  yield all([call(watchFetchRequest)]);
-}
