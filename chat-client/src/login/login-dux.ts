@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { history } from 'chat-client/routes';
-import { action } from 'typesafe-actions';
+import { actionCreator } from "chat-client/shared/utils";
 import { Reducer } from 'redux';
 
 export enum LoginActionTypes {
@@ -21,9 +21,9 @@ interface LoginRequest {
   password: string;
 }
 
-export const loginRequest = () => action(LoginActionTypes.FETCH_REQUEST);
-export const loginSuccess = (data: any) => action(LoginActionTypes.FETCH_SUCCESS, data);
-export const loginError = (message: string) => action(LoginActionTypes.FETCH_ERROR, message);
+export const loginRequest = () => actionCreator(LoginActionTypes.FETCH_REQUEST);
+export const loginSuccess = (data: any) => actionCreator(LoginActionTypes.FETCH_SUCCESS, data);
+export const loginError = (message: string) => actionCreator(LoginActionTypes.FETCH_ERROR, message);
 
 export const loginApi = ({ email, password }: LoginRequest) => async (dispatch) => {
   dispatch(loginRequest());
