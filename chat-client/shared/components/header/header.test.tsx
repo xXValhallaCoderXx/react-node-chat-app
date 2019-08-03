@@ -21,7 +21,7 @@ describe('<Header />', () => {
   it('should display nav bar links', () => {
     const links = [{path: "/", label: "home"}]
     const wrapper = shallow(<Header links={links} />);
-    expect(wrapper.find('#link-1').length).toEqual(1);
+    expect(wrapper.find('#link-0').length).toEqual(1);
   });
 
   // it('should set the email value on change event', () => {

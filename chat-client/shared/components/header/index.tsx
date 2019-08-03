@@ -30,22 +30,15 @@ const NavbarContainer = ({ showBrand, links }: NavbarProps) => {
   }
   return (
     <Navbar color="light" light expand="md">
-      {showBrand && <NavbarBrand id="nav-brand" href="/">Valhalla Chat</NavbarBrand>}
+      {showBrand && (
+        <NavbarBrand id="nav-brand" href="/">
+          Valhalla Chat
+        </NavbarBrand>
+      )}
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={isOpen} navbar>
         <Nav className="ml-auto" navbar>
           {links && renderLinks()}
-          {/* <UncontrolledDropdown nav inNavbar>
-            <DropdownToggle nav caret>
-              Options
-            </DropdownToggle>
-            <DropdownMenu right>
-              <DropdownItem>Option 1</DropdownItem>
-              <DropdownItem>Option 2</DropdownItem>
-              <DropdownItem divider />
-              <DropdownItem>Reset</DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown> */}
         </Nav>
       </Collapse>
     </Navbar>
@@ -54,8 +47,10 @@ const NavbarContainer = ({ showBrand, links }: NavbarProps) => {
   function renderLinks() {
     return links!.map((link: NavLinks, index: any) => {
       return (
-        <NavItem>
-          <NavLink id={`link-${index}`} href={link.path}>{link.label}</NavLink>
+        <NavItem key={index}>
+          <NavLink id={`link-${index}`} href={link.path}>
+            {link.label}
+          </NavLink>
         </NavItem>
       );
     });
@@ -67,3 +62,17 @@ NavbarContainer.defaultProps = {
 };
 
 export default NavbarContainer;
+
+{
+  /* <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle nav caret>
+              Options
+            </DropdownToggle>
+            <DropdownMenu right>
+              <DropdownItem>Option 1</DropdownItem>
+              <DropdownItem>Option 2</DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>Reset</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown> */
+}
