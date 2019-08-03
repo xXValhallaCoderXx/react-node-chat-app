@@ -28,7 +28,7 @@ const AuthForm = ({ onSubmit, error }: Props) => {
   return (
     <Form id="login-form" onSubmit={handleSubmit}>
       <FormGroup>
-        <Label>Email</Label>
+        <Label className="font-weight-bold">Email</Label>
         <Input
           invalid={errors.email ? true : false}
           type="email"
@@ -40,7 +40,7 @@ const AuthForm = ({ onSubmit, error }: Props) => {
         <FormFeedback id="email-error">{errors.email}</FormFeedback>
       </FormGroup>
       <FormGroup>
-        <Label>Password</Label>
+        <Label className="font-weight-bold">Password</Label>
         <Input
           invalid={errors.password ? true : false}
           type="password"

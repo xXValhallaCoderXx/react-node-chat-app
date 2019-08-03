@@ -22,7 +22,7 @@ const LoginView = ({ error, onSubmit }: Props) => {
             <LoginForm error={error} onSubmit={onSubmit} />
           </Col>
         </Row>
-        <Row className="justify-content-center">
+        <Row className="justify-content-center font-italic">
           Not part of the shield wall?
           <Link to="/register" className="ml-1 text-brand-primary font-weight-bold">
             Join our ranks!

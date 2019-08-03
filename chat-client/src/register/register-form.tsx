@@ -31,7 +31,7 @@ const RegisterForm = ({onSubmit, error, loading}: Props) => {
   return (
     <Form onSubmit={handleSubmit}>
       <FormGroup>
-        <Label>Username</Label>
+        <Label className="font-weight-bold">Username</Label>
         <Input
           invalid={errors.username ? true : false}
           type="text"
@@ -44,7 +44,7 @@ const RegisterForm = ({onSubmit, error, loading}: Props) => {
         <FormFeedback>{errors.username}</FormFeedback>
       </FormGroup>
       <FormGroup>
-        <Label>Email</Label>
+        <Label className="font-weight-bold">Email</Label>
         <Input
           invalid={errors.email ? true : false}
           type="text"
@@ -56,7 +56,7 @@ const RegisterForm = ({onSubmit, error, loading}: Props) => {
         <FormFeedback>{errors.password}</FormFeedback>
       </FormGroup>
       <FormGroup>
-        <Label>Password</Label>
+        <Label className="font-weight-bold">Password</Label>
         <Input
           invalid={errors.password ? true : false}
           type="text"
@@ -68,7 +68,7 @@ const RegisterForm = ({onSubmit, error, loading}: Props) => {
         <FormFeedback>{errors.password}</FormFeedback>
       </FormGroup>
       <FormGroup>
-        <Label>Confirm Password</Label>
+        <Label className="font-weight-bold">Confirm Password</Label>
         <Input
           invalid={errors.confirmPassword ? true : false}
           type="text"

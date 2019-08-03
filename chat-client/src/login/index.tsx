@@ -13,7 +13,7 @@ const LoginPageContainer = () => {
   async function onSubmit({email, password}) {
     dispatch(loginApi({email, password}));
   }
-  return <Layout header={<Navabar links={[{label: "hello", path: "/"}]} />} content={<LoginView  error={state.error} onSubmit={onSubmit} />} />;
+  return <Layout content={<LoginView  error={state.error} onSubmit={onSubmit} />} />;
 };
 
 export default LoginPageContainer;
