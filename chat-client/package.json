@@ -40,7 +40,6 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.3.5",
-    "redux-logger": "^3.0.6",
-    "typesafe-actions": "^4.4.2"
+    "redux-logger": "^3.0.6"
   }
 }

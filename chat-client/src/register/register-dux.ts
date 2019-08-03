@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { history } from 'chat-client/routes';
-import { action } from 'typesafe-actions';
+import { actionCreator } from "chat-client/shared/utils";
 import { Reducer } from 'redux';
 
 export enum RegisterActionType {
@@ -22,9 +22,9 @@ interface RegisterInput {
   username: string;
 }
 
-export const registerRequest = () => action(RegisterActionType.FETCH_REQUEST);
-export const registerSuccess = (data: any) => action(RegisterActionType.FETCH_SUCCESS, data);
-export const registerError = (message: string) => action(RegisterActionType.FETCH_ERROR, message);
+export const registerRequest = () => actionCreator(RegisterActionType.FETCH_REQUEST);
+export const registerSuccess = (data: any) => actionCreator(RegisterActionType.FETCH_SUCCESS, data);
+export const registerError = (message: string) => actionCreator(RegisterActionType.FETCH_ERROR, message);
 
 export const registerApi = ({ email, password, username }: RegisterInput) => async dispatch => {
   dispatch(registerRequest());

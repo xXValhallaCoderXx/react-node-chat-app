@@ -24,9 +24,38 @@ describe('Login Actions', () => {
 });
 
 const action: Action<any> = { type: '' };
-describe('Login Reducer', () => {
+describe('Register Reducer', () => {
   it('should return the initial state', () => {
     expect(loginReducer(initialState, action)).toEqual(initialState);
+  });
+
+  it('should handle FETCH REQUEST', () => {
+    expect(
+      loginReducer(initialState, {
+        type: LoginActionTypes.FETCH_REQUEST,
+      }),
+    ).toEqual({
+      data: {},
+      error: '',
+      loading: true,
+      success: false,
+    });
+  });
+
+  it('should handle FETCH SUCCESS', () => {
+    const mockData = {
+      email: 'renate',
+      token: '1234',
+    };
+    expect(
+      loginReducer(initialState, {
+        type: LoginActionTypes.FETCH_SUCCESS,
+        payload: mockData,
+      }),
+    ).toEqual({
+      ...initialState,
+      data: mockData,
+    });
   });
 
   it('should handle FETCH ERROR', () => {
@@ -36,10 +65,9 @@ describe('Login Reducer', () => {
         payload: 'Error has occured',
       }),
     ).toEqual({
-      data: {},
+      ...initialState,
       error: 'Error has occured',
-      loading: false,
-      success: false,
     });
   });
 });
+
