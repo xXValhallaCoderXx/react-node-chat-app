@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { history } from 'chat-client/routes';
 import { action } from 'typesafe-actions';
 import { Reducer } from 'redux';
 
@@ -29,6 +30,7 @@ export const loginApi = ({ email, password }: LoginRequest) => async (dispatch) 
   try {
     const response = await axios.post('/api/auth/login', {email, password}, { withCredentials: true });
     dispatch(loginSuccess(response))
+    history.push("/room/123")
   }catch(error) {
     dispatch(loginError(error.response.data.message))
   }

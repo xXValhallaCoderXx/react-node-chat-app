@@ -13,15 +13,9 @@ const RegisterPageContainer = () => {
     dispatch(registerApi({ username, email, password }));
   }
 
-  useEffect(() => {
-  }, [state.loading]);
+  useEffect(() => {}, [state.loading]);
 
-  return (
-    <Layout
-      header={<Navabar />}
-      content={<RegisterView loading={state.loading} error={state.error} onSubmit={onSubmit} />}
-    />
-  );
+  return <Layout content={<RegisterView loading={state.loading} error={state.error} onSubmit={onSubmit} />} />;
 };
 
 export default RegisterPageContainer;

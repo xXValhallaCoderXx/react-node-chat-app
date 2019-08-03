@@ -19,7 +19,7 @@ const RegisterView = ({ error, onSubmit, loading }: Props) => {
         <h3 className="text-center mt-2 mb-2">Valhalla Chat</h3>
         <p className="text-center font-weight-bold">Join us and be part of the shield wall!</p>
         <RegisterForm loading={loading} error={error} onSubmit={onSubmit}  />
-        <Row className="justify-content-center">
+        <Row className="justify-content-center font-italic">
           Already part of our army?
           <Link to="/" className="ml-1 text-brand-primary font-weight-bold">
             Login in!

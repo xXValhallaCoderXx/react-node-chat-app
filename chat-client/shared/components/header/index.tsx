@@ -13,28 +13,58 @@ import {
   DropdownItem,
 } from 'reactstrap';
 
-interface NavbarProps {
-  showBrand?: boolean;
+interface NavLinks {
+  path: string;
+  label: string;
 }
 
-const NavbarContainer = (props: NavbarProps) => {
+interface NavbarProps {
+  showBrand?: boolean;
+  links?: NavLinks[];
+}
+
+const NavbarContainer = ({ showBrand, links }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   function toggle() {
     setIsOpen(!isOpen);
   }
   return (
     <Navbar color="light" light expand="md">
-      {props.showBrand && <NavbarBrand href="/">Valhalla Chat</NavbarBrand>}
+      {showBrand && (
+        <NavbarBrand id="nav-brand" href="/">
+          Valhalla Chat
+        </NavbarBrand>
+      )}
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={isOpen} navbar>
         <Nav className="ml-auto" navbar>
-          <NavItem>
-            <NavLink href="/components/">Components</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
-          </NavItem>
-          {/* <UncontrolledDropdown nav inNavbar>
+          {links && renderLinks()}
+        </Nav>
+      </Collapse>
+    </Navbar>
+  );
+
+  function renderLinks() {
+    return links!.map((link: NavLinks, index: any) => {
+      return (
+        <NavItem key={index}>
+          <NavLink id={`link-${index}`} href={link.path}>
+            {link.label}
+          </NavLink>
+        </NavItem>
+      );
+    });
+  }
+};
+
+NavbarContainer.defaultProps = {
+  showBrand: true,
+};
+
+export default NavbarContainer;
+
+{
+  /* <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav caret>
               Options
             </DropdownToggle>
@@ -44,15 +74,5 @@ const NavbarContainer = (props: NavbarProps) => {
               <DropdownItem divider />
               <DropdownItem>Reset</DropdownItem>
             </DropdownMenu>
-          </UncontrolledDropdown> */}
-        </Nav>
-      </Collapse>
-    </Navbar>
-  );
-};
-
-NavbarContainer.defaultProps = {
-  showBrand: true,
-};
-
-export default NavbarContainer;
+          </UncontrolledDropdown> */
+}

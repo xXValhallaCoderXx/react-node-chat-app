@@ -6,11 +6,12 @@ import LoginForm from './login-form';
 const imageSrc = require('chat-client/shared/images/viking-icon.png');
 
 interface Props {
+  loading: boolean;
   error: string;
   onSubmit: ({email, password}) => void;
 }
 
-const LoginView = ({ error, onSubmit }: Props) => {
+const LoginView = ({ error, onSubmit, loading }: Props) => {
   return (
     <div className="d-flex h-100 justify-content-center align-items-center">
       <Card className="p-5">
@@ -19,10 +20,10 @@ const LoginView = ({ error, onSubmit }: Props) => {
         <Row style={{ width: 500 }}>
           <Col>
             <p className="text-center font-weight-bold">Login and start raiding!</p>
-            <LoginForm error={error} onSubmit={onSubmit} />
+            <LoginForm loading={loading} error={error} onSubmit={onSubmit} />
           </Col>
         </Row>
-        <Row className="justify-content-center">
+        <Row className="justify-content-center font-italic">
           Not part of the shield wall?
           <Link to="/register" className="ml-1 text-brand-primary font-weight-bold">
             Join our ranks!
