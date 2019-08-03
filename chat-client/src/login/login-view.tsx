@@ -6,6 +6,7 @@ import LoginForm from './login-form';
 const imageSrc = require('chat-client/shared/images/viking-icon.png');
 
 interface Props {
+  loading: boolean;
   error: string;
   onSubmit: ({email, password}) => void;
 }

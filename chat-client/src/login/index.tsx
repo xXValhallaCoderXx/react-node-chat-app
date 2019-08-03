@@ -13,7 +13,7 @@ const LoginPageContainer = () => {
   async function onSubmit({email, password}) {
     dispatch(loginApi({email, password}));
   }
-  return <Layout content={<LoginView  error={state.error} onSubmit={onSubmit} />} />;
+  return <Layout content={<LoginView loading={state.loading}  error={state.error} onSubmit={onSubmit} />} />;
 };
 
 export default LoginPageContainer;
