@@ -1,9 +1,11 @@
 import React from 'react';
-import { Button, Form, FormGroup, Input, FormFeedback, Label } from 'reactstrap';
+import { Form, FormGroup, Input, FormFeedback, Label } from 'reactstrap';
+import { BtnSpinner } from 'chat-client/shared/components';
 import { useForm } from 'chat-client/shared/hooks';
 
 interface Props {
-  onSubmit: ({email, password}) => void;
+  loading: boolean;
+  onSubmit: ({ email, password }) => void;
   error: string;
 }
 
@@ -23,7 +25,7 @@ function validate(values: Values) {
   return errors;
 }
 
-const AuthForm = ({ onSubmit, error }: Props) => {
+const AuthForm = ({ onSubmit, error, loading }: Props) => {
   const { values, errors, handleSubmit, handleChange } = useForm(onSubmit, validate);
   return (
     <Form id="login-form" onSubmit={handleSubmit}>
@@ -52,11 +54,15 @@ const AuthForm = ({ onSubmit, error }: Props) => {
         <FormFeedback>{errors.password}</FormFeedback>
       </FormGroup>
       <FormGroup>
-        <Button block color="brand-secondary" id="login-submit" type="submit">
+        <BtnSpinner loading={loading} block color="brand-secondary" id="login-submit" type="submit">
           ENTER
-        </Button>
+        </BtnSpinner>
       </FormGroup>
-      {error && <p id="login-server-error" className="text-center text-danger">{error}</p>}
+      {error && (
+        <p id="login-server-error" className="text-center text-danger">
+          {error}
+        </p>
+      )}
     </Form>
   );
 };

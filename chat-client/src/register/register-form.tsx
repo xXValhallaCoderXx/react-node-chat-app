@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'chat-client/shared/hooks';
-import {Form, FormGroup, Label, Input, FormText, FormFeedback, Button, Spinner} from "reactstrap";
+import { BtnSpinner } from 'chat-client/shared/components';
+import { Form, FormGroup, Label, Input, FormText, FormFeedback, Spinner } from 'reactstrap';
 
 interface Props {
   onSubmit: any;
@@ -25,9 +26,8 @@ function validate(values) {
   return errors;
 }
 
-const RegisterForm = ({onSubmit, error, loading}: Props) => {
+const RegisterForm = ({ onSubmit, error, loading }: Props) => {
   const { values, errors, handleSubmit, handleChange } = useForm(onSubmit, validate);
-  console.log("VALUES: ", values);
   return (
     <Form onSubmit={handleSubmit}>
       <FormGroup>
@@ -80,9 +80,9 @@ const RegisterForm = ({onSubmit, error, loading}: Props) => {
         <FormFeedback>{errors.confirmPassword}</FormFeedback>
       </FormGroup>
       <FormGroup>
-        <Button block color="brand-secondary" type="submit">
-          {loading ? <Spinner size="sm" /> : 'SIGN UP'}
-        </Button>
+        <BtnSpinner block color="brand-secondary" type="submit">
+          SIGN UP
+        </BtnSpinner>
       </FormGroup>
       {error && <p className="text-center text-danger">{error}</p>}
     </Form>

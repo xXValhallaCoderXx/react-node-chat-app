@@ -11,7 +11,7 @@ interface Props {
   onSubmit: ({email, password}) => void;
 }
 
-const LoginView = ({ error, onSubmit }: Props) => {
+const LoginView = ({ error, onSubmit, loading }: Props) => {
   return (
     <div className="d-flex h-100 justify-content-center align-items-center">
       <Card className="p-5">
@@ -20,7 +20,7 @@ const LoginView = ({ error, onSubmit }: Props) => {
         <Row style={{ width: 500 }}>
           <Col>
             <p className="text-center font-weight-bold">Login and start raiding!</p>
-            <LoginForm error={error} onSubmit={onSubmit} />
+            <LoginForm loading={loading} error={error} onSubmit={onSubmit} />
           </Col>
         </Row>
         <Row className="justify-content-center font-italic">
