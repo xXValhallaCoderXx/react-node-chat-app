@@ -1,6 +1,5 @@
 import { Action } from 'redux';
-import thunk from 'redux-thunk';
-import { LoginActionTypes, loginSuccess, loginError, loginReducer, initialState, loginApi } from './login-dux';
+import { LoginActionTypes, loginSuccess, loginError, loginReducer, initialState } from './login-dux';
 
 describe('Login Actions', () => {
   it('should create an action: loginSuccess', () => {

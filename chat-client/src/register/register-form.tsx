@@ -29,7 +29,7 @@ function validate(values) {
 const RegisterForm = ({ onSubmit, error, loading }: Props) => {
   const { values, errors, handleSubmit, handleChange } = useForm(onSubmit, validate);
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form id="register-form" onSubmit={handleSubmit}>
       <FormGroup>
         <Label className="font-weight-bold">Username</Label>
         <Input
@@ -41,50 +41,50 @@ const RegisterForm = ({ onSubmit, error, loading }: Props) => {
           onChange={handleChange}
         />
         <FormText>This is how others will see you</FormText>
-        <FormFeedback>{errors.username}</FormFeedback>
+        <FormFeedback id="errors-username">{errors.username}</FormFeedback>
       </FormGroup>
       <FormGroup>
         <Label className="font-weight-bold">Email</Label>
         <Input
           invalid={errors.email ? true : false}
-          type="text"
+          type="email"
           id="email"
           placeholder="Enter your email..."
           value={values.email || ''}
           onChange={handleChange}
         />
-        <FormFeedback>{errors.password}</FormFeedback>
+        <FormFeedback id="errors-email">{errors.password}</FormFeedback>
       </FormGroup>
       <FormGroup>
         <Label className="font-weight-bold">Password</Label>
         <Input
           invalid={errors.password ? true : false}
-          type="text"
+          type="password"
           id="password"
           placeholder="Speak friend, and enter..."
           value={values.password || ''}
           onChange={handleChange}
         />
-        <FormFeedback>{errors.password}</FormFeedback>
+        <FormFeedback id="errors-password">{errors.password}</FormFeedback>
       </FormGroup>
       <FormGroup>
         <Label className="font-weight-bold">Confirm Password</Label>
         <Input
           invalid={errors.confirmPassword ? true : false}
-          type="text"
+          type="password"
           id="confirmPassword"
           placeholder="Speak friend, and enter..."
           value={values.confirmPassword || ''}
           onChange={handleChange}
         />
-        <FormFeedback>{errors.confirmPassword}</FormFeedback>
+        <FormFeedback id="errors-confirmPassword">{errors.confirmPassword}</FormFeedback>
       </FormGroup>
       <FormGroup>
         <BtnSpinner block color="brand-secondary" type="submit">
           SIGN UP
         </BtnSpinner>
       </FormGroup>
-      {error && <p className="text-center text-danger">{error}</p>}
+      {error && <p id="register-server-error" className="text-center text-danger">{error}</p>}
     </Form>
   );
 };

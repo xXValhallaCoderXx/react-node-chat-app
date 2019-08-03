@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import LoginForm from './login-form';
 
 describe('Login Form', () => {
-  const wrapper = shallow(<LoginForm error={'Server error'} onSubmit={jest.fn} />);
+  const wrapper = shallow(<LoginForm loading={true} error={'Server error'} onSubmit={jest.fn} />);
   // it('Renders correctly', () => {
   //   expect(wrapper).toMatchSnapshot();
   // });
