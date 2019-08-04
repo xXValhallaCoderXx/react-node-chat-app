@@ -1,14 +1,13 @@
 import { Action } from 'redux';
+import axios from 'axios';
+import moxios from "moxios";
 import thunk from 'redux-thunk';
-import configureStore from 'redux-mock-store';
+import nock from 'nock';
+import configureMockStore from 'redux-mock-store';
 import { LoginActionTypes, loginSuccess, loginError, loginReducer, initialState, loginApi } from './login-dux';
 
-const buildStore = configureStore([thunk]);
-
-const mockServiceCreator = (body, succeeds = true) => () =>
-  new Promise((resolve, reject) => {
-    setTimeout(() => (succeeds ? resolve(body) : reject(body)), 10);
-  });
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
 
 describe('Login Redux Actions', () => {
   it('should create an action: loginSuccess', () => {
@@ -80,18 +79,34 @@ describe('Login Reducer State Changes', () => {
   });
 });
 
-describe('Login Async Actions', () => {
+describe('async actions', () => {
   let store;
-
   beforeEach(() => {
-    store = buildStore(initialState);
+    store = mockStore(initialState);
+    moxios.install();
+  });
+  afterEach(() => {
+    moxios.uninstall(); // Clear HTTP Mocks after each test
   });
 
-  it('Dispatches the LOGIN REQUEST action', () => {
-    console.log('HMMM', store.getActions());
-    const mockResponse = 'Hello';
-    store
-      .dispatch(loginApi({ email: 'user', password: 'pass', service: mockServiceCreator(mockResponse) }))
-      .then(() => expect(store.getActions()).toContainEqual({type: "sss"}));
+  it('it handles failed logins', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({status: 500, response:{message: "This is a server error"}})
+    })
+
+    const expectedActions = [
+      {
+        type: LoginActionTypes.FETCH_REQUEST
+      },
+      {
+        type: LoginActionTypes.FETCH_ERROR,
+        payload: "This is a server error"
+      }
+    ]
+    return store.dispatch(loginApi({email: "", password: ""})).then(() => {
+      expect(store.getActions()).toMatchObject(expectedActions);
+      // console.log("STATEE: ", store.getState());
+    });
   });
 });
