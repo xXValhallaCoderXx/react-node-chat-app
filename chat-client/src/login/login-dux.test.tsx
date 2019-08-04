@@ -1,9 +1,14 @@
 import { Action } from 'redux';
-import thunk from "redux-thunk";
-import configureStore from "redux-mock-store";
-import { LoginActionTypes, loginSuccess, loginError, loginReducer, initialState } from './login-dux';
+import thunk from 'redux-thunk';
+import configureStore from 'redux-mock-store';
+import { LoginActionTypes, loginSuccess, loginError, loginReducer, initialState, loginApi } from './login-dux';
 
 const buildStore = configureStore([thunk]);
+
+const mockServiceCreator = (body, succeeds = true) => () =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => (succeeds ? resolve(body) : reject(body)), 10);
+  });
 
 describe('Login Redux Actions', () => {
   it('should create an action: loginSuccess', () => {
@@ -77,8 +82,16 @@ describe('Login Reducer State Changes', () => {
 
 describe('Login Async Actions', () => {
   let store;
-  
+
   beforeEach(() => {
     store = buildStore(initialState);
-  })
-})
+  });
+
+  it('Dispatches the LOGIN REQUEST action', () => {
+    console.log('HMMM', store.getActions());
+    const mockResponse = 'Hello';
+    store
+      .dispatch(loginApi({ email: 'user', password: 'pass', service: mockServiceCreator(mockResponse) }))
+      .then(() => expect(store.getActions()).toContainEqual({type: "sss"}));
+  });
+});
