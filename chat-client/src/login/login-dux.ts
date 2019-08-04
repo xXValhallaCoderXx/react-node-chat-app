@@ -19,16 +19,21 @@ export interface LoginState {
 interface LoginRequest {
   email: string;
   password: string;
+  service?: any;
 }
 
 export const loginRequest = () => actionCreator(LoginActionTypes.FETCH_REQUEST);
 export const loginSuccess = (data: any) => actionCreator(LoginActionTypes.FETCH_SUCCESS, data);
 export const loginError = (message: string) => actionCreator(LoginActionTypes.FETCH_ERROR, message);
 
-export const loginApi = ({ email, password }: LoginRequest) => async (dispatch) => {
+const callLoginApi = async ({email, password}: LoginRequest ) => {
+  return axios.post('/api/auth/login', {email, password}, { withCredentials: true });
+}
+
+export const loginApi = ({ email, password, service = callLoginApi }: LoginRequest) => async (dispatch) => {
   dispatch(loginRequest());
   try {
-    const response = await axios.post('/api/auth/login', {email, password}, { withCredentials: true });
+    const response = await service({email, password});
     dispatch(loginSuccess(response))
     history.push("/room/123")
   }catch(error) {

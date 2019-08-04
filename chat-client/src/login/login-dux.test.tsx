@@ -1,7 +1,11 @@
 import { Action } from 'redux';
+import thunk from "redux-thunk";
+import configureStore from "redux-mock-store";
 import { LoginActionTypes, loginSuccess, loginError, loginReducer, initialState } from './login-dux';
 
-describe('Login Actions', () => {
+const buildStore = configureStore([thunk]);
+
+describe('Login Redux Actions', () => {
   it('should create an action: loginSuccess', () => {
     const response = {
       data: 'We have some data',
@@ -24,7 +28,7 @@ describe('Login Actions', () => {
 });
 
 const action: Action<any> = { type: '' };
-describe('Register Reducer', () => {
+describe('Login Reducer State Changes', () => {
   it('should return the initial state', () => {
     expect(loginReducer(initialState, action)).toEqual(initialState);
   });
@@ -71,3 +75,10 @@ describe('Register Reducer', () => {
   });
 });
 
+describe('Login Async Actions', () => {
+  let store;
+  
+  beforeEach(() => {
+    store = buildStore(initialState);
+  })
+})
