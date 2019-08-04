@@ -25,7 +25,8 @@ export const loginRequest = () => actionCreator(LoginActionTypes.FETCH_REQUEST);
 export const loginSuccess = (data: any) => actionCreator(LoginActionTypes.FETCH_SUCCESS, data);
 export const loginError = (message: string) => actionCreator(LoginActionTypes.FETCH_ERROR, message);
 
-export const loginApi = ({ email, password }: LoginRequest) => async (dispatch) => {
+
+export const loginApi = ({ email, password}: LoginRequest) => async (dispatch) => {
   dispatch(loginRequest());
   try {
     const response = await axios.post('/api/auth/login', {email, password}, { withCredentials: true });
