@@ -1,8 +1,6 @@
 import { Action } from 'redux';
-import axios from 'axios';
 import moxios from "moxios";
 import thunk from 'redux-thunk';
-import nock from 'nock';
 import configureMockStore from 'redux-mock-store';
 import { LoginActionTypes, loginSuccess, loginError, loginReducer, initialState, loginApi } from './login-dux';
 
@@ -80,9 +78,8 @@ describe('Login Reducer State Changes', () => {
 });
 
 describe('async actions', () => {
-  let store;
   beforeEach(() => {
-    store = mockStore(initialState);
+    
     moxios.install();
   });
   afterEach(() => {
@@ -90,6 +87,7 @@ describe('async actions', () => {
   });
 
   it('it handles failed logins', () => {
+    const store = mockStore(initialState);
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({status: 500, response:{message: "This is a server error"}})
@@ -106,7 +104,6 @@ describe('async actions', () => {
     ]
     return store.dispatch(loginApi({email: "", password: ""})).then(() => {
       expect(store.getActions()).toMatchObject(expectedActions);
-      // console.log("STATEE: ", store.getState());
     });
   });
 });
