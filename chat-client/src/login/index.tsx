@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from 'chat-client/config/root-reducer';
-import { Navabar, Layout } from 'chat-client/shared/components';
+import { Layout } from 'chat-client/shared/components';
 import { loginApi } from './login-dux';
 import LoginView from './login-view';
 
