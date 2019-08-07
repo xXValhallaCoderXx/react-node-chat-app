@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { Container, Col, Row } from 'reactstrap';
 import classNames from 'classnames/bind';
 const styles = require('./styles.module.scss');
@@ -44,19 +44,5 @@ const Layout = ({ header, sidebar, content, footer }: LayoutProps) => {
     </Container>
   );
 };
-
-{
-  /* <Col md="auto" className="pl-0 pr-0">
-          <RoomLayout.Sidebar>{result['sidebar']}</RoomLayout.Sidebar>
-        </Col>
-        <div className={`d-flex align-items-end flex-column w-100 ${styles.bgMain}`}>
-          <div className={`pl-3 pr-3 ml-3 h-100 w-100 ${styles.messagesMain}`}>
-            <RoomLayout.Messages>{result['messages']}</RoomLayout.Messages>
-          </div>
-          <div className="pl-3 pr-3 mb-3 mt-auto w-100">
-            <RoomLayout.Input>{result['input']}</RoomLayout.Input>
-          </div>
-        </div> */
-}
 
 export default Layout;

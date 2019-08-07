@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import LoginForm from './login-form';
+import LoginForm from './form';
 
 describe('Login Form', () => {
-  const wrapper = shallow(<LoginForm loading={true} error={'Server error'} onSubmit={jest.fn} />);
+  const wrapper = shallow(<LoginForm initUser={jest.fn} />);
   // it('Renders correctly', () => {
   //   expect(wrapper).toMatchSnapshot();
   // });
@@ -44,9 +44,5 @@ describe('Login Form', () => {
     });
     expect(wrapper.find('#email-error').contains('Warrior! We must know your name for the battle field!'));
     expect(wrapper.find('#password-error').contains('You must provide this, for passage!'));
-  });
-
-  it('should display server error if "error" prop is passed', () => {
-    expect(wrapper.find('#login-server-error').contains('Server error'));
   });
 });

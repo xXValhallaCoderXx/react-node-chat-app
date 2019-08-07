@@ -1,12 +1,11 @@
 import React from 'react';
-import { useForm } from 'chat-client/shared/hooks';
+import {authServices} from "chat-client/services";
+import { useForm, useApi } from 'chat-client/shared/hooks';
 import { BtnSpinner } from 'chat-client/shared/components';
-import { Form, FormGroup, Label, Input, FormText, FormFeedback, Spinner } from 'reactstrap';
+import { Form, FormGroup, Label, Input, FormText, FormFeedback } from 'reactstrap';
 
 interface Props {
-  onSubmit: any;
-  error: string;
-  loading: boolean;
+  initUser: any;
 }
 
 function validate(values) {
@@ -26,8 +25,9 @@ function validate(values) {
   return errors;
 }
 
-const RegisterForm = ({ onSubmit, error, loading }: Props) => {
+const RegisterForm = ({ initUser }: Props) => {
   const { values, errors, handleSubmit, handleChange } = useForm(onSubmit, validate);
+  const [{loading, data, error}, callApi]: any = useApi(authServices.registerApi);
   return (
     <Form id="register-form" onSubmit={handleSubmit}>
       <FormGroup>
@@ -80,13 +80,22 @@ const RegisterForm = ({ onSubmit, error, loading }: Props) => {
         <FormFeedback id="errors-confirmPassword">{errors.confirmPassword}</FormFeedback>
       </FormGroup>
       <FormGroup>
-        <BtnSpinner block color="brand-secondary" type="submit">
+        <BtnSpinner loading={loading} block color="brand-secondary" type="submit">
           SIGN UP
         </BtnSpinner>
       </FormGroup>
-      {error && <p id="register-server-error" className="text-center text-danger">{error}</p>}
+      {error && (
+        <p id="register-server-error" className="text-center text-danger">
+          {error}
+        </p>
+      )}
     </Form>
   );
+  async function onSubmit() {
+    const { email, password } = values;
+    await callApi({ email, password });
+    console.log('DATA: ', data);
+  }
 };
 
 export default RegisterForm;

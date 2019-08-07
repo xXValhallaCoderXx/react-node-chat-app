@@ -1,10 +1,8 @@
 import { combineReducers } from 'redux';
-import { loginReducer } from 'chat-client/src/login/login-dux';
-import { registerReducer } from 'chat-client/src/register/register-dux';
+import { userReducer } from 'chat-client/store';
 
 const rootReducer = combineReducers({
-  login: loginReducer,
-  register: registerReducer
+  user: userReducer
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

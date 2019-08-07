@@ -1,26 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Card } from 'reactstrap';
-import LoginForm from './login-form';
-
-const imageSrc = require('chat-client/shared/images/viking-icon.png');
+import LoginForm from "./form";
 
 interface Props {
-  loading: boolean;
-  error: string;
-  onSubmit: ({email, password}) => void;
+  initUser: any;
 }
+// const imageSrc = require('chat-client/shared/images/viking-icon.png');
 
-const LoginView = ({ error, onSubmit, loading }: Props) => {
+const LoginView = ({ initUser }: Props) => {
   return (
     <div className="d-flex h-100 justify-content-center align-items-center">
       <Card className="p-5">
-        <img className="mx-auto" src={imageSrc} height="60" width="55" />
+        {/* <img className="mx-auto" src={imageSrc} height="60" width="55" /> */}
         <h3 className="text-center mt-2 mb-2">Valhalla Chat</h3>
         <Row style={{ width: 500 }}>
           <Col>
             <p className="text-center font-weight-bold">Login and start raiding!</p>
-            <LoginForm loading={loading} error={error} onSubmit={onSubmit} />
+            <LoginForm initUser={initUser} />
           </Col>
         </Row>
         <Row className="justify-content-center font-italic">
@@ -33,4 +30,5 @@ const LoginView = ({ error, onSubmit, loading }: Props) => {
     </div>
   );
 };
+
 export default LoginView;

@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import RegisterForm from './register-form';
+import RegisterForm from './form';
 
 describe('<RegisterForm />', () => {
-  const wrapper = shallow(<RegisterForm loading={true} error={'Server error'} onSubmit={jest.fn} />);
+  const wrapper = shallow(<RegisterForm initUser={jest.fn} />);
 
   it('should have an username field', () => {
     expect(wrapper.find('#username').length).toEqual(1);
@@ -84,9 +84,5 @@ describe('<RegisterForm />', () => {
       },
     });
     expect(wrapper.find('#email').prop('value')).toEqual('freyo@gmail.com');
-  });
-
-  it('should display server error if "error" prop is passed', () => {
-    expect(wrapper.find('#login-server-error').contains('Server error'));
   });
 });

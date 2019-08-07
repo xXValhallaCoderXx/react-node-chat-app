@@ -47,8 +47,6 @@ export default abstract class BaseController {
   }
 
   protected fail(error: Error | string) {
-    return this.res.status(500).json({
-      message: error.toString(),
-    });
+    return this.res.status(500).send(error.toString(),);
   }
 }

@@ -1,4 +1,4 @@
-import 'shared/styles/main.scss';
+import 'shared/styles/index.scss';
 import React from 'react';
 import { render } from 'react-dom';
 import Routes from './routes';
