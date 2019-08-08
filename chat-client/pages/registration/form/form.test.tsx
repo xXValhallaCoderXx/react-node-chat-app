@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import RegisterForm from './form';
+import RegisterForm from '.';
 
 describe('<RegisterForm />', () => {
   const wrapper = shallow(<RegisterForm initUser={jest.fn} />);

@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import LoginForm from './form';
+import Form from './form';
 
 describe('Login Form', () => {
-  const wrapper = shallow(<LoginForm initUser={jest.fn} />);
+  const wrapper = shallow(<Form apiState={null} values={null} errors={null} onChange={jest.fn} onSubmit={jest.fn} />);
   // it('Renders correctly', () => {
   //   expect(wrapper).toMatchSnapshot();
   // });

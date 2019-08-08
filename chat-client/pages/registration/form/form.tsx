@@ -1,35 +1,20 @@
 import React from 'react';
-import {authServices} from "chat-client/services";
-import { useForm, useApi } from 'chat-client/shared/hooks';
 import { BtnSpinner } from 'chat-client/shared/components';
 import { Form, FormGroup, Label, Input, FormText, FormFeedback } from 'reactstrap';
+import { FormValues, ApiState } from './index';
 
 interface Props {
-  initUser: any;
+  values: FormValues;
+  errors: FormValues;
+  onSubmit: any;
+  onChange: any;
+  apiState: ApiState;
 }
 
-function validate(values) {
-  const errors: any = {};
-  if (!values.username) {
-    errors.username = 'Warrior! We must know your name for the battle field!';
-  }
-  if (!values.email) {
-    errors.email = 'You must provide this, for passage!';
-  }
-  if (!values.password) {
-    errors.password = 'You must provide this, for passage!';
-  }
-  if (!values.confirmPassword) {
-    errors.confirmPassword = 'Warrior! We must know your name for the battle field!';
-  }
-  return errors;
-}
-
-const RegisterForm = ({ initUser }: Props) => {
-  const { values, errors, handleSubmit, handleChange } = useForm(onSubmit, validate);
-  const [{loading, data, error}, callApi]: any = useApi(authServices.registerApi);
+const RegisterForm = ({ onChange, onSubmit, values, errors, apiState }: Props) => {
+  const {loading, error} = apiState;
   return (
-    <Form id="register-form" onSubmit={handleSubmit}>
+    <Form id="register-form" onSubmit={onSubmit}>
       <FormGroup>
         <Label className="font-weight-bold">Username</Label>
         <Input
@@ -38,7 +23,7 @@ const RegisterForm = ({ initUser }: Props) => {
           id="username"
           placeholder="What do you hail as warrior?"
           value={values.username || ''}
-          onChange={handleChange}
+          onChange={onChange}
         />
         <FormText>This is how others will see you</FormText>
         <FormFeedback id="errors-username">{errors.username}</FormFeedback>
@@ -51,7 +36,7 @@ const RegisterForm = ({ initUser }: Props) => {
           id="email"
           placeholder="Enter your email..."
           value={values.email || ''}
-          onChange={handleChange}
+          onChange={onChange}
         />
         <FormFeedback id="errors-email">{errors.password}</FormFeedback>
       </FormGroup>
@@ -63,7 +48,7 @@ const RegisterForm = ({ initUser }: Props) => {
           id="password"
           placeholder="Speak friend, and enter..."
           value={values.password || ''}
-          onChange={handleChange}
+          onChange={onChange}
         />
         <FormFeedback id="errors-password">{errors.password}</FormFeedback>
       </FormGroup>
@@ -75,7 +60,7 @@ const RegisterForm = ({ initUser }: Props) => {
           id="confirmPassword"
           placeholder="Speak friend, and enter..."
           value={values.confirmPassword || ''}
-          onChange={handleChange}
+          onChange={onChange}
         />
         <FormFeedback id="errors-confirmPassword">{errors.confirmPassword}</FormFeedback>
       </FormGroup>
@@ -91,11 +76,6 @@ const RegisterForm = ({ initUser }: Props) => {
       )}
     </Form>
   );
-  async function onSubmit() {
-    const { email, password } = values;
-    await callApi({ email, password });
-    console.log('DATA: ', data);
-  }
 };
 
 export default RegisterForm;

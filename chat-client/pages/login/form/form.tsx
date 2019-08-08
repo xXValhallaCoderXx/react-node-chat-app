@@ -1,34 +1,20 @@
-import React, {memo} from 'react';
-import {authServices} from "chat-client/services";
+import React, { memo } from 'react';
 import { Form, FormGroup, Input, FormFeedback, Label } from 'reactstrap';
 import { BtnSpinner } from 'chat-client/shared/components';
-import { useForm, useApi } from 'chat-client/shared/hooks';
+import {FormValues, ApiState} from "./index";
 
 interface Props {
-  initUser: any;
+  values: FormValues;
+  errors: FormValues;
+  onSubmit: any;
+  onChange: any;
+  apiState: ApiState;
 }
 
-interface Values {
-  email?: string;
-  password?: string;
-}
-
-function validate(values: Values) {
-  const errors: Values = {};
-  if (!values.email) {
-    errors.email = 'Warrior! We must know your name for the battle field!';
-  }
-  if (!values.password) {
-    errors.password = 'You must provide this, for passage!';
-  }
-  return errors;
-}
-
-const AuthForm = ({ initUser }: Props) => {
-  const { values, errors, handleSubmit, handleChange } = useForm(onSubmit, validate);
-  const [{loading, data, error}, callApi]: any = useApi(authServices.loginApi);
+const LoginForm = ({ onChange, onSubmit, values, errors, apiState }: Props) => {
+  const {loading, error} = apiState;
   return (
-    <Form id="login-form" onSubmit={handleSubmit}>
+    <Form id="login-form" onSubmit={onSubmit}>
       <FormGroup>
         <Label className="font-weight-bold">Email</Label>
         <Input
@@ -37,7 +23,7 @@ const AuthForm = ({ initUser }: Props) => {
           id="email"
           placeholder="What do you hail as warrior?"
           value={values.email || ''}
-          onChange={handleChange}
+          onChange={onChange}
         />
         <FormFeedback id="email-error">{errors.email}</FormFeedback>
       </FormGroup>
@@ -49,7 +35,7 @@ const AuthForm = ({ initUser }: Props) => {
           id="password"
           placeholder="Speak friend, and enter..."
           value={values.password || ''}
-          onChange={handleChange}
+          onChange={onChange}
         />
         <FormFeedback>{errors.password}</FormFeedback>
       </FormGroup>
@@ -65,12 +51,6 @@ const AuthForm = ({ initUser }: Props) => {
       )}
     </Form>
   );
-
-  async function onSubmit() {
-    const {email, password} = values;
-    await callApi({email, password});
-    console.log("DATA: ", data);
-  }
 };
 
-export default memo(AuthForm);
+export default memo(LoginForm);

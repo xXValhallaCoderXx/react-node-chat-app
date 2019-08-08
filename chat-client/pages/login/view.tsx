@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Card } from 'reactstrap';
-import LoginForm from "./form";
+import Form from "./form";
 
 interface Props {
   initUser: any;
@@ -17,7 +17,7 @@ const LoginView = ({ initUser }: Props) => {
         <Row style={{ width: 500 }}>
           <Col>
             <p className="text-center font-weight-bold">Login and start raiding!</p>
-            <LoginForm initUser={initUser} />
+            <Form initUser={initUser} />
           </Col>
         </Row>
         <Row className="justify-content-center font-italic">
