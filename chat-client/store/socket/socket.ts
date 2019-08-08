@@ -3,13 +3,13 @@ import PROTOCOL from 'chat-shared/socket-types';
 
 export default class Socket {
   private socket: any;
-  private onMessageRecieved: any;
-  private onRoomDataUpdate: any;
+  // private onMessageRecieved: any;
+  // private onRoomDataUpdate: any;
 
-  public constructor(onMessageRecieved, onRoomDataUpdate) {
+  public constructor() {
     this.socket = null;
-    this.onMessageRecieved = onMessageRecieved;
-    this.onRoomDataUpdate = onRoomDataUpdate;
+    // this.onMessageRecieved = onMessageRecieved;
+    // this.onRoomDataUpdate = onRoomDataUpdate;
   }
   // Connect client to server
   public connect = token => {
@@ -21,8 +21,8 @@ export default class Socket {
       this.socket = io({ query: { token } });
     }
     // Setup Initial Events
-    this.socket.on(PROTOCOL.SERVER_TO_CLIENT_MSG, this.onMessageRecieved);
-    this.socket.on(PROTOCOL.UPDATE_ROOM_USER, this.onRoomDataUpdate);
+    // this.socket.on(PROTOCOL.SERVER_TO_CLIENT_MSG, this.onMessageRecieved);
+    // this.socket.on(PROTOCOL.UPDATE_ROOM_USER, this.onRoomDataUpdate);
     // this.socket.on(PROTOCOL.ON_ERROR, this.onSocketError);
   };
 
