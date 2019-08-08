@@ -1,9 +1,37 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import RegisterForm from '.';
+import { shallow, mount } from 'enzyme';
+import RegisterForm from './form';
+
+const mockApiState = {
+  loading: false,
+  error: { data: '' },
+  data: '',
+};
+
+const mockValues = {
+  username: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+};
+
+const mockErrors = {
+  username: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+};
 
 describe('<RegisterForm />', () => {
-  const wrapper = shallow(<RegisterForm initUser={jest.fn} />);
+  const wrapper = shallow(
+    <RegisterForm
+      apiState={mockApiState}
+      values={mockValues}
+      errors={mockErrors}
+      onChange={jest.fn}
+      onSubmit={jest.fn}
+    />,
+  );
 
   it('should have an username field', () => {
     expect(wrapper.find('#username').length).toEqual(1);
@@ -75,14 +103,14 @@ describe('<RegisterForm />', () => {
     expect(wrapper.find('#errors-confirmPassword').contains('You must provide this, for passage!'));
   });
 
-  it('should set the email value on change event', () => {
-    wrapper.find('#email').simulate('change', {
-      persist: jest.fn(),
-      target: {
-        id: 'email',
-        value: 'freyo@gmail.com',
-      },
-    });
-    expect(wrapper.find('#email').prop('value')).toEqual('freyo@gmail.com');
-  });
+  // it('should set the email value on change event', () => {
+  //   wrapper.find('#email').simulate('change', {
+  //     persist: jest.fn(),
+  //     target: {
+  //       id: 'email',
+  //       value: 'freyo@gmail.com',
+  //     },
+  //   });
+  //   expect(wrapper.find('#email')).toEqual('freyo@gmail.com');
+  // });
 });

@@ -18,16 +18,6 @@ export const actions = {
   userInit: (data: UserInit) => actionCreator(UserActionTypes.USER_INIT, data),
 };
 
-// export const initActions = function(userService) {
-//   const fetchUsers = () => async dispatch => {
-//     const users = await userService.loginUser();
-
-//     dispatch(actions.userInit(users));
-//   };
-
-//   return { fetchUsers };
-// };
-
 export const initialState: LoginState = {
   isOnline: false,
   email: '',
@@ -38,8 +28,8 @@ export const initialState: LoginState = {
 export const reducer: Reducer<LoginState> = (state = initialState, action): LoginState => {
   switch (action.type) {
     case UserActionTypes.USER_INIT: {
-      const { online, token, email, username } = action.payload;
-      return { ...state, isOnline: online, token, email, username };
+      const { isOnline, token, email, username } = action.payload;
+      return { ...state, isOnline, token, email, username };
     }
     default: {
       return state;

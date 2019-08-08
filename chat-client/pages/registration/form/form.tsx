@@ -13,6 +13,7 @@ interface Props {
 
 const RegisterForm = ({ onChange, onSubmit, values, errors, apiState }: Props) => {
   const {loading, error} = apiState;
+  console.debug("VALUES: ", values);
   return (
     <Form id="register-form" onSubmit={onSubmit}>
       <FormGroup>
