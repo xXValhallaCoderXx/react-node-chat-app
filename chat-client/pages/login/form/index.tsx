@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import { authServices } from 'chat-client/services';
-import { useForm, useCallApi } from 'chat-client/shared/hooks';
+import React, { useEffect, Component } from 'react';
+// import { authServices } from 'chat-client/services';
 import { InitUser } from '../index';
 import Form from './form';
 
@@ -30,22 +29,51 @@ function validate(values: FormValues) {
   return errors;
 }
 
-const FormController = ({ initUser }: Props) => {
-  const { values, errors, handleChange, validateOn } = useForm({ validate, onSubmit });
-  const { state, useApi } = useCallApi({ callApi: authServices.loginApi });
-
-  useEffect(() => {
-    if (state.success && state.data) {
-      const { email, token, username, online } = state.data.data.user;
-      initUser({ email, token, username, isOnline: true });
+export default class FormController extends Component {
+  state = {
+    values: {
+      email: '',
+      password: '',
     }
-  }, [state]);
+  };
 
-  async function onSubmit() {
-    const { email, password } = values;
-    await useApi({ email, password });
+  onSubmit = (event: any) => {
+    event.preventDefault();
+    const result = validate(this.state.values);
+    console.log("RESULT: ", result);
   }
-  return <Form onChange={handleChange} apiState={state} values={values} errors={errors} validateOn={validateOn} />;
-};
 
-export default FormController;
+  onChange = (event: any) => {
+    const {id, value} = event.target;
+    this.setState({
+      values: {
+        ...this.state.values,
+        [id]: value
+      }
+    })
+  };
+  render() {
+    const {values} = this.state;
+    return <Form onChange={this.onChange} values={values} onSubmit={this.onSubmit} />;
+  }
+}
+
+// const FormController = ({ initUser }: Props) => {
+//   const { values, errors, handleChange, validateOn } = useForm({ validate, onSubmit });
+//   const { state, useApi } = useCallApi({ callApi: authServices.loginApi });
+
+//   useEffect(() => {
+//     if (state.success && state.data) {
+//       const { email, token, username, online } = state.data.data.user;
+//       initUser({ email, token, username, isOnline: true });
+//     }
+//   }, [state]);
+
+//   async function onSubmit() {
+//     const { email, password } = values;
+//     await useApi({ email, password });
+//   }
+//   return;
+// };
+
+// export default FormController;

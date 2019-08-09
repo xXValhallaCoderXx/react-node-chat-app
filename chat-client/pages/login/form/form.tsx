@@ -1,54 +1,46 @@
 import React, { memo } from 'react';
 import { Form, FormGroup, Input, FormFeedback, Label } from 'reactstrap';
 import { BtnSpinner } from 'chat-client/shared/components';
-import {FormValues, ApiState} from "./index";
+import { FormValues, ApiState } from './index';
 
 interface Props {
   values: FormValues;
-  errors: FormValues;
-  validateOn: any;
+  onSubmit: any;
   onChange: any;
-  apiState: ApiState;
 }
 
-const LoginForm = ({ onChange, validateOn, values, errors, apiState }: Props) => {
-  const {loading, error} = apiState;
+const LoginForm = ({ onChange, values, onSubmit }: Props) => {
   return (
-    <Form id="login-form" onSubmit={validateOn}>
+    <Form id="login-form" onSubmit={onSubmit}>
       <FormGroup>
         <Label className="font-weight-bold">Email</Label>
         <Input
-          invalid={errors.email ? true : false}
+          invalid={values.email ? true : false}
           type="email"
           id="email"
           placeholder="What do you hail as warrior?"
           value={values.email || ''}
           onChange={onChange}
         />
-        <FormFeedback id="email-error">{errors.email}</FormFeedback>
+        <FormFeedback id="email-error">{values.email}</FormFeedback>
       </FormGroup>
       <FormGroup>
         <Label className="font-weight-bold">Password</Label>
         <Input
-          invalid={errors.password ? true : false}
+          invalid={values.password ? true : false}
           type="password"
           id="password"
           placeholder="Speak friend, and enter..."
           value={values.password || ''}
           onChange={onChange}
         />
-        <FormFeedback>{errors.password}</FormFeedback>
+        <FormFeedback>{values.password}</FormFeedback>
       </FormGroup>
       <FormGroup>
-        <BtnSpinner loading={loading} block color="brand-secondary" id="login-submit" type="submit">
+        <BtnSpinner block color="brand-secondary" id="login-submit" type="submit">
           ENTER
         </BtnSpinner>
       </FormGroup>
-      {error && (
-        <p id="login-server-error" className="text-center text-danger">
-          {error}
-        </p>
-      )}
     </Form>
   );
 };
