@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Card } from 'reactstrap';
+import {InitUser} from "./index";
 import RegisterForm from './form';
 
 // const imageSrc = require('chat-client/shared/images/viking-icon.png');
 
 interface Props {
-  initUser: any;
+  initUser: (params: InitUser) => void;
 }
+
 const RegisterView = ({ initUser }: Props) => {
   return (
     <div className="d-flex h-100 justify-content-center align-items-center">

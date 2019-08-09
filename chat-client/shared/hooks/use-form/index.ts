@@ -31,14 +31,14 @@ const useForm = ({ validate, initialValues, onSubmit }: UseForm): UseFormReturn 
     if (validate) {
       const result = validate(values);
       setErrors(result);
-      // if (event.type === 'submit' && Object.keys(result).length === 0) {
-      //   onSubmit();
-      // }
+      if (event.type === 'submit' && Object.keys(result).length === 0) {
+        onSubmit();
+      }
     } else {
       setErrors({});
-      // if (event.type === 'submit') {
-      //   onSubmit();
-      // }
+      if (event.type === 'submit') {
+        onSubmit();
+      }
     }
   };
 

@@ -1,10 +1,11 @@
 import React from 'react';
 import { authServices } from 'chat-client/services';
-import { useForm, useApi } from 'chat-client/shared/hooks';
+import { useForm, useCallApi } from 'chat-client/shared/hooks';
+import { InitUser } from '../index';
 import Form from './form';
 
 interface Props {
-  initUser: any;
+  initUser: (params: InitUser) => void;
 }
 
 export interface FormValues {
@@ -17,9 +18,7 @@ export interface FormValues {
 export interface ApiState {
   loading: boolean;
   data: any;
-  error: {
-    data: string;
-  };
+  error: string;
 }
 
 function validate(values) {
@@ -40,15 +39,17 @@ function validate(values) {
 }
 
 const FormController = ({ initUser }: Props) => {
-  const { values, errors, handleSubmit, handleChange } = useForm(onSubmit, validate);
-  const [apiState, callApi]: any = useApi(authServices.registerApi);
+  const { values, errors, validateOn, handleChange } = useForm({ onSubmit, validate });
+  const { state, useApi } = useCallApi({ callApi: authServices.registerApi });
 
   async function onSubmit() {
-    const { email, password } = values;
-    const response = await callApi({ email, password });
+    const { email, password, username } = values;
+    const response = await useApi({ email, password, username });
+    console.log("RESPONSE: ", response);
+    initUser({username, email, isOnline: true, token: "" })
     console.log('DO STUFF');
   }
-  return <Form onChange={handleChange} apiState={apiState} values={values} errors={errors} onSubmit={handleSubmit} />;
+  return <Form onChange={handleChange} apiState={state} values={values} errors={errors} onSubmit={validateOn} />;
 };
 
 export default FormController;

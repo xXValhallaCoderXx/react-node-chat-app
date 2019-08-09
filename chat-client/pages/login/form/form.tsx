@@ -12,7 +12,9 @@ interface Props {
 }
 
 const LoginForm = ({ onChange, validateOn, values, errors, apiState }: Props) => {
-  const {loading, error} = apiState;
+  const {loading, error, data} = apiState;
+  console.log("DATA: ", data);
+  console.log("error: ", error);
   return (
     <Form id="login-form" onSubmit={validateOn}>
       <FormGroup>
@@ -46,7 +48,7 @@ const LoginForm = ({ onChange, validateOn, values, errors, apiState }: Props) =>
       </FormGroup>
       {error && (
         <p id="login-server-error" className="text-center text-danger">
-          {error.data}
+          {error}
         </p>
       )}
     </Form>

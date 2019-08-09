@@ -1,11 +1,11 @@
 import React from 'react';
 import { authServices } from 'chat-client/services';
-import { useForm, useApi } from 'chat-client/shared/hooks';
-
+import { useForm, useCallApi } from 'chat-client/shared/hooks';
+import { InitUser } from '../index';
 import Form from './form';
 
 interface Props {
-  initUser: any;
+  initUser: (params: InitUser) => void;
 }
 
 export interface FormValues {
@@ -16,9 +16,7 @@ export interface FormValues {
 export interface ApiState {
   loading: boolean;
   data: any;
-  error: {
-    data: string;
-  };
+  error: any;
 }
 
 function validate(values: FormValues) {
@@ -34,14 +32,16 @@ function validate(values: FormValues) {
 
 const FormController = ({ initUser }: Props) => {
   const { values, errors, handleChange, validateOn } = useForm({ validate, onSubmit });
-  const [apiState, callApi]: any = useApi(authServices.loginApi);
+  const { state, useApi } = useCallApi({ callApi: authServices.loginApi });
 
   async function onSubmit() {
     const { email, password } = values;
-    const response = await callApi({ email, password });
-    console.log('DO STUFF');
+    
+    const response = await useApi({email, password});
+    console.log('response: ', response);
+    // initUser({token: "", email: "", isOnline: true, username: ""})
   }
-  return <Form onChange={handleChange} apiState={apiState} values={values} errors={errors} validateOn={validateOn} />;
+  return <Form onChange={handleChange} apiState={state} values={values} errors={errors} validateOn={validateOn} />;
 };
 
 export default FormController;

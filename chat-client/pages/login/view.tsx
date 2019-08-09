@@ -1,10 +1,11 @@
 import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Card } from 'reactstrap';
+import {InitUser} from "./index";
 import Form from './form';
 
 interface Props {
-  initUser: any;
+  initUser: (params: InitUser) => void;
 }
 // const imageSrc = require('chat-client/shared/images/viking-icon.png');
 
