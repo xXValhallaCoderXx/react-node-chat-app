@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Card } from 'reactstrap';
-import Form from "./form";
+import Form from './form';
 
 interface Props {
   initUser: any;
@@ -9,6 +9,7 @@ interface Props {
 // const imageSrc = require('chat-client/shared/images/viking-icon.png');
 
 const LoginView = ({ initUser }: Props) => {
+
   return (
     <div className="d-flex h-100 justify-content-center align-items-center">
       <Card className="p-5">
@@ -31,4 +32,4 @@ const LoginView = ({ initUser }: Props) => {
   );
 };
 
-export default LoginView;
+export default memo(LoginView);

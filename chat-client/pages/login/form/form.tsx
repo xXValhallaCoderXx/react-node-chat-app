@@ -6,15 +6,15 @@ import {FormValues, ApiState} from "./index";
 interface Props {
   values: FormValues;
   errors: FormValues;
-  onSubmit: any;
+  validateOn: any;
   onChange: any;
   apiState: ApiState;
 }
 
-const LoginForm = ({ onChange, onSubmit, values, errors, apiState }: Props) => {
+const LoginForm = ({ onChange, validateOn, values, errors, apiState }: Props) => {
   const {loading, error} = apiState;
   return (
-    <Form id="login-form" onSubmit={onSubmit}>
+    <Form id="login-form" onSubmit={validateOn}>
       <FormGroup>
         <Label className="font-weight-bold">Email</Label>
         <Input

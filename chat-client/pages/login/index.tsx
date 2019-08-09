@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import { useDispatch } from 'react-redux';
 import { userActions } from 'chat-client/store';
 import { Layout } from 'chat-client/shared/components';
@@ -13,4 +13,4 @@ const LoginContainer = () => {
   return <Layout content={<View initUser={initializeUser} />} />;
 };
 
-export default LoginContainer;
+export default memo(LoginContainer);
