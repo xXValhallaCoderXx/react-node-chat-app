@@ -1,10 +1,24 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import FormController from './index';
+import FormController from './form-controller';
 
+const mockLoginApi = jest.fn();
+const mockStatus = {};
 
 describe('Login Form', () => {
-  const wrapper = shallow<FormController>(<FormController />);
+  const wrapper = shallow<FormController>(<FormController status={mockStatus} loginApi={mockLoginApi} />);
+
+  it('should have validation errors', () => {
+    const instance = wrapper.instance();
+    const mockEvent = {
+      preventDefault: () => {},
+    };
+    instance.onSubmit(mockEvent);
+    expect(wrapper.state().errors).toEqual({
+      email: 'Warrior! We must know your name for the battle field!',
+      password: 'You must provide this, for passage!',
+    });
+  });
 
   it('should updated the email state', () => {
     const instance = wrapper.instance();
@@ -27,4 +41,6 @@ describe('Login Form', () => {
     });
     expect(wrapper.state().values.password).toEqual('123456');
   });
+
+
 });

@@ -1,19 +1,17 @@
 import React from 'react';
 import { BtnSpinner } from 'chat-client/shared/components';
 import { Form, FormGroup, Label, Input, FormText, FormFeedback } from 'reactstrap';
-import { FormValues, ApiState } from './index';
+import { FormValues } from './form-controller';
 
 interface Props {
+  status: any;
   values: FormValues;
   errors: FormValues;
   onSubmit: any;
   onChange: any;
-  apiState: ApiState;
 }
 
-const RegisterForm = ({ onChange, onSubmit, values, errors, apiState }: Props) => {
-  const {loading, error} = apiState;
-  console.debug("VALUES: ", values);
+const RegisterForm = ({ onChange, onSubmit, values, errors, status }: Props) => {
   return (
     <Form id="register-form" onSubmit={onSubmit}>
       <FormGroup>
@@ -27,7 +25,7 @@ const RegisterForm = ({ onChange, onSubmit, values, errors, apiState }: Props) =
           onChange={onChange}
         />
         <FormText>This is how others will see you</FormText>
-        <FormFeedback id="errors-username">{errors.username}</FormFeedback>
+        <FormFeedback id="username-error">{errors.username}</FormFeedback>
       </FormGroup>
       <FormGroup>
         <Label className="font-weight-bold">Email</Label>
@@ -39,7 +37,7 @@ const RegisterForm = ({ onChange, onSubmit, values, errors, apiState }: Props) =
           value={values.email || ''}
           onChange={onChange}
         />
-        <FormFeedback id="errors-email">{errors.password}</FormFeedback>
+        <FormFeedback id="email-error">{errors.password}</FormFeedback>
       </FormGroup>
       <FormGroup>
         <Label className="font-weight-bold">Password</Label>
@@ -51,7 +49,7 @@ const RegisterForm = ({ onChange, onSubmit, values, errors, apiState }: Props) =
           value={values.password || ''}
           onChange={onChange}
         />
-        <FormFeedback id="errors-password">{errors.password}</FormFeedback>
+        <FormFeedback id="password-error">{errors.password}</FormFeedback>
       </FormGroup>
       <FormGroup>
         <Label className="font-weight-bold">Confirm Password</Label>
@@ -63,18 +61,14 @@ const RegisterForm = ({ onChange, onSubmit, values, errors, apiState }: Props) =
           value={values.confirmPassword || ''}
           onChange={onChange}
         />
-        <FormFeedback id="errors-confirmPassword">{errors.confirmPassword}</FormFeedback>
+        <FormFeedback id="confirmPassword-error">{errors.confirmPassword}</FormFeedback>
       </FormGroup>
       <FormGroup>
-        <BtnSpinner loading={loading} block color="brand-secondary" type="submit">
+        <BtnSpinner loading={status.loading} block color="brand-secondary" type="submit">
           SIGN UP
         </BtnSpinner>
       </FormGroup>
-      {error && (
-        <p id="register-server-error" className="text-center text-danger">
-          {error}
-        </p>
-      )}
+      {status.error && <p className="text-danger text-center">{status.data}</p>}
     </Form>
   );
 };

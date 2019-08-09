@@ -1,10 +1,14 @@
-import React, { useEffect, Component } from 'react';
-// import { authServices } from 'chat-client/services';
-import { InitUser } from '../index';
-import Form from './form';
+import React from 'react';
 
-interface Props {
-  initUser: (params: InitUser) => void;
+import { connect } from 'react-redux';
+import FormController from './form-controller';
+import { authActions } from 'chat-client/store';
+
+const getLoginStatus = state => state.auth.login;
+
+interface FormContainerProps {
+  status: any;
+  loginApi: any;
 }
 
 export interface FormValues {
@@ -12,68 +16,15 @@ export interface FormValues {
   password?: string;
 }
 
-export interface ApiState {
-  loading: boolean;
-  data: any;
-  error: any;
-}
+const FormContainer = ({ status, loginApi }: FormContainerProps) => {
+  return <FormController status={status} loginApi={loginApi} />;
+};
 
-function validate(values: FormValues) {
-  const errors: FormValues = {};
-  if (!values.email) {
-    errors.email = 'Warrior! We must know your name for the battle field!';
-  }
-  if (!values.password) {
-    errors.password = 'You must provide this, for passage!';
-  }
-  return errors;
-}
-
-export default class FormController extends Component {
-  state = {
-    values: {
-      email: '',
-      password: '',
-    }
-  };
-
-  onSubmit = (event: any) => {
-    event.preventDefault();
-    const result = validate(this.state.values);
-    console.log("RESULT: ", result);
-  }
-
-  onChange = (event: any) => {
-    const {id, value} = event.target;
-    this.setState({
-      values: {
-        ...this.state.values,
-        [id]: value
-      }
-    })
-  };
-  render() {
-    const {values} = this.state;
-    return <Form onChange={this.onChange} values={values} onSubmit={this.onSubmit} />;
-  }
-}
-
-// const FormController = ({ initUser }: Props) => {
-//   const { values, errors, handleChange, validateOn } = useForm({ validate, onSubmit });
-//   const { state, useApi } = useCallApi({ callApi: authServices.loginApi });
-
-//   useEffect(() => {
-//     if (state.success && state.data) {
-//       const { email, token, username, online } = state.data.data.user;
-//       initUser({ email, token, username, isOnline: true });
-//     }
-//   }, [state]);
-
-//   async function onSubmit() {
-//     const { email, password } = values;
-//     await useApi({ email, password });
-//   }
-//   return;
-// };
-
-// export default FormController;
+export default connect(
+  state => ({
+    status: getLoginStatus(state),
+  }),
+  {
+    loginApi: authActions.loginApi,
+  },
+)(FormContainer);

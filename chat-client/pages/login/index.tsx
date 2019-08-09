@@ -1,23 +1,7 @@
-import React, {memo} from 'react';
-import { useDispatch } from 'react-redux';
-import { userActions } from 'chat-client/store';
+import React, { memo } from 'react';
 import { Layout } from 'chat-client/shared/components';
 import View from './view';
 
-export interface InitUser {
-  isOnline: boolean;
-  email: string;
-  token: string;
-  username: string;
-}
-
-const LoginContainer = () => {
-  const dispatch = useDispatch();
-
-  const initializeUser = ({ isOnline, email, token, username }: InitUser) => {
-    dispatch(userActions.userInit({ isOnline, email, token, username }));
-  };
-  return <Layout content={<View initUser={initializeUser} />} />;
-};
+const LoginContainer = () => <Layout content={<View />} />;
 
 export default memo(LoginContainer);
