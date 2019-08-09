@@ -4,7 +4,7 @@ import { Row, Card } from 'reactstrap';
 import {InitUser} from "./index";
 import RegisterForm from './form';
 
-// const imageSrc = require('chat-client/shared/images/viking-icon.png');
+const imageSrc = require('chat-client/shared/images/viking-icon.png');
 
 interface Props {
   initUser: (params: InitUser) => void;
@@ -14,7 +14,7 @@ const RegisterView = ({ initUser }: Props) => {
   return (
     <div className="d-flex h-100 justify-content-center align-items-center">
       <Card className="p-5" style={{ width: 500 }}>
-        {/* <img className="mx-auto" src={imageSrc} height="60" width="55" /> */}
+        <img className="mx-auto" src={imageSrc} height="60" width="55" />
         <h3 className="text-center mt-2 mb-2">Valhalla Chat</h3>
         <p className="text-center font-weight-bold">Join us and be part of the shield wall!</p>
         <RegisterForm initUser={initUser} />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { authServices } from 'chat-client/services';
 import { useForm, useCallApi } from 'chat-client/shared/hooks';
 import { InitUser } from '../index';
@@ -42,12 +42,16 @@ const FormController = ({ initUser }: Props) => {
   const { values, errors, validateOn, handleChange } = useForm({ onSubmit, validate });
   const { state, useApi } = useCallApi({ callApi: authServices.registerApi });
 
+  useEffect(() => {
+    if(state.success && state.data){
+      const {email, token, username, online} = state.data.data;
+      initUser({email, token, username, isOnline: true})
+    }
+  }, [state])
+
   async function onSubmit() {
     const { email, password, username } = values;
-    const response = await useApi({ email, password, username });
-    console.log("RESPONSE: ", response);
-    initUser({username, email, isOnline: true, token: "" })
-    console.log('DO STUFF');
+    await useApi({ email, password, username });
   }
   return <Form onChange={handleChange} apiState={state} values={values} errors={errors} onSubmit={validateOn} />;
 };

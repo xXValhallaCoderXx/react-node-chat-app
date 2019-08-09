@@ -12,9 +12,7 @@ interface Props {
 }
 
 const LoginForm = ({ onChange, validateOn, values, errors, apiState }: Props) => {
-  const {loading, error, data} = apiState;
-  console.log("DATA: ", data);
-  console.log("error: ", error);
+  const {loading, error} = apiState;
   return (
     <Form id="login-form" onSubmit={validateOn}>
       <FormGroup>

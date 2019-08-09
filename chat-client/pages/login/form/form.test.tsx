@@ -4,7 +4,8 @@ import Form from './form';
 
 const mockApiState = {
   loading: false,
-  error: { data: ""},
+  error: "",
+  success: false,
   data: ""
 }
 
@@ -19,7 +20,7 @@ const mockErrors = {
 }
 
 describe('Login Form', () => {
-  const wrapper = shallow(<Form apiState={mockApiState} values={mockValues} errors={mockErrors} onChange={jest.fn} onSubmit={jest.fn} />);
+  const wrapper = shallow(<Form apiState={mockApiState} values={mockValues} errors={mockErrors} onChange={jest.fn} validateOn={jest.fn} />);
   // it('Renders correctly', () => {
   //   expect(wrapper).toMatchSnapshot();
   // });
