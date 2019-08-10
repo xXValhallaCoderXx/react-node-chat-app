@@ -4,10 +4,11 @@ import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router'
 import { createBrowserHistory as createHistory } from 'history';
 
-import { LoadingScreen } from 'chat-client/shared/components';
+import { LoadingScreen, InvalidUrlPage } from 'chat-client/shared/components';
 
 const Login = lazy(() => import(/* webpackChunkName: "login" */ './pages/login'));
-const Register = lazy(() => import(/* webpackChunkName: "login" */ './pages/registration'));
+const Register = lazy(() => import(/* webpackChunkName: "register" */ './pages/registration'));
+const ChatRoom = lazy(() => import(/* webpackChunkName: "chat-room" */ './pages/chat-room'));
 
 export const history = createHistory();
 
@@ -25,6 +26,8 @@ const Application = () => {
         <Suspense fallback={LoadingUI()}>
           <Route exact path="/" component={Login} />
           <Route exact path="/register" component={Register} />
+          <Route exact path="/chat/:uid" component={ChatRoom} />
+          <Route component={InvalidUrlPage} />
         </Suspense>
       </Switch>
     </ConnectedRouter>
