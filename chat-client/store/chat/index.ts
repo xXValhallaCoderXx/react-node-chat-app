@@ -11,6 +11,18 @@ export interface ChatState {
 
 export const actions = {
   recieveMessage: (data: any) => actionCreator(ChatActionTypes.RECIEVE_MESSAGE, data),
+  testSubscribe: () => {
+    return dispatch =>
+      dispatch({
+        subscribe: true,
+        event: 'NEW_MESSAGE',
+        handle: data =>
+          dispatch({
+            type: 'NEW_MESSAGE',
+            payload: data,
+          }),
+      });
+  },
 };
 
 export const initialState: ChatState = {

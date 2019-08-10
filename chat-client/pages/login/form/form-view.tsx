@@ -9,9 +9,15 @@ interface Props {
   errors: FormValues;
   onSubmit: any;
   onChange: any;
+  connect: any;
+  subscribe: any;
 }
 
-const LoginForm = ({ onChange, values, errors, onSubmit, status }: Props) => {
+const LoginForm = ({ onChange, values, errors, onSubmit, status, connect, subscribe }: Props) => {
+
+  function handleConnect(){
+    connect("123456789")
+  }
   return (
     <Form id="login-form" onSubmit={onSubmit}>
       <FormGroup>
@@ -44,6 +50,8 @@ const LoginForm = ({ onChange, values, errors, onSubmit, status }: Props) => {
         </BtnSpinner>
       </FormGroup>
       {status.error && <p className="text-danger text-center">{status.data}</p>}
+      <button onClick={handleConnect}>CONNECT</button>
+      <button onClick={subscribe}>SUBSCRIBE</button>
     </Form>
   );
 };

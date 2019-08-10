@@ -41,7 +41,10 @@ class ChatSocketController {
       });
 
       Logger.info('Client connected');
-
+      setInterval(() => {
+        console.log('EMIT');
+        socket.emit("NEW_MESSAGE", "Hellooooo")
+      }, 3000)
       /************************
         USER JOINS CHAT ROOM
       *************************/

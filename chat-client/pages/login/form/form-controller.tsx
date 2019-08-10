@@ -11,6 +11,8 @@ interface State {
 interface Props {
   status: any;
   loginApi: any;
+  connect: any;
+  subscribe: any;
 }
 
 function validate(values: FormValues) {
@@ -57,7 +59,17 @@ export default class FormController extends Component<Props, State> {
   };
   render() {
     const { values, errors } = this.state;
-    const { status } = this.props;
-    return <Form status={status} onChange={this.onChange} values={values} onSubmit={this.onSubmit} errors={errors} />;
+    const { status, connect, subscribe } = this.props;
+    return (
+      <Form
+        subscribe={subscribe}
+        connect={connect}
+        status={status}
+        onChange={this.onChange}
+        values={values}
+        onSubmit={this.onSubmit}
+        errors={errors}
+      />
+    );
   }
 }
