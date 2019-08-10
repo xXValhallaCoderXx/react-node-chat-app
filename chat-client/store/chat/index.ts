@@ -1,4 +1,5 @@
 import { actionCreator } from 'chat-client/shared/utils/redux-helpers';
+import PROTOCOLS from 'chat-shared/socket-types';
 import { Reducer } from 'redux';
 
 export enum ChatActionTypes {
@@ -11,14 +12,14 @@ export interface ChatState {
 
 export const actions = {
   recieveMessage: (data: any) => actionCreator(ChatActionTypes.RECIEVE_MESSAGE, data),
-  testSubscribe: () => {
-    return dispatch =>
+  subcribeMessages: () => {
+    return (dispatch: any) =>
       dispatch({
         subscribe: true,
-        event: 'NEW_MESSAGE',
-        handle: data =>
+        event: PROTOCOLS.SERVER_TO_CLIENT_MSG,
+        handle: (data: any) =>
           dispatch({
-            type: 'NEW_MESSAGE',
+            type: PROTOCOLS.SERVER_TO_CLIENT_MSG,
             payload: data,
           }),
       });
