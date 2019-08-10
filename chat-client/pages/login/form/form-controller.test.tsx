@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import FormController from './form-controller';
 
 const mockLoginApi = jest.fn();
+const mockPush = jest.fn();
 const mockStatus = {};
 
 describe('Login Form', () => {
