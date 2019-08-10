@@ -1,6 +1,7 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { hot } from 'react-hot-loader';
-import { Route, Router, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router'
 import { createBrowserHistory as createHistory } from 'history';
 
 import { LoadingScreen } from 'chat-client/shared/components';
@@ -19,14 +20,14 @@ const Application = () => {
     return <LoadingScreen />;
   }
   return (
-    <Router history={history}>
+    <ConnectedRouter history={history}>
       <Switch>
         <Suspense fallback={LoadingUI()}>
           <Route exact path="/" component={Login} />
           <Route exact path="/register" component={Register} />
         </Suspense>
       </Switch>
-    </Router>
+    </ConnectedRouter>
   );
 };
 

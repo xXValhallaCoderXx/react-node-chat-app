@@ -5,6 +5,7 @@ import FormController from './form-controller';
 import { authActions } from 'chat-client/store';
 
 const getLoginStatus = state => state.auth.login;
+const getHistory = state => state.router;
 
 interface FormContainerProps {
   status: any;
