@@ -1,5 +1,6 @@
 import { actionCreator } from 'chat-client/shared/utils/redux-helpers';
 import { chatRoomServices } from 'chat-client/services';
+import { uiActions } from 'chat-client/store';
 import PROTOCOLS from 'chat-shared/socket-types';
 import { Reducer } from 'redux';
 
@@ -39,6 +40,7 @@ export const actions = {
       const response = await chatRoomServices.roomInfoApi({ uid });
       dispatch(fetchRoomInfoSuccess(response));
     } catch (error) {
+      dispatch(uiActions.handleToast({color: "danger", message: error.data.message}))
       dispatch(fetchRoomInfoError(error));
     }
   },
