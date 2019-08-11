@@ -42,8 +42,8 @@ export default abstract class BaseController {
     return this.jsonResponse(403, message ? message : 'Forbidden');
   }
 
-  protected notFound(message?: string) {
-    return this.jsonResponse(404, message ? message : 'Not found');
+  protected notFound(data?: string) {
+    return this.jsonResponse(404, data ? data : 'Not found');
   }
 
   protected fail(error: Error | string) {

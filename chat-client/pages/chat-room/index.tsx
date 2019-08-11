@@ -12,7 +12,7 @@ interface Props {
 
 class LoginContainer extends Component<Props, {}> {
   componentDidMount(){
-    this.props.roomInfoApi("123");
+    this.props.roomInfoApi({uid: "123"});
   }
   render() {
     return <Layout sidebar={<Sidebar />} header={<Navbar />} content={<View />} />;
