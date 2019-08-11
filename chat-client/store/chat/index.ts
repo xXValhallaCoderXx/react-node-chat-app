@@ -4,6 +4,7 @@ import PROTOCOLS from 'chat-shared/socket-types';
 import { Reducer } from 'redux';
 
 export enum ChatActionTypes {
+  INIT_ROOMS = '@@chat/INIT_ROOMS',
   RECIEVE_MESSAGE = '@@chat/RECIEVE_MESSAGE',
   ROOM_INFO_REQUEST = '@@chat/ROOM_INFO_REQUEST',
   ROOM_INFO_ERROR = '@@chat/ROOM_INFO_ERROR',
@@ -11,6 +12,7 @@ export enum ChatActionTypes {
 }
 
 export interface ChatState {
+  rooms: any;
   messages: any;
   users: any;
   fetchRoomStatus: {
@@ -26,6 +28,7 @@ interface FetchRoomInfo {
 
 export const actions = {
   recieveMessage: (data: any) => actionCreator(ChatActionTypes.RECIEVE_MESSAGE, data),
+  initRooms: (data: any) => actionCreator(ChatActionTypes.INIT_ROOMS, data),
   subcribeMessages: () => {
     return (dispatch: any) =>
       dispatch({
@@ -61,6 +64,7 @@ export const initialState: ChatState = {
   },
   messages: [],
   users: [],
+  rooms: {}
 };
 
 export const reducer: Reducer<ChatState> = (state = initialState, action): ChatState => {
@@ -77,6 +81,9 @@ export const reducer: Reducer<ChatState> = (state = initialState, action): ChatS
     }
     case ChatActionTypes.ROOM_INFO_ERROR: {
       return { ...state, fetchRoomStatus: {loading: false, success: false, error: true} };
+    }
+    case ChatActionTypes.INIT_ROOMS: {
+      return { ...state, rooms: action.payload };
     }
     default: {
       return state;

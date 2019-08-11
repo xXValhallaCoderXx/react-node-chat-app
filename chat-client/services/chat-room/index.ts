@@ -4,6 +4,11 @@ interface RoomInfoApi {
   uid: string;
 }
 
+interface ParseRooms {
+  uid: string;
+  name: string;
+}
+
 export const chatRoomServices = {
   roomInfoApi: ({ uid }: RoomInfoApi) => {
     return new Promise((resolve, reject) => {
@@ -22,5 +27,12 @@ export const chatRoomServices = {
           }
         });
     });
+  },
+  parseRooms: (data: ParseRooms[]) => {
+    const roomObject = {};
+    for (const key of data) {
+      roomObject[key.uid] = key;
+    }
+    return roomObject;
   },
 };

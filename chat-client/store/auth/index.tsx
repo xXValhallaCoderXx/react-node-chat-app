@@ -1,6 +1,8 @@
 import axios from 'axios';
+import {history} from "chat-client/routes";
 import { actionCreator } from 'chat-client/shared/utils/redux-helpers';
-import {authServices} from "chat-client/services";
+import { userActions, chatActions } from 'chat-client/store';
+import { authServices, chatRoomServices } from 'chat-client/services';
 import { Reducer } from 'redux';
 
 export enum AuthActionTypes {
@@ -39,8 +41,14 @@ export const actions = {
   loginApi: ({ email, password }: LoginRequest) => async dispatch => {
     dispatch(loginRequest());
     try {
-      const response = await authServices.loginApi({email, password});
+      const response: any = await authServices.loginApi({ email, password });
       dispatch(loginSuccess(response));
+      const { online, token, username } = response.data.user;
+      const {rooms} = response.data;
+      const parsedRooms = chatRoomServices.parseRooms(rooms);
+      dispatch(userActions.userInit({ email, token, username, isOnline: online }));
+      dispatch(chatActions.initRooms(parsedRooms));
+      history.push(`/chat/${rooms[0].uid}`)
     } catch (error) {
       dispatch(loginError(error));
     }
@@ -60,8 +68,8 @@ export const loginRequest = () => actionCreator(AuthActionTypes.LOGIN_REQUEST);
 export const loginSuccess = (data: any) => actionCreator(AuthActionTypes.LOGIN_SUCCESS, data);
 export const loginError = (message: string) => actionCreator(AuthActionTypes.LOGIN_ERROR, message);
 export const registerRequest = () => actionCreator(AuthActionTypes.REGISTER_REQUEST);
-export const registerSuccess = (data: any) => actionCreator(AuthActionTypes.REGISTER_ERROR, data);
-export const registerError = (message: string) => actionCreator(AuthActionTypes.REGISTER_SUCCESS, message);
+export const registerSuccess = (data: any) => actionCreator(AuthActionTypes.REGISTER_SUCCESS, data);
+export const registerError = (message: string) => actionCreator(AuthActionTypes.REGISTER_ERROR, message);
 
 export const initialState: AuthState = {
   login: {

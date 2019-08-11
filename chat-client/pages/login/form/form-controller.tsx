@@ -35,10 +35,11 @@ export default class FormController extends Component<Props, State> {
 
   onSubmit = (event: any) => {
     event.preventDefault();
-    const result = validate(this.state.values);
-    this.setState({ errors: result });
-    if (isEmpty(result)) {
-      this.props.loginApi({ isOnline: true, email: '', token: '', username: '' });
+    const errors = validate(this.state.values);
+    this.setState({ errors });
+    if (isEmpty(errors)) {
+      const { email, password } = this.state.values;
+      this.props.loginApi({ isOnline: true, email, password });
     }
   };
 
