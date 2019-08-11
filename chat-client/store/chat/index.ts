@@ -1,13 +1,22 @@
 import { actionCreator } from 'chat-client/shared/utils/redux-helpers';
+import { chatRoomServices } from 'chat-client/services';
 import PROTOCOLS from 'chat-shared/socket-types';
 import { Reducer } from 'redux';
 
 export enum ChatActionTypes {
   RECIEVE_MESSAGE = '@@chat/RECIEVE_MESSAGE',
+  ROOM_INFO_REQUEST = '@@chat/ROOM_INFO_REQUEST',
+  ROOM_INFO_ERROR = '@@chat/ROOM_INFO_ERROR',
+  ROOM_INFO_SUCCESS = '@@chat/ROOM_INFO_SUCCESS',
 }
 
 export interface ChatState {
   messages: any;
+  users: any;
+}
+
+interface FetchRoomInfo {
+  uid: string;
 }
 
 export const actions = {
@@ -24,10 +33,24 @@ export const actions = {
           }),
       });
   },
+  fetchRoomInfo: ({ uid }: FetchRoomInfo) => async dispatch => {
+    dispatch(fetchRoomInfoRequest());
+    try {
+      const response = await chatRoomServices.roomInfoApi({ uid });
+      dispatch(fetchRoomInfoSuccess(response));
+    } catch (error) {
+      dispatch(fetchRoomInfoError(error));
+    }
+  },
 };
+
+export const fetchRoomInfoRequest = () => actionCreator(ChatActionTypes.ROOM_INFO_REQUEST);
+export const fetchRoomInfoSuccess = (data: any) => actionCreator(ChatActionTypes.ROOM_INFO_SUCCESS, data);
+export const fetchRoomInfoError = (message: string) => actionCreator(ChatActionTypes.ROOM_INFO_ERROR, message);
 
 export const initialState: ChatState = {
   messages: [],
+  users: [],
 };
 
 export const reducer: Reducer<ChatState> = (state = initialState, action): ChatState => {

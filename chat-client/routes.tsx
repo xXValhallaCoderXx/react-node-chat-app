@@ -27,7 +27,7 @@ const Application = () => {
           <Route exact path="/" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/chat/:uid" component={ChatRoom} />
-          <Route component={InvalidUrlPage} />
+          {/* <Route component={InvalidUrlPage} /> */}
         </Suspense>
       </Switch>
     </ConnectedRouter>
