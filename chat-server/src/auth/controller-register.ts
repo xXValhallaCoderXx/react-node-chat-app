@@ -1,8 +1,10 @@
 import { BaseController, Result } from 'chat-server/shared/classes';
 import { UserServices, UserType } from 'chat-server/src/user';
+import { RoomServices, RoomType } from 'chat-server/src/room';
 
 export default class RegisterController extends BaseController {
   userService = new UserServices();
+  roomService = new RoomServices();
 
   protected async executeImpl(): Promise<any> {
     const { email, username, password } = this.req.body;
@@ -10,6 +12,14 @@ export default class RegisterController extends BaseController {
     if (userOrError.isFailure) {
       return this.fail(userOrError.error);
     }
-    return this.ok(userOrError.getValue());
+    const roomsOrError: Result<RoomType[]> = await this.roomService.fetchRoomsList();
+    if (roomsOrError.isFailure) {
+      return this.fail(roomsOrError.error);
+    }
+    const { online, token } = userOrError.getValue();
+    return this.ok({
+      user: { online, token, email, username },
+      rooms: roomsOrError.getValue(),
+    });
   }
 }
