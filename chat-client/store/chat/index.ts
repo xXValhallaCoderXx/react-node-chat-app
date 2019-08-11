@@ -1,6 +1,5 @@
 import { actionCreator } from 'chat-client/shared/utils/redux-helpers';
 import { chatRoomServices } from 'chat-client/services';
-import { uiActions } from 'chat-client/store';
 import PROTOCOLS from 'chat-shared/socket-types';
 import { Reducer } from 'redux';
 
@@ -14,6 +13,11 @@ export enum ChatActionTypes {
 export interface ChatState {
   messages: any;
   users: any;
+  fetchRoomStatus: {
+    loading: boolean;
+    success: boolean;
+    error: boolean;
+  }
 }
 
 interface FetchRoomInfo {
@@ -40,7 +44,6 @@ export const actions = {
       const response = await chatRoomServices.roomInfoApi({ uid });
       dispatch(fetchRoomInfoSuccess(response));
     } catch (error) {
-      dispatch(uiActions.handleToast({color: "danger", message: error.data.message}))
       dispatch(fetchRoomInfoError(error));
     }
   },
@@ -51,6 +54,11 @@ export const fetchRoomInfoSuccess = (data: any) => actionCreator(ChatActionTypes
 export const fetchRoomInfoError = (message: string) => actionCreator(ChatActionTypes.ROOM_INFO_ERROR, message);
 
 export const initialState: ChatState = {
+  fetchRoomStatus: {
+    loading: false,
+    success: false,
+    error: false
+  },
   messages: [],
   users: [],
 };
@@ -60,6 +68,15 @@ export const reducer: Reducer<ChatState> = (state = initialState, action): ChatS
     case ChatActionTypes.RECIEVE_MESSAGE: {
       const { messages } = action.payload;
       return { ...state, messages };
+    }
+    case ChatActionTypes.ROOM_INFO_REQUEST: {
+      return { ...state, fetchRoomStatus: {loading: true, success: false, error: false} };
+    }
+    case ChatActionTypes.ROOM_INFO_SUCCESS: {
+      return { ...state, fetchRoomStatus: {loading: false, success: true, error: false} };
+    }
+    case ChatActionTypes.ROOM_INFO_ERROR: {
+      return { ...state, fetchRoomStatus: {loading: false, success: false, error: true} };
     }
     default: {
       return state;
