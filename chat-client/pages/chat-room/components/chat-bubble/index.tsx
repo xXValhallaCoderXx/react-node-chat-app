@@ -4,19 +4,20 @@ import { Card, Col, Row } from 'reactstrap';
 interface Props {
   author: string;
   createdAt: string;
-  children: ReactNode;
+  message: string;
+  uid: string;
 }
 
-const ChatBubble = ({ author, createdAt, children }: Props) => {
+const ChatBubble = ({ author, createdAt, message, uid }: Props) => {
   return (
-    <Col className="p-0 mb-3" md="5">
+    <div key={uid} className="p-0 mb-3" style={{maxWidth: 450}}>
       <Card className="p-2" style={{ borderRadius: 8 }}>
         <Row className="ml-1">
           {author} - {createdAt}
         </Row>
-        <Row className="ml-1">{children}</Row>
+        <Row className="ml-1">{message}</Row>
       </Card>
-    </Col>
+    </div>
   );
 };
 

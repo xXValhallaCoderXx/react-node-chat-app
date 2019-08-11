@@ -58,6 +58,12 @@ export const actions = {
     try {
       const response = await axios.post('/api/auth/register', { email, password, username }, { withCredentials: true });
       dispatch(registerSuccess(response));
+      const { online, token } = response.data.user;
+      const {rooms} = response.data;
+      const parsedRooms = chatRoomServices.parseRooms(rooms);
+      dispatch(userActions.userInit({ email, token, username, isOnline: online }));
+      dispatch(chatActions.initRooms(parsedRooms));
+      history.push(`/chat/${rooms[0].uid}`)
     } catch (error) {
       dispatch(registerError(error.response.data.message));
     }
