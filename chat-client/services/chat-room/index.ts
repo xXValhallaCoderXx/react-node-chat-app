@@ -8,7 +8,7 @@ export const chatRoomServices = {
   roomInfoApi: ({ uid }: RoomInfoApi) => {
     return new Promise((resolve, reject) => {
       axios
-        .post('/api/auth/register', { uid }, { withCredentials: true })
+        .get(`/api/room/${uid}`, { withCredentials: true })
         .then(res => {
           resolve(res);
         })
