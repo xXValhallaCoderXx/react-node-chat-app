@@ -3,7 +3,6 @@ import io from 'socket.io-client';
 export default () => {
   const socket = new SocketInstance();
   return () => next => action => {
-    console.log('ACTION PASSING: ', action);
     if (typeof action === 'function') {
       return next(action);
     }
