@@ -6,6 +6,7 @@ import { Reducer } from 'redux';
 export enum ChatActionTypes {
   INIT_ROOMS = '@@chat/INIT_ROOMS',
   RECIEVE_MESSAGE = '@@chat/RECIEVE_MESSAGE',
+  SEND_MESSAGE = '@@chat/SEND_MESSAGE',
   ROOM_INFO_REQUEST = '@@chat/ROOM_INFO_REQUEST',
   ROOM_INFO_ERROR = '@@chat/ROOM_INFO_ERROR',
   ROOM_INFO_SUCCESS = '@@chat/ROOM_INFO_SUCCESS',
@@ -27,6 +28,7 @@ interface FetchRoomInfo {
 }
 
 export const actions = {
+  sendMessage: (data: any) => actionCreator(ChatActionTypes.RECIEVE_MESSAGE, data),
   recieveMessage: (data: any) => actionCreator(ChatActionTypes.RECIEVE_MESSAGE, data),
   initRooms: (data: any) => actionCreator(ChatActionTypes.INIT_ROOMS, data),
   subcribeMessages: () => {

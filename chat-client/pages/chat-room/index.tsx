@@ -3,8 +3,8 @@ import { RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { chatActions } from 'chat-client/store';
 import { Layout, Navbar, Sidebar } from 'chat-client/shared/components';
-import View from './view';
-import { NoRoom } from './components';
+import View from './page';
+import { NoRoom } from './atoms';
 
 const getChatState = state => state.chat.fetchRoomStatus;
 const roomName = 'Asgardians';
@@ -26,6 +26,7 @@ const messages = [
 
 interface LocalProps {
   roomInfoApi: any;
+  sendMessage: any;
   status: any;
 }
 
@@ -49,8 +50,8 @@ class LoginContainer extends Component<Props, {}> {
   };
 
   handleContent = () => {
-    const { status } = this.props;
-    return status.error ? <NoRoom message="Room not found!" /> : <View messages={messages} />;
+    const { status, sendMessage } = this.props;
+    return status.error ? <NoRoom message="Room not found!" /> : <View sendMessage={sendMessage} messages={messages} />;
   };
 }
 
@@ -59,6 +60,7 @@ export default connect(
     status: getChatState(state),
   }),
   {
+    sendMessage: chatActions.sendMessage,
     roomInfoApi: chatActions.fetchRoomInfo,
   },
 )(LoginContainer);
