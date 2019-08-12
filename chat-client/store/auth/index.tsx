@@ -13,6 +13,7 @@ export enum AuthActionTypes {
   REGISTER_REQUEST = '@@auth/REGISTER_REQUEST',
   REGISTER_ERROR = '@@auth/REGISTER_ERROR',
   REGISTER_SUCCESS = '@@auth/REGISTER_SUCCESS',
+  RESET = 'RESET',
 }
 
 export interface AuthState {
@@ -72,6 +73,7 @@ export const actions = {
       dispatch(registerError(error.response.data.message));
     }
   },
+  logout: () => actionCreator(AuthActionTypes.RESET)
 };
 
 export const loginRequest = () => actionCreator(AuthActionTypes.LOGIN_REQUEST);

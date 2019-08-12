@@ -26,12 +26,16 @@ interface RouteProps {
 
 type Props = LocalProps & RouteComponentProps<RouteProps>;
 
+const links = [
+  {label: "Login", path: "/"}
+]
+
 class LoginContainer extends Component<Props, {}> {
   componentDidMount() {
     this.props.roomInfoApi({ uid: this.props.match.params.uid });
   }
   render() {
-    return <Layout sidebar={this.handleSidebar()} header={<Navbar />} content={this.handleContent()} />;
+    return <Layout sidebar={this.handleSidebar()} header={<Navbar links={links} />} content={this.handleContent()} />;
   }
 
   handleSidebar = () => {

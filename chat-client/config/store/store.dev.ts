@@ -1,4 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 import { routerMiddleware } from 'connected-react-router';
 import socketMiddleware from 'chat-client/middleware/socket';
 import thunk from 'redux-thunk';
@@ -6,14 +8,22 @@ import { rootReducer } from '../root-reducer';
 
 import logger from 'redux-logger';
 import { history } from '../../routes';
-// import { socketMiddleware } from 'chat-client/shared/dux/socket';
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  blacklist: ['router'] 
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer(history))
 
 export default function configureStore() {
   const store = createStore(
-    rootReducer(history),
+    persistedReducer,
+    // rootReducer(history),
     applyMiddleware(socketMiddleware(), routerMiddleware(history), thunk, logger),
   );
-
+  const persistor = persistStore(store)
   // HMR
   if (module.hot) {
     module.hot.accept('../root-reducer', () => {
@@ -22,5 +32,5 @@ export default function configureStore() {
     });
   }
 
-  return store;
+  return {store, persistor};
 }

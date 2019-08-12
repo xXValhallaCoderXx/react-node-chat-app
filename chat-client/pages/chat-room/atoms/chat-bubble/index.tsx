@@ -9,6 +9,7 @@ interface Props {
 }
 
 const ChatBubble = ({ author, createdAt, message, uid }: Props) => {
+  console.log("UID: ", uid);
   return (
     <div key={uid} className="p-0 mb-3" style={{maxWidth: 450}}>
       <Card className="p-2" style={{ borderRadius: 8 }}>
