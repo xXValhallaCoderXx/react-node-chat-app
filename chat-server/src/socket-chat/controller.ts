@@ -51,8 +51,8 @@ class ChatSocketController {
           socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error occured trying to join this room');
         }
         socket.join(roomUid);
-        const welcomeMessage = generateMessage({author: "Admin", message: "Welcome to Valhalla!", roomUid});
-        const announceMessage = generateMessage({author: "Admin", message: "This user has joined Valhalla!", roomUid});
+        const welcomeMessage = generateMessage({username: "Admin", message: "Welcome to Valhalla!", roomUid});
+        const announceMessage = generateMessage({username: "Admin", message: "This user has joined Valhalla!", roomUid});
         socket.emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, welcomeMessage);
         socket.broadcast.to(roomUid).emit(PROTOCOLS.CLIENT_TO_SERVER_MSG, announceMessage);
       });
@@ -79,7 +79,8 @@ class ChatSocketController {
         if (messageOrError.isFailure) {
           socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error room not found');
         }
-        const newMessage = generateMessage(userOrError.getValue().username, message);
+        const {username} = userOrError.getValue();
+        const newMessage = generateMessage({username, message, roomUid});
         this.io.to(roomUid).emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, newMessage);
       });
 

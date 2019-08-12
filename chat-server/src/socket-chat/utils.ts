@@ -2,7 +2,7 @@ import uuidv4 from "uuid/v4";
 
 interface GenerateMessage {
   roomUid: string;
-  author: string;
+  username: string;
   message: string;
   uid?: string;
 }
