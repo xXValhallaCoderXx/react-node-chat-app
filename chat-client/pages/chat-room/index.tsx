@@ -1,14 +1,19 @@
 import React, { memo, Component } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { chatActions, socketActions } from 'chat-client/store';
-import { Layout, Navbar, Sidebar } from 'chat-client/shared/components';
+
+import { chatActions } from 'chat-client/store';
+
 import View from './page';
 import { NoRoom } from './atoms';
+import { Layout, Navbar, Sidebar } from 'chat-client/shared/components';
+
+import { RouteComponentProps } from 'react-router-dom';
+import {User, Members, Messages} from "chat-client/shared/types";
 
 const getChatState = state => state.chat.fetchRoomStatus;
 const getChatMessages = (state, ownProps) => state.chat.rooms[ownProps.match.params.uid].messages;
 const getChatMembers = (state, ownProps) => state.chat.rooms[ownProps.match.params.uid].members;
+const getCurrentUser = (state) => state.user
 
 const roomName = 'Asgardians';
 
@@ -16,8 +21,9 @@ interface LocalProps {
   roomInfoApi: any;
   sendMessage: any;
   status: any;
-  messages: any;
-  members: any;
+  messages: Messages[];
+  members: Members[];
+  user: User;
 }
 
 interface RouteProps {
@@ -27,7 +33,7 @@ interface RouteProps {
 type Props = LocalProps & RouteComponentProps<RouteProps>;
 
 const links = [
-  {label: "Login", path: "/"}
+  {label: "Logout", path: "/"}
 ]
 
 class LoginContainer extends Component<Props, {}> {
@@ -44,9 +50,10 @@ class LoginContainer extends Component<Props, {}> {
   };
 
   handleContent = () => {
-    const { status, sendMessage, messages } = this.props;
+    const { status, sendMessage, messages, user } = this.props;
+    console.log("USER: ", user);
     const {uid} = this.props.match.params;
-    return status.error ? <NoRoom message="Room not found!" /> : <View roomUid={uid} sendMessage={sendMessage} messages={messages} />;
+    return status.error ? <NoRoom message="Room not found!" /> : <View user={user} roomUid={uid} sendMessage={sendMessage} messages={messages} />;
   };
 }
 
@@ -54,7 +61,8 @@ export default connect(
   (state, ownProps) => ({
     status: getChatState(state),
     messages: getChatMessages(state, ownProps),
-    members: getChatMembers(state, ownProps)
+    members: getChatMembers(state, ownProps),
+    user: getCurrentUser(state)
   }),
   {
     sendMessage: chatActions.sendMessage,

@@ -1,22 +1,35 @@
-import React, { ReactNode } from 'react';
-import { Card, Col, Row } from 'reactstrap';
+import React from 'react';
+import { Card, Row } from 'reactstrap';
+import { Messages } from 'chat-client/shared/types';
+import classNames from 'classnames/bind';
+const styles = require('./styles.module.scss');
+const cx = classNames.bind(styles);
 
 interface Props {
-  author: string;
-  createdAt: string;
-  message: string;
-  uid: string;
+  message: Messages;
+  currentUser: string;
 }
 
-const ChatBubble = ({ author, createdAt, message, uid }: Props) => {
-  console.log("UID: ", uid);
+const chatBubbleClass = cx({
+  chatBubble: true,
+  'p-2': true,
+});
+
+const ChatBubble = ({ message, currentUser }: Props) => {
+  const { author, createdAt, message: text, uid } = message;
+  const chatBubbleWrapper = cx({
+    'p-0': true,
+    'mb-3': true,
+    'd-flex': true,
+    'justify-content-end': currentUser !== author
+  });
   return (
-    <div key={uid} className="p-0 mb-3" style={{maxWidth: 450}}>
-      <Card className="p-2" style={{ borderRadius: 8 }}>
+    <div key={uid} className={chatBubbleWrapper}>
+      <Card className={chatBubbleClass}>
         <Row className="ml-1">
           {author} - {createdAt}
         </Row>
-        <Row className="ml-1">{message}</Row>
+        <Row className="ml-1">{text}</Row>
       </Card>
     </div>
   );

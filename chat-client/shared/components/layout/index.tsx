@@ -22,14 +22,14 @@ const Layout = ({ header, sidebar, content, footer }: LayoutProps) => {
       {header && <div id="header">{header}</div>}
       <Row className="h-100">
         {sidebar && (
-          <Col className="h-100" sm="4" md="3" lg="2" xl="2">
+          <Col className="h-100" xs="1" sm="4" md="3" lg="2" xl="1" style={{ minWidth: 215 }}>
             <div className="h-100" id="sidebar">
               {sidebar}
             </div>
           </Col>
         )}
         {content && (
-          <Col className="h-100" sm="8" md="9" lg="10" xl="10">
+          <Col className="h-100 w-100">
             <div className="h-100" id="content">
               {content}
             </div>
