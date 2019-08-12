@@ -11,6 +11,7 @@ interface Props {
 }
 
 const chatBubbleClass = cx({
+  chatBubbleBG: false,
   chatBubble: true,
   'p-2': true,
 });
@@ -22,6 +23,12 @@ const ChatBubble = ({ message, currentUser }: Props) => {
     'mb-3': true,
     'd-flex': true,
     'justify-content-end': currentUser !== author,
+  });
+
+  const chatBubbleClass = cx({
+    chatBubbleBG: currentUser !== author,
+    chatBubble: true,
+    'p-2': true,
   });
   return (
     <div key={uid} className={chatBubbleWrapper}>
