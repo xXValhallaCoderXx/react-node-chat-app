@@ -20,7 +20,7 @@ export interface ChatState {
     loading: boolean;
     success: boolean;
     error: boolean;
-  }
+  };
 }
 
 interface FetchRoomInfo {
@@ -28,8 +28,22 @@ interface FetchRoomInfo {
 }
 
 export const actions = {
-  sendMessage: (data: any) => actionCreator(ChatActionTypes.RECIEVE_MESSAGE, data),
-  recieveMessage: (data: any) => actionCreator(ChatActionTypes.RECIEVE_MESSAGE, data),
+  joinRoom: (data: any) => {
+    return {
+      type: PROTOCOLS.JOIN_ROOM,
+      emit: true,
+      event: PROTOCOLS.JOIN_ROOM,
+      payload: data
+    };
+  },
+  sendMessage: (data: any) => {
+    return {
+      type: PROTOCOLS.JOIN_ROOM,
+      emit: true,
+      event: PROTOCOLS.JOIN_ROOM,
+    };
+  },
+  recieveMessage: (data: any) => actionCreator(PROTOCOLS.SERVER_TO_CLIENT_MSG, data),
   initRooms: (data: any) => actionCreator(ChatActionTypes.INIT_ROOMS, data),
   subcribeMessages: () => {
     return (dispatch: any) =>
@@ -62,27 +76,36 @@ export const initialState: ChatState = {
   fetchRoomStatus: {
     loading: false,
     success: false,
-    error: false
+    error: false,
   },
-  messages: [],
+  messages: {},
   users: [],
-  rooms: {}
+  rooms: {},
 };
+
 
 export const reducer: Reducer<ChatState> = (state = initialState, action): ChatState => {
   switch (action.type) {
-    case ChatActionTypes.RECIEVE_MESSAGE: {
-      const { messages } = action.payload;
-      return { ...state, messages };
+    case PROTOCOLS.SERVER_TO_CLIENT_MSG: {
+      const { roomUid, uid, message, createdAt } = action.payload;
+      const roomKey = state.rooms[roomUid];
+      const newMessage = {uid, message, createdAt, author: "Admin"}
+      return { ...state, rooms: {...state.rooms, [roomKey.uid]: {...roomKey, messages: [...state.rooms[roomUid].messages, newMessage]} } };
     }
     case ChatActionTypes.ROOM_INFO_REQUEST: {
-      return { ...state, fetchRoomStatus: {loading: true, success: false, error: false} };
+      return { ...state, fetchRoomStatus: { loading: true, success: false, error: false } };
     }
     case ChatActionTypes.ROOM_INFO_SUCCESS: {
-      return { ...state, fetchRoomStatus: {loading: false, success: true, error: false} };
+      const { uid, messages, members } = action.payload.data;
+      const roomKey = state.rooms[uid];
+      return { 
+        ...state, 
+        fetchRoomStatus: { loading: false, success: true, error: false },
+        rooms: {...state.rooms, [roomKey.uid]: {...roomKey, members, messages: [...state.rooms[uid].messages, messages]} }
+      };
     }
     case ChatActionTypes.ROOM_INFO_ERROR: {
-      return { ...state, fetchRoomStatus: {loading: false, success: false, error: true} };
+      return { ...state, fetchRoomStatus: { loading: false, success: false, error: true } };
     }
     case ChatActionTypes.INIT_ROOMS: {
       return { ...state, rooms: action.payload };

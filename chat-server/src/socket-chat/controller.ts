@@ -40,11 +40,6 @@ class ChatSocketController {
         }
       });
 
-      Logger.info('Client connected');
-      setInterval(() => {
-        console.log('EMIT');
-        socket.emit("NEW_MESSAGE", "Hellooooo")
-      }, 3000)
       /************************
         USER JOINS CHAT ROOM
       *************************/
@@ -56,8 +51,8 @@ class ChatSocketController {
           socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error occured trying to join this room');
         }
         socket.join(roomUid);
-        const welcomeMessage = generateMessage('Admin', 'Welcome to Valhalla!');
-        const announceMessage = generateMessage('Admin', 'This user has joined Valhalla');
+        const welcomeMessage = generateMessage({author: "Admin", message: "Welcome to Valhalla!", roomUid});
+        const announceMessage = generateMessage({author: "Admin", message: "This user has joined Valhalla!", roomUid});
         socket.emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, welcomeMessage);
         socket.broadcast.to(roomUid).emit(PROTOCOLS.CLIENT_TO_SERVER_MSG, announceMessage);
       });

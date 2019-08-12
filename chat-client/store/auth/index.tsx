@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {history} from "chat-client/routes";
 import { actionCreator } from 'chat-client/shared/utils/redux-helpers';
-import { userActions, chatActions } from 'chat-client/store';
+import { userActions, chatActions, socketActions } from 'chat-client/store';
 import { authServices, chatRoomServices } from 'chat-client/services';
 import { Reducer } from 'redux';
 
@@ -48,6 +48,9 @@ export const actions = {
       const parsedRooms = chatRoomServices.parseRooms(rooms);
       dispatch(userActions.userInit({ email, token, username, isOnline: online }));
       dispatch(chatActions.initRooms(parsedRooms));
+      dispatch(socketActions.connectSocket(token));
+      dispatch(chatActions.subcribeMessages());
+      dispatch(chatActions.joinRoom(rooms[0].uid));
       history.push(`/chat/${rooms[0].uid}`)
     } catch (error) {
       dispatch(loginError(error));

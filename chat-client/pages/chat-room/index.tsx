@@ -7,27 +7,17 @@ import View from './page';
 import { NoRoom } from './atoms';
 
 const getChatState = state => state.chat.fetchRoomStatus;
+const getChatMessages = (state, ownProps) => state.chat.rooms[ownProps.match.params.uid].messages;
+const getChatMembers = (state, ownProps) => state.chat.rooms[ownProps.match.params.uid].members;
+
 const roomName = 'Asgardians';
-const members = [
-  { name: 'hello', online: true },
-  { name: 'goodbye', online: false },
-  { name: 'Nate', online: true },
-  { name: 'Nate', online: true },
-  { name: 'Freyo', online: false },
-  { name: 'Freyo2', online: false },
-  { name: 'Freyo3', online: false },
-  { name: 'Freyo4', online: true },
-];
-const messages = [
-  { author: 'Admin', createdAt: '11/11/1', message: 'Hello world', uid: "1" },
-  { author: 'Nate', createdAt: '11/11/1', message: 'Hello Cat', uid: "2" },
-  { author: 'Cat', createdAt: '11/11/1', message: 'Hello Nate', uid: "3" },
-];
 
 interface LocalProps {
   roomInfoApi: any;
   sendMessage: any;
   status: any;
+  messages: any;
+  members: any;
 }
 
 interface RouteProps {
@@ -45,19 +35,21 @@ class LoginContainer extends Component<Props, {}> {
   }
 
   handleSidebar = () => {
-    const { status } = this.props;
+    const { status, members } = this.props;
     return status.error ? null : <Sidebar roomName={roomName} members={members} />;
   };
 
   handleContent = () => {
-    const { status, sendMessage } = this.props;
+    const { status, sendMessage, messages } = this.props;
     return status.error ? <NoRoom message="Room not found!" /> : <View sendMessage={sendMessage} messages={messages} />;
   };
 }
 
 export default connect(
-  state => ({
+  (state, ownProps) => ({
     status: getChatState(state),
+    messages: getChatMessages(state, ownProps),
+    members: getChatMembers(state, ownProps)
   }),
   {
     sendMessage: chatActions.sendMessage,
