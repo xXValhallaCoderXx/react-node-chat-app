@@ -43,6 +43,7 @@ class SocketInstance {
     this.socket = null;
   }
   public connect = token => {
+    console.log("TOKEN: ", token);
     if (process.env.NODE_ENV === 'development') {
       const { LOCALHOST, PORT } = process.env;
       const host = `${LOCALHOST}:${PORT}`;

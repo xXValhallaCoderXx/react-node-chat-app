@@ -24,6 +24,7 @@ export default class RoomInfo extends BaseController {
     Logger.info(`messagesOrError: ${messagesOrError.getValue()}`)
     const messages: any = messagesOrError.getValue().map(item => {
       return {
+        uid: item._id,
         message: item.message,
         createdAt: item.createdAt,
         author: item.author.username,

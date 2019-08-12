@@ -5,7 +5,7 @@ export default class MessageRepository extends BaseRepository<Entity> {
   public fetchMessagesAndAuthor = async (roomUid: string): Promise<any> => {
     const result: any = await this.model
       .find({ roomID: roomUid })
-      .select('message createdAt -_id')
+      .select('message createdAt')
       .populate('author', 'username -_id')
       .exec();
     return result;

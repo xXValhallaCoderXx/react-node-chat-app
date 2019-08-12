@@ -40,7 +40,7 @@ const Sidebar = ({ roomName, members }: Props) => {
       const offlineStyle = member.online ? '' : 'text-muted';
       return (
         <li className={`ml-n4 ${offlineStyle}`} key={index}>
-          {captialize(member.name)}
+          {captialize(member.username)}
         </li>
       );
     });

@@ -1,7 +1,8 @@
 import axios from 'axios';
-import {history} from "chat-client/routes";
+import produce from 'immer';
+import { history } from 'chat-client/routes';
 import { actionCreator } from 'chat-client/shared/utils/redux-helpers';
-import { userActions, chatActions } from 'chat-client/store';
+import { userActions, chatActions, socketActions } from 'chat-client/store';
 import { authServices, chatRoomServices } from 'chat-client/services';
 import { Reducer } from 'redux';
 
@@ -12,6 +13,7 @@ export enum AuthActionTypes {
   REGISTER_REQUEST = '@@auth/REGISTER_REQUEST',
   REGISTER_ERROR = '@@auth/REGISTER_ERROR',
   REGISTER_SUCCESS = '@@auth/REGISTER_SUCCESS',
+  RESET = 'RESET',
 }
 
 export interface AuthState {
@@ -44,11 +46,14 @@ export const actions = {
       const response: any = await authServices.loginApi({ email, password });
       dispatch(loginSuccess(response));
       const { online, token, username } = response.data.user;
-      const {rooms} = response.data;
+      const { rooms } = response.data;
       const parsedRooms = chatRoomServices.parseRooms(rooms);
       dispatch(userActions.userInit({ email, token, username, isOnline: online }));
       dispatch(chatActions.initRooms(parsedRooms));
-      history.push(`/chat/${rooms[0].uid}`)
+      dispatch(socketActions.connectSocket(token));
+      dispatch(chatActions.subcribeMessages());
+      dispatch(chatActions.joinRoom(rooms[0].uid));
+      history.push(`/chat/${rooms[0].uid}`);
     } catch (error) {
       dispatch(loginError(error));
     }
@@ -59,15 +64,16 @@ export const actions = {
       const response = await axios.post('/api/auth/register', { email, password, username }, { withCredentials: true });
       dispatch(registerSuccess(response));
       const { online, token } = response.data.user;
-      const {rooms} = response.data;
+      const { rooms } = response.data;
       const parsedRooms = chatRoomServices.parseRooms(rooms);
       dispatch(userActions.userInit({ email, token, username, isOnline: online }));
       dispatch(chatActions.initRooms(parsedRooms));
-      history.push(`/chat/${rooms[0].uid}`)
+      history.push(`/chat/${rooms[0].uid}`);
     } catch (error) {
       dispatch(registerError(error.response.data.message));
     }
   },
+  logout: () => actionCreator(AuthActionTypes.RESET)
 };
 
 export const loginRequest = () => actionCreator(AuthActionTypes.LOGIN_REQUEST);
@@ -93,27 +99,35 @@ export const initialState: AuthState = {
 };
 
 export const reducer: Reducer<AuthState> = (state = initialState, action): AuthState => {
-  switch (action.type) {
-    case AuthActionTypes.LOGIN_REQUEST: {
-      return { ...state, login: { loading: true, error: false, success: false, data: null } };
+  return produce(state, draftState => {
+    switch (action.type) {
+      case AuthActionTypes.LOGIN_REQUEST: {
+        draftState.login = { loading: true, error: false, success: false, data: null };
+        break;
+      }
+      case AuthActionTypes.LOGIN_ERROR: {
+        draftState.login = { loading: false, error: true, success: false, data: action.payload };
+        break;
+      }
+      case AuthActionTypes.LOGIN_SUCCESS: {
+        draftState.login = { loading: false, error: false, success: true, data: null };
+        break;
+      }
+      case AuthActionTypes.REGISTER_REQUEST: {
+        draftState.registration = { loading: true, error: false, success: false, data: null };
+        break;
+      }
+      case AuthActionTypes.REGISTER_ERROR: {
+        draftState.registration = { loading: false, error: true, success: false, data: null };
+        break;
+      }
+      case AuthActionTypes.REGISTER_SUCCESS: {
+        draftState.registration = { loading: false, error: false, success: true, data: null };
+        break;
+      }
+      default: {
+        return state;
+      }
     }
-    case AuthActionTypes.LOGIN_ERROR: {
-      return { ...state, login: { loading: false, error: true, success: false, data: action.payload } };
-    }
-    case AuthActionTypes.LOGIN_SUCCESS: {
-      return { ...state, login: { loading: false, error: false, success: true, data: null } };
-    }
-    case AuthActionTypes.REGISTER_REQUEST: {
-      return { ...state, registration: { loading: true, error: false, success: false, data: null } };
-    }
-    case AuthActionTypes.REGISTER_ERROR: {
-      return { ...state, registration: { loading: false, error: true, success: false, data: null } };
-    }
-    case AuthActionTypes.REGISTER_SUCCESS: {
-      return { ...state, registration: { loading: false, error: false, success: true, data: null } };
-    }
-    default: {
-      return state;
-    }
-  }
+  });
 };

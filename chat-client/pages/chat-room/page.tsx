@@ -1,18 +1,26 @@
 import React, { memo } from 'react';
 import { Container, Col } from 'reactstrap';
 import { ChatBubble } from './atoms';
-import {MessageInput} from "./organisms";
+import { MessageInput } from './organisms';
+
+import { User, Messages, Room } from 'chat-client/shared/types';
 
 interface Props {
-  messages: any;
+  user: User;
+  room: Room;
   sendMessage: any;
 }
 
-const ChatRoomPage = ({ messages, sendMessage }: Props) => {
+const ChatRoomPage = ({ sendMessage, user, room }: Props) => {
+  function messageList() {
+    return room.messages.map((message: Messages, index: number) => (
+      <ChatBubble key={index} message={message} currentUser={user.username} />
+    ));
+  }
   return (
     <Container fluid className="pt-4 ml-n3 h-100">
-      <Col className="p-0" md="10">{messages.map(ChatBubble)}</Col>
-      <MessageInput loading={false} sendMessage={sendMessage} />
+      <Col className="p-0">{messageList()}</Col>
+      <MessageInput roomUid={room.uid} loading={false} sendMessage={sendMessage} />
     </Container>
   );
 };

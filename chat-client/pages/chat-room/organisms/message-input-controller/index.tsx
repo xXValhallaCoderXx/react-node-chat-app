@@ -9,6 +9,7 @@ export interface FormValues {
 interface Props {
   sendMessage: any;
   loading: boolean;
+  roomUid: string;
 }
 
 function validate(values: FormValues) {
@@ -32,6 +33,8 @@ class FormController extends Component<Props, {}> {
     this.setState({ errors });
     if (isEmpty(errors)) {
       const { message } = this.state.value;
+      const {roomUid} = this.props;
+      this.props.sendMessage({roomUid, message});
     }
   };
   render() {

@@ -1,8 +1,19 @@
-export const generateMessage = (username: string, text: string) => {
+import uuidv4 from "uuid/v4";
+
+interface GenerateMessage {
+  roomUid: string;
+  username: string;
+  message: string;
+  uid?: string;
+}
+
+export const generateMessage = ({username, message, uid, roomUid}: GenerateMessage) => {
   const date = new Date();
   return {
-    author: username,
-    message: text,
+    roomUid,
+    username,
+    message,
     createdAt: date.toISOString(),
+    uid: uid || uuidv4()
   };
 };

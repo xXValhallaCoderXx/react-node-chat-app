@@ -32,6 +32,8 @@ export const chatRoomServices = {
     const roomObject = {};
     for (const key of data) {
       roomObject[key.uid] = key;
+      roomObject[key.uid].messages = []
+      roomObject[key.uid].users = []
     }
     return roomObject;
   },
