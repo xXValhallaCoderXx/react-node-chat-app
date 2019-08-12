@@ -2,6 +2,7 @@ import { actionCreator } from 'chat-client/shared/utils/redux-helpers';
 import { chatRoomServices } from 'chat-client/services';
 import PROTOCOLS from 'chat-shared/socket-types';
 import { Reducer } from 'redux';
+import produce from 'immer';
 
 export enum ChatActionTypes {
   INIT_ROOMS = '@@chat/INIT_ROOMS',
@@ -14,8 +15,6 @@ export enum ChatActionTypes {
 
 export interface ChatState {
   rooms: any;
-  messages: any;
-  users: any;
   fetchRoomStatus: {
     loading: boolean;
     success: boolean;
@@ -33,7 +32,7 @@ export const actions = {
       type: PROTOCOLS.JOIN_ROOM,
       emit: true,
       event: PROTOCOLS.JOIN_ROOM,
-      payload: data
+      payload: data,
     };
   },
   sendMessage: (data: any) => {
@@ -78,40 +77,40 @@ export const initialState: ChatState = {
     success: false,
     error: false,
   },
-  messages: {},
-  users: [],
   rooms: {},
 };
 
-
 export const reducer: Reducer<ChatState> = (state = initialState, action): ChatState => {
-  switch (action.type) {
-    case PROTOCOLS.SERVER_TO_CLIENT_MSG: {
-      const { roomUid, uid, message, createdAt } = action.payload;
-      const roomKey = state.rooms[roomUid];
-      const newMessage = {uid, message, createdAt, author: "Admin"}
-      return { ...state, rooms: {...state.rooms, [roomKey.uid]: {...roomKey, messages: [...state.rooms[roomUid].messages, newMessage]} } };
+  return produce(state, draftState => {
+    switch (action.type) {
+      case PROTOCOLS.SERVER_TO_CLIENT_MSG: {
+        const { roomUid, uid, message, createdAt } = action.payload;
+        const newMessage = { uid, message, createdAt, author: 'Admin' };
+        draftState.rooms[roomUid].messages.push(newMessage);
+        break;
+      }
+      case ChatActionTypes.ROOM_INFO_REQUEST: {
+        draftState.fetchRoomStatus = { loading: true, success: false, error: false };
+        break;
+      }
+      case ChatActionTypes.ROOM_INFO_SUCCESS: {
+        const { uid, messages, members } = action.payload.data;
+        draftState.fetchRoomStatus = { loading: false, success: true, error: false };
+        draftState.rooms[uid].members = members;
+        draftState.rooms[uid].messages.push(messages);
+        break;
+      }
+      case ChatActionTypes.ROOM_INFO_ERROR: {
+        draftState.fetchRoomStatus = { loading: false, success: false, error: true }
+        break;
+      }
+      case ChatActionTypes.INIT_ROOMS: {
+        draftState.rooms = action.payload;
+        break;
+      }
+      default: {
+        return state;
+      }
     }
-    case ChatActionTypes.ROOM_INFO_REQUEST: {
-      return { ...state, fetchRoomStatus: { loading: true, success: false, error: false } };
-    }
-    case ChatActionTypes.ROOM_INFO_SUCCESS: {
-      const { uid, messages, members } = action.payload.data;
-      const roomKey = state.rooms[uid];
-      return { 
-        ...state, 
-        fetchRoomStatus: { loading: false, success: true, error: false },
-        rooms: {...state.rooms, [roomKey.uid]: {...roomKey, members, messages: [...state.rooms[uid].messages, messages]} }
-      };
-    }
-    case ChatActionTypes.ROOM_INFO_ERROR: {
-      return { ...state, fetchRoomStatus: { loading: false, success: false, error: true } };
-    }
-    case ChatActionTypes.INIT_ROOMS: {
-      return { ...state, rooms: action.payload };
-    }
-    default: {
-      return state;
-    }
-  }
+  });
 };
