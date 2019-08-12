@@ -1,5 +1,6 @@
 import { BaseController, Result } from 'chat-server/shared/classes';
 import { MessageServices, MessageType } from 'chat-server/src/messages';
+import { Room as RoomType } from './interface';
 import Logger from 'chat-server/loaders/logger-config';
 import Repository from './repository';
 import Room from './model';
@@ -9,12 +10,18 @@ export default class RoomInfo extends BaseController {
   private messageServices = new MessageServices();
   protected async executeImpl(): Promise<any> {
     const { uid } = this.req.params;
-    const result: any = await this.repo.fetchRoomInfo(uid);
-    const messagesOrError: any = await this.messageServices.fetchRoomMessages(result);
+    Logger.info(`Fetching room info for: ${uid}`)
+    const roomOrError: Result<RoomType> = await this.repo.fetchRoomInfo(uid);
+    if(roomOrError.isFailure){
+      return this.notFound(roomOrError.error);
+    }
+    const room = roomOrError.getValue();
+    const messagesOrError: any = await this.messageServices.fetchRoomMessages(room);
     if (messagesOrError.isFailure) {
       Logger.error('Controller - Room Info: ', messagesOrError.error);
       return this.fail('Error getting messages');
     }
+    Logger.info(`messagesOrError: ${messagesOrError.getValue()}`)
     const messages: any = messagesOrError.getValue().map(item => {
       return {
         message: item.message,
@@ -24,11 +31,12 @@ export default class RoomInfo extends BaseController {
     });
 
     const response = {
-      uid: result.uid,
-      name: result.name,
-      members: result.members,
+      uid: room.uid,
+      name: room.name,
+      members: room.members,
       messages,
     };
+    
 
     return this.ok(response);
   }

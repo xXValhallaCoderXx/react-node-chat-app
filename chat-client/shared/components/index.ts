@@ -9,3 +9,4 @@ export { default as Sidebar } from './side-bar';
 
 // Components
 export {default as BtnSpinner} from "./btn-spinner";
+export {default as InvalidUrlPage} from "./no-route";

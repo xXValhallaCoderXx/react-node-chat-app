@@ -1,4 +1,5 @@
 import { BaseRepository } from 'chat-server/shared/classes';
+import { Result } from 'chat-server/shared/classes';
 import Entity from './entity';
 import { Room as RoomType } from './interface';
 
@@ -10,13 +11,17 @@ export default class RoomRepository extends BaseRepository<Entity> {
     return result;
   };
 
-  public fetchRoomInfo = async (roomUid: string): Promise<RoomType> => {
+  public fetchRoomInfo = async (roomUid: string): Promise<Result<RoomType>> => {
     const result: any = await this.model
       .findOne({ uid: roomUid })
       .select('uid name')
       .populate('members', 'username email -_id')
       .exec();
-    return result;
+    if(!result){
+      return Result.fail("No room found");
+    } else {
+      return Result.ok(result);
+    }
   };
 
   public roomsAndMembers = async (): Promise<RoomType[]> => {

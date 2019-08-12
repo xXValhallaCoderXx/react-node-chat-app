@@ -1,6 +1,6 @@
-    
-.sidebarWrapper {
-  display: flex;
-  align-items: stretch;
-  background-color: red;
+@import "chat-client/shared/styles/_custom-variables.scss";
+
+.sidebar {
+  color: $brand-accent;
+  background-color: $brand-secondary;
 }
