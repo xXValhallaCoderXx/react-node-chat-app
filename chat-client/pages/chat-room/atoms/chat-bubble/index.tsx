@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Row } from 'reactstrap';
+import { Card, Row, FormText } from 'reactstrap';
 import { Messages } from 'chat-client/shared/types';
 import classNames from 'classnames/bind';
 const styles = require('./styles.module.scss');
@@ -21,14 +21,17 @@ const ChatBubble = ({ message, currentUser }: Props) => {
     'p-0': true,
     'mb-3': true,
     'd-flex': true,
-    'justify-content-end': currentUser !== author
+    'justify-content-end': currentUser !== author,
   });
   return (
     <div key={uid} className={chatBubbleWrapper}>
       <Card className={chatBubbleClass}>
-        <Row className="ml-1">
-          {author} - {createdAt}
-        </Row>
+        <div className="d-flex align-items-center">
+          <p className="font-weight-bold mb-0">{author}</p>{' '}
+          <p className="text-muted mb-0" style={{ fontSize: 12 }}>
+            - {createdAt}
+          </p>
+        </div>
         <Row className="ml-1">{text}</Row>
       </Card>
     </div>

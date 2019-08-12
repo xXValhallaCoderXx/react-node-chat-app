@@ -1,29 +1,26 @@
-import React, { memo, Component } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { chatActions } from 'chat-client/store';
+import {parseRoomData} from "./selectors";
 
 import View from './page';
 import { NoRoom } from './atoms';
 import { Layout, Navbar, Sidebar } from 'chat-client/shared/components';
 
 import { RouteComponentProps } from 'react-router-dom';
-import {User, Members, Messages} from "chat-client/shared/types";
+import { User, Room } from 'chat-client/shared/types';
 
 const getChatState = state => state.chat.fetchRoomStatus;
-const getChatMessages = (state, ownProps) => state.chat.rooms[ownProps.match.params.uid].messages;
-const getChatMembers = (state, ownProps) => state.chat.rooms[ownProps.match.params.uid].members;
-const getCurrentUser = (state) => state.user
-
-const roomName = 'Asgardians';
+const getRoomInfo = (state, ownProps) => state.chat.rooms[ownProps.match.params.uid];
+const getCurrentUser = state => state.user;
 
 interface LocalProps {
   roomInfoApi: any;
   sendMessage: any;
   status: any;
-  messages: Messages[];
-  members: Members[];
   user: User;
+  room: Room;
 }
 
 interface RouteProps {
@@ -32,9 +29,7 @@ interface RouteProps {
 
 type Props = LocalProps & RouteComponentProps<RouteProps>;
 
-const links = [
-  {label: "Logout", path: "/"}
-]
+const links = [{ label: 'Logout', path: '/' }];
 
 class LoginContainer extends Component<Props, {}> {
   componentDidMount() {
@@ -45,24 +40,25 @@ class LoginContainer extends Component<Props, {}> {
   }
 
   handleSidebar = () => {
-    const { status, members } = this.props;
-    return status.error ? null : <Sidebar roomName={roomName} members={members} />;
+    const { status, room } = this.props;
+    return status.error ? null : <Sidebar roomName={room.name} members={room.members} />;
   };
 
   handleContent = () => {
-    const { status, sendMessage, messages, user } = this.props;
-    console.log("USER: ", user);
-    const {uid} = this.props.match.params;
-    return status.error ? <NoRoom message="Room not found!" /> : <View user={user} roomUid={uid} sendMessage={sendMessage} messages={messages} />;
+    const { status, sendMessage, user, room } = this.props;
+    return status.error ? (
+      <NoRoom message="Room not found!" />
+    ) : (
+      <View user={user} room={room} sendMessage={sendMessage} />
+    );
   };
 }
 
 export default connect(
   (state, ownProps) => ({
     status: getChatState(state),
-    messages: getChatMessages(state, ownProps),
-    members: getChatMembers(state, ownProps),
-    user: getCurrentUser(state)
+    user: getCurrentUser(state),
+    room: parseRoomData(state, ownProps)
   }),
   {
     sendMessage: chatActions.sendMessage,
