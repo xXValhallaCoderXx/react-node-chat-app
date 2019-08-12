@@ -1,7 +1,7 @@
 import React, { memo, Component } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { chatActions } from 'chat-client/store';
+import { chatActions, socketActions } from 'chat-client/store';
 import { Layout, Navbar, Sidebar } from 'chat-client/shared/components';
 import View from './page';
 import { NoRoom } from './atoms';
@@ -41,7 +41,8 @@ class LoginContainer extends Component<Props, {}> {
 
   handleContent = () => {
     const { status, sendMessage, messages } = this.props;
-    return status.error ? <NoRoom message="Room not found!" /> : <View sendMessage={sendMessage} messages={messages} />;
+    const {uid} = this.props.match.params;
+    return status.error ? <NoRoom message="Room not found!" /> : <View roomUid={uid} sendMessage={sendMessage} messages={messages} />;
   };
 }
 

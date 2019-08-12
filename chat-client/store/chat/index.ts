@@ -26,6 +26,11 @@ interface FetchRoomInfo {
   uid: string;
 }
 
+interface SendMessage {
+  roomUid: string;
+  message: string;
+}
+
 export const actions = {
   joinRoom: (data: any) => {
     return {
@@ -35,11 +40,12 @@ export const actions = {
       payload: data,
     };
   },
-  sendMessage: (data: any) => {
+  sendMessage: ({roomUid, message}: SendMessage) => {
     return {
-      type: PROTOCOLS.JOIN_ROOM,
+      type: PROTOCOLS.CLIENT_TO_SERVER_MSG,
       emit: true,
-      event: PROTOCOLS.JOIN_ROOM,
+      event: PROTOCOLS.CLIENT_TO_SERVER_MSG,
+      payload: {uid: roomUid, message}
     };
   },
   recieveMessage: (data: any) => actionCreator(PROTOCOLS.SERVER_TO_CLIENT_MSG, data),
@@ -97,7 +103,7 @@ export const reducer: Reducer<ChatState> = (state = initialState, action): ChatS
         const { uid, messages, members } = action.payload.data;
         draftState.fetchRoomStatus = { loading: false, success: true, error: false };
         draftState.rooms[uid].members = members;
-        draftState.rooms[uid].messages.push(messages);
+        draftState.rooms[uid].messages = messages;
         break;
       }
       case ChatActionTypes.ROOM_INFO_ERROR: {
