@@ -26,7 +26,7 @@ const Layout = ({ header, sidebar, content, footer }: LayoutProps) => {
             {sidebar}
           </Col>
         )}
-        {content && <Col className="h-100">{content}</Col>}
+        {content && <Col className={styles.content}>{content}</Col>}
       </div>
       {footer && (
         <div className={styles.footer} id="footer">

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useRef, useEffect } from 'react';
 import { Container, Col } from 'reactstrap';
 import { ChatBubble } from './atoms';
 import { MessageInput } from './organisms';
@@ -13,6 +13,16 @@ interface Props {
 }
 
 const ChatRoomPage = ({ sendMessage, user, room }: Props) => {
+  const messagesEndRef = useRef(null);
+  useEffect(scrollToBottom, [room]);
+  function scrollToBottom() {
+    try {
+      // @ts-ignore
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    } catch (error) {
+      console.log('Error');
+    }
+  };
   function messageList() {
     return room.messages.map((message: Messages, index: number) => (
       <ChatBubble key={index} message={message} currentUser={user.username} />
@@ -20,7 +30,10 @@ const ChatRoomPage = ({ sendMessage, user, room }: Props) => {
   }
   return (
     <div className={styles.chatMain}>
-      <div className={styles.chatMessages}>{messageList()}</div>
+      <div className={styles.chatMessages}>
+        {messageList()}
+        <div ref={messagesEndRef} />
+      </div>
       <div className={styles.compose}>
         <MessageInput roomUid={room.uid} loading={false} sendMessage={sendMessage} />
       </div>
@@ -29,15 +42,3 @@ const ChatRoomPage = ({ sendMessage, user, room }: Props) => {
 };
 
 export default memo(ChatRoomPage);
-
-{
-  /* <div style={{ overflowY: 'auto', overflowX: 'hidden'}}>{messageList()}</div>
-<div style={{ position: 'absolute', bottom: 0, marginBottom: 70, width: '97%' }}> */
-}
-
-// <Container fluid className="pt-4 ml-n3">
-//   <Col style={{ overflowY: 'scroll', overflowX: 'hidden'}}>{messageList()}</Col>
-//   <Col style={{ position: 'absolute', bottom: 0, marginBottom: 70 }}>
-//     <MessageInput roomUid={room.uid} loading={false} sendMessage={sendMessage} />
-//   </Col>
-// </Container>
