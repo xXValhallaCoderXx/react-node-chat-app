@@ -11,7 +11,7 @@ interface Props {
 
 const MessageInput = ({ onChange, onSubmit, value, loading }: Props) => {
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} style={{width: "100%"}}>
       <Row>
         <Col sm="9" md="9" lg="10" xl="11">
           <Input placeholder="Enter message..." value={value} onChange={onChange} />
