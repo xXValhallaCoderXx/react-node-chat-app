@@ -6,7 +6,8 @@ import {parseRoomData} from "./selectors";
 
 import View from './page';
 import { NoRoom } from './atoms';
-import { Layout, Navbar, Sidebar } from 'chat-client/shared/components';
+import { Navbar, Sidebar } from 'chat-client/shared/components';
+import {Main} from "chat-client/shared/components/template";
 
 import { RouteComponentProps } from 'react-router-dom';
 import { User, Room } from 'chat-client/shared/types';
@@ -36,7 +37,7 @@ class LoginContainer extends Component<Props, {}> {
     this.props.roomInfoApi({ uid: this.props.match.params.uid });
   }
   render() {
-    return <Layout sidebar={this.handleSidebar()} header={<Navbar links={links} />} content={this.handleContent()} />;
+    return <Main sidebar={this.handleSidebar()} header={<Navbar links={links} />} content={this.handleContent()} />;
   }
 
   handleSidebar = () => {
