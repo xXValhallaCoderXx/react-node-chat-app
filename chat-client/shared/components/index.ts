@@ -5,7 +5,6 @@ export { default as ErrorBoundary } from './error-boundary';
 export { default as Layout } from './layout-template';
 export { default as Navbar } from './nav-bar';
 export { default as Footer } from './footer';
-export { default as Sidebar } from './side-bar';
 
 // Components
 export {default as BtnSpinner} from "./btn-spinner";
