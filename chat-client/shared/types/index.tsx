@@ -22,4 +22,5 @@ export interface Messages {
 export interface Members {
   username: string;
   email: string;
+  isOnline: boolean;
 }
