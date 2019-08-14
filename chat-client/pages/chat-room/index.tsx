@@ -6,7 +6,8 @@ import {parseRoomData} from "./selectors";
 
 import View from './page';
 import { NoRoom } from './atoms';
-import { Navbar, Sidebar } from 'chat-client/shared/components';
+import { Navbar } from 'chat-client/shared/components';
+import { Sidebar } from "chat-client/shared/components/organisms";
 import {Main} from "chat-client/shared/components/template";
 
 import { RouteComponentProps } from 'react-router-dom';

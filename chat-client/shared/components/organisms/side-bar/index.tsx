@@ -1,8 +1,7 @@
 import React from 'react';
 import captialize from 'lodash/capitalize';
-import get from "lodash/get";
-import { Nav, Row } from 'reactstrap';
-import {sortMembers} from "./utils";
+import { Nav, Row, Container } from 'reactstrap';
+import { sortMembers } from './utils';
 
 const styles = require('./styles.module.scss');
 
@@ -13,18 +12,21 @@ interface Props {
 
 const Sidebar = ({ roomName, members }: Props) => {
   return (
-    <Nav className={`h-100 p-3 ${styles.sidebar}`} vertical>
-      <Row className="m-0">
+    <Nav className={`h-100 ${styles.sidebar}`} vertical>
+      <Row className="m-0 p-2">
         <h4>{captialize(roomName)}</h4>
       </Row>
-      <h6>Members</h6>
-      <ul>{renderMembers()}</ul>
+      <div style={{ height: 3, backgroundColor: 'white' }} />
+      <Container className="mt-3">
+        <h6>Members</h6>
+        <ul>{renderMembers()}</ul>
+      </Container>
     </Nav>
   );
 
   function renderMembers() {
-    const sortedMembers = sortMembers(get(members, []));
-    return sortedMembers.map((member: any, index: number) => {
+    const result = sortMembers(members || []);
+    return result.map((member: any, index: number) => {
       const offlineStyle = member.online ? '' : 'text-muted';
       return (
         <li className={`ml-n4 ${offlineStyle}`} key={index}>

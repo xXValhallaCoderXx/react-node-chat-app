@@ -7,11 +7,11 @@ export const sortMembers = (members: Members[]) => {
     let returnVal = 0;
     // If 'a' is online, subtract 1 to move
     // 'a' up in the sort order
-    if (a.isOnline) {
+    if (a.online) {
       returnVal = returnVal - 1;
     }
     // If `b` is online add 1 to move 'b' up
-    if (b.isOnline) {
+    if (b.online) {
       returnVal = returnVal + 1;
     }
     return returnVal;
