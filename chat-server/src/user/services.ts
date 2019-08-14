@@ -97,4 +97,13 @@ export default class UserServices {
     }
     return Result.ok(userOrError.getValue());
   }
+  
+  public async updateUser(uid: string, data: object): Promise<Result<any>> {
+    const userOrError = await this.repo.update(uid, data);
+    console.log("USER OR ERROR: ", userOrError)
+    if (userOrError.isFailure) {
+      return Result.fail(userOrError.error);
+    }
+    return Result.ok(userOrError.getValue());
+  }
 }
