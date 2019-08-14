@@ -14,11 +14,11 @@ const Sidebar = ({ roomName, members }: Props) => {
   return (
     <Nav className={`h-100 ${styles.sidebar}`} vertical>
       <Row className="m-0 p-2">
-        <h4>{captialize(roomName)}</h4>
+        <h4 id="room-name">{captialize(roomName)}</h4>
       </Row>
-      <div style={{ height: 3, backgroundColor: 'white' }} />
+      <div className={styles.divider} />
       <Container className="mt-3">
-        <h6>Members</h6>
+        <h6>Room Members</h6>
         <ul>{renderMembers()}</ul>
       </Container>
     </Nav>
