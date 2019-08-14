@@ -15,7 +15,7 @@ export default class RoomRepository extends BaseRepository<Entity> {
     const result: any = await this.model
       .findOne({ uid: roomUid })
       .select('uid name')
-      .populate('members', 'username email -_id')
+      .populate('members', 'username email online -_id')
       .exec();
     if(!result){
       return Result.fail("No room found");
