@@ -103,7 +103,7 @@ export const reducer: Reducer<ChatState> = (state = initialState, action): ChatS
         const { uid, messages, members } = action.payload.data;
         draftState.fetchRoomStatus = { loading: false, success: true, error: false };
         draftState.rooms[uid].members = members;
-        draftState.rooms[uid].messages = messages;
+        draftState.rooms[uid].messages.concat(messages);
         break;
       }
       case ChatActionTypes.ROOM_INFO_ERROR: {

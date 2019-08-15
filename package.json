@@ -19,6 +19,7 @@
     "server:dev": "yarn workspace chat-server dev",
     "server:build": "yarn workspace chat-server build",
     "server:test": "yarn workspace chat-server test",
+    "dev": "yarn client:dev && yarn server:dev",
     "build": "yarn workspace chat-client build && yarn workspace chat-server build",
     "start": "node ./dist/server.js",
     "test": "yarn client:test && yarn server:test"

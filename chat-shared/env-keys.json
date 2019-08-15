@@ -12,8 +12,8 @@
     "development": {
       "LOCALHOST": "http://localhost",
       "JWT_SECRET": "ThisIsSecret",
-      "MONGODB_URI2": "mongodb://localhost:27017/dev-chat-app",
-      "MONGODB_URI": "mongodb://192.168.99.100:27017/dev-chat-app",
+      "MONGODB_URI": "mongodb://localhost:27017/dev-chat-app",
+      "MONGODB_URI2": "mongodb://192.168.99.100:27017/dev-chat-app",
       "PORT": 5000,
       "LOG_LEVEL": "silly",
       "NODE_ENV": "development",
