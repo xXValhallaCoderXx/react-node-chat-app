@@ -53,7 +53,6 @@ export const actions = {
       dispatch(socketActions.connectSocket(token));
       dispatch(chatActions.subcribeMessages());
       dispatch(chatActions.subscribeRoomUpdates());
-      dispatch(chatActions.joinRoom(rooms[0].uid));
       history.push(`/chat/${rooms[0].uid}`);
     } catch (error) {
       dispatch(loginError(error));

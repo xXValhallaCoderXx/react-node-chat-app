@@ -51,6 +51,9 @@ class ChatSocketController {
         USER JOINS CHAT ROOM
       *************************/
       socket.on(PROTOCOLS.JOIN_ROOM, async (roomUid: string) => {
+        Logger.info("Store Room UID");
+        // @ts-ignore
+        socket.roomUid = roomUid;
         Logger.info('Attempting to join room: ' + roomUid);
         const joinOrError: Result<any> = await this.roomServices.joinRoom(roomUid, socket.userUid);
         if (joinOrError.isFailure) {
@@ -63,7 +66,7 @@ class ChatSocketController {
           socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error user not found');
         }
 
-        const roomInfoOrError: Result<RoomType> = await this.roomServices.fetchRoom(roomUid);
+        const roomInfoOrError: Result<RoomType> = await this.roomServices.fetchRoomInfo(roomUid);
         if (roomInfoOrError.isFailure) {
           socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error room not found');
         }
@@ -71,10 +74,11 @@ class ChatSocketController {
         const {username} = userOrError.getValue();
         const welcomeMessage = generateMessage({username: "Admin", message: "Welcome to Valhalla!", roomUid});
         const announceMessage = generateMessage({username: "Admin", message: `${capitalize(username)} has joined Valhalla!`, roomUid});
-        Logger.debug("WHAT THIS: ", roomInfoOrError.getValue())
-        socket.emit(PROTOCOLS.UPDATE_ROOM_USER, roomInfoOrError.getValue());
-        socket.emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, welcomeMessage);
+
+      
         socket.broadcast.to(roomUid).emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, announceMessage);
+        socket.broadcast.to(roomUid).emit(PROTOCOLS.UPDATE_ROOM_USER, roomInfoOrError.getValue());
+        socket.emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, welcomeMessage);
       });
 
       /*****************************
@@ -107,16 +111,16 @@ class ChatSocketController {
       /*****************************
         CLIENT SEND PAINT TO SERVER
       ******************************/
-      socket.on(PROTOCOLS.CLIENT_TO_SERVER_DRAW, async (data: any) => {
-        const { uid: roomUid, lineInfo } = data;
-        const line = lineInfo.line.map((currentLine: any) => {
-          return {
-            ...currentLine,
-            strokeColor: lineInfo.strokeColor,
-          };
-        });
-        socket.broadcast.to(roomUid).emit(PROTOCOLS.SERVER_TO_CLIENT_DRAW, line);
-      });
+      // socket.on(PROTOCOLS.CLIENT_TO_SERVER_DRAW, async (data: any) => {
+      //   const { uid: roomUid, lineInfo } = data;
+      //   const line = lineInfo.line.map((currentLine: any) => {
+      //     return {
+      //       ...currentLine,
+      //       strokeColor: lineInfo.strokeColor,
+      //     };
+      //   });
+      //   socket.broadcast.to(roomUid).emit(PROTOCOLS.SERVER_TO_CLIENT_DRAW, line);
+      // });
 
       socket.on(PROTOCOLS.DISCONNECT, async () => {
         const { userUid } = socket;
@@ -125,6 +129,13 @@ class ChatSocketController {
         if (updateUserOrError.isFailure) {
           Logger.error("Disconnect - Error updating user")
         }
+        // @ts-ignore
+        const roomInfoOrError: Result<RoomType> = await this.roomServices.fetchRoomInfo(socket.roomUid);
+        if (roomInfoOrError.isFailure) {
+          socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error room not found');
+        }
+        // @ts-ignore
+        socket.broadcast.to(socket.roomUid).emit(PROTOCOLS.UPDATE_ROOM_USER, roomInfoOrError.getValue());
       })
     });
   }

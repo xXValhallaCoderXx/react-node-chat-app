@@ -79,6 +79,7 @@ export const actions = {
     try {
       const response = await chatRoomServices.roomInfoApi({ uid });
       dispatch(fetchRoomInfoSuccess(response));
+      dispatch(actions.joinRoom(uid));
     } catch (error) {
       dispatch(fetchRoomInfoError(error));
     }
@@ -107,6 +108,11 @@ export const reducer: Reducer<ChatState> = (state = initialState, action): ChatS
         draftState.rooms[roomUid].messages.push(newMessage);
         break;
       }
+      case PROTOCOLS.UPDATE_ROOM_USER: {
+        const { members, uid } = action.payload;
+        draftState.rooms[uid].members = members;
+        break;
+      }
       case ChatActionTypes.ROOM_INFO_REQUEST: {
         draftState.fetchRoomStatus = { loading: true, success: false, error: false };
         break;
@@ -115,7 +121,7 @@ export const reducer: Reducer<ChatState> = (state = initialState, action): ChatS
         const { uid, messages, members } = action.payload.data;
         draftState.fetchRoomStatus = { loading: false, success: true, error: false };
         draftState.rooms[uid].members = members;
-        draftState.rooms[uid].messages.concat(messages);
+        draftState.rooms[uid].messages.push(...messages);
         break;
       }
       case ChatActionTypes.ROOM_INFO_ERROR: {
