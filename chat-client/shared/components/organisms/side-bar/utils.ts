@@ -1,8 +1,9 @@
-import {Members} from "chat-client/shared/types";
+import { Members } from 'chat-client/shared/types';
+import { Result } from 'chat-shared/classes';
 
-export const sortMembers = (members: Members[]) => {
+export const sortMembers = (members: Members[]): Result<Members[]> => {
   // Sort members by Online / Offline
-  return members.sort((a, b) => {
+  const result = members.sort((a, b) => {
     // Default to 0 - No sorting needed
     let returnVal = 0;
     // If 'a' is online, subtract 1 to move
@@ -16,4 +17,9 @@ export const sortMembers = (members: Members[]) => {
     }
     return returnVal;
   });
-}
+  if (result) {
+    return Result.ok(result);
+  } else {
+    return Result.fail('Error parsing members');
+  }
+};

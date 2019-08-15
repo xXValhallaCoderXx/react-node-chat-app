@@ -25,8 +25,11 @@ const Sidebar = ({ roomName, members }: Props) => {
   );
 
   function renderMembers() {
-    const result = sortMembers(members || []);
-    return result.map((member: any, index: number) => {
+    const membersOrError = sortMembers(members || []);
+    if(membersOrError.isFailure){
+      // Handle Failure
+    }
+    return membersOrError.getValue().map((member: any, index: number) => {
       const offlineStyle = member.online ? '' : 'text-muted';
       return (
         <li className={`ml-n4 ${offlineStyle}`} key={index}>
