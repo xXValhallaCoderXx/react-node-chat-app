@@ -41,6 +41,14 @@ export default class RoomServices {
     return Result.ok(roomOrError.getValue());
   }
 
+  public async fetchRoomInfo(uid: string): Promise<Result<RoomType>> {
+    const roomOrError: Result<RoomType> = await this.repo.fetchRoomInfo(uid);
+    if (roomOrError.isFailure) {
+      return Result.fail(roomOrError.error);
+    }
+    return Result.ok(roomOrError.getValue());
+  }
+
   public async joinRoom(roomUid: string, userUid: string): Promise<Result<any>> {
     if (!roomUid || !userUid) {
       return Result.fail('Missing UID');

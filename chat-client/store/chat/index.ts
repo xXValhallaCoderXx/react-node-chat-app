@@ -1,7 +1,7 @@
 import { actionCreator } from 'chat-client/shared/utils/redux-helpers';
 import { chatRoomServices } from 'chat-client/services';
 import PROTOCOLS from 'chat-shared/socket-types';
-import { Reducer } from 'redux';
+import { Reducer, Dispatch } from 'redux';
 import produce from 'immer';
 
 export enum ChatActionTypes {
@@ -62,11 +62,24 @@ export const actions = {
           }),
       });
   },
-  fetchRoomInfo: ({ uid }: FetchRoomInfo) => async dispatch => {
+  subscribeRoomUpdates: () => {
+    return (dispatch: any) =>
+      dispatch({
+        subscribe: true,
+        event: PROTOCOLS.UPDATE_ROOM_USER,
+        handle: (data: any) =>
+          dispatch({
+            type: PROTOCOLS.UPDATE_ROOM_USER,
+            payload: data,
+          }),
+      });
+  },
+  fetchRoomInfo: ({ uid }: FetchRoomInfo) => async (dispatch: Dispatch) => {
     dispatch(fetchRoomInfoRequest());
     try {
       const response = await chatRoomServices.roomInfoApi({ uid });
       dispatch(fetchRoomInfoSuccess(response));
+      dispatch(actions.joinRoom(uid));
     } catch (error) {
       dispatch(fetchRoomInfoError(error));
     }
@@ -95,6 +108,11 @@ export const reducer: Reducer<ChatState> = (state = initialState, action): ChatS
         draftState.rooms[roomUid].messages.push(newMessage);
         break;
       }
+      case PROTOCOLS.UPDATE_ROOM_USER: {
+        const { members, uid } = action.payload;
+        draftState.rooms[uid].members = members;
+        break;
+      }
       case ChatActionTypes.ROOM_INFO_REQUEST: {
         draftState.fetchRoomStatus = { loading: true, success: false, error: false };
         break;
@@ -103,7 +121,7 @@ export const reducer: Reducer<ChatState> = (state = initialState, action): ChatS
         const { uid, messages, members } = action.payload.data;
         draftState.fetchRoomStatus = { loading: false, success: true, error: false };
         draftState.rooms[uid].members = members;
-        draftState.rooms[uid].messages.concat(messages);
+        draftState.rooms[uid].messages.push(...messages);
         break;
       }
       case ChatActionTypes.ROOM_INFO_ERROR: {

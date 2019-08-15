@@ -21,7 +21,7 @@ export default class RoomInfo extends BaseController {
       Logger.error('Controller - Room Info: ', messagesOrError.error);
       return this.fail('Error getting messages');
     }
-    const messages: any = messagesOrError.getValue().map(item => {
+    const messages: any = messagesOrError.getValue().map((item: any) => {
       return {
         uid: item._id,
         message: item.message,
