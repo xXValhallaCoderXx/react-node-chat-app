@@ -62,9 +62,17 @@ class ChatSocketController {
         if (userOrError.isFailure) {
           socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error user not found');
         }
+
+        const roomInfoOrError: Result<RoomType> = await this.roomServices.fetchRoom(roomUid);
+        if (roomInfoOrError.isFailure) {
+          socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error room not found');
+        }
+
         const {username} = userOrError.getValue();
         const welcomeMessage = generateMessage({username: "Admin", message: "Welcome to Valhalla!", roomUid});
         const announceMessage = generateMessage({username: "Admin", message: `${capitalize(username)} has joined Valhalla!`, roomUid});
+        Logger.debug("WHAT THIS: ", roomInfoOrError.getValue())
+        socket.emit(PROTOCOLS.UPDATE_ROOM_USER, roomInfoOrError.getValue());
         socket.emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, welcomeMessage);
         socket.broadcast.to(roomUid).emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, announceMessage);
       });

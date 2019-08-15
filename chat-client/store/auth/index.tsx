@@ -4,7 +4,7 @@ import { history } from 'chat-client/routes';
 import { actionCreator } from 'chat-client/shared/utils/redux-helpers';
 import { userActions, chatActions, socketActions } from 'chat-client/store';
 import { authServices, chatRoomServices } from 'chat-client/services';
-import { Reducer } from 'redux';
+import { Reducer, Dispatch } from 'redux';
 
 export enum AuthActionTypes {
   LOGIN_REQUEST = '@@auth/LOGIN_REQUEST',
@@ -40,7 +40,7 @@ interface RegisterRequest {
 }
 
 export const actions = {
-  loginApi: ({ email, password }: LoginRequest) => async dispatch => {
+  loginApi: ({ email, password }: LoginRequest) => async (dispatch: any) => {
     dispatch(loginRequest());
     try {
       const response: any = await authServices.loginApi({ email, password });
@@ -52,13 +52,14 @@ export const actions = {
       dispatch(chatActions.initRooms(parsedRooms));
       dispatch(socketActions.connectSocket(token));
       dispatch(chatActions.subcribeMessages());
+      dispatch(chatActions.subscribeRoomUpdates());
       dispatch(chatActions.joinRoom(rooms[0].uid));
       history.push(`/chat/${rooms[0].uid}`);
     } catch (error) {
       dispatch(loginError(error));
     }
   },
-  registerApi: ({ email, password, username }: RegisterRequest) => async dispatch => {
+  registerApi: ({ email, password, username }: RegisterRequest) => async (dispatch: Dispatch) => {
     dispatch(registerRequest());
     try {
       const response = await axios.post('/api/auth/register', { email, password, username }, { withCredentials: true });

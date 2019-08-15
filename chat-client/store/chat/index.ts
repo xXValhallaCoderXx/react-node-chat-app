@@ -1,7 +1,7 @@
 import { actionCreator } from 'chat-client/shared/utils/redux-helpers';
 import { chatRoomServices } from 'chat-client/services';
 import PROTOCOLS from 'chat-shared/socket-types';
-import { Reducer } from 'redux';
+import { Reducer, Dispatch } from 'redux';
 import produce from 'immer';
 
 export enum ChatActionTypes {
@@ -62,7 +62,19 @@ export const actions = {
           }),
       });
   },
-  fetchRoomInfo: ({ uid }: FetchRoomInfo) => async dispatch => {
+  subscribeRoomUpdates: () => {
+    return (dispatch: any) =>
+      dispatch({
+        subscribe: true,
+        event: PROTOCOLS.UPDATE_ROOM_USER,
+        handle: (data: any) =>
+          dispatch({
+            type: PROTOCOLS.UPDATE_ROOM_USER,
+            payload: data,
+          }),
+      });
+  },
+  fetchRoomInfo: ({ uid }: FetchRoomInfo) => async (dispatch: Dispatch) => {
     dispatch(fetchRoomInfoRequest());
     try {
       const response = await chatRoomServices.roomInfoApi({ uid });
