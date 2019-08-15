@@ -1,4 +1,5 @@
 import { Result } from 'chat-server/shared/classes';
+import Logger from '../../loaders/logger-config';
 
 interface Find {
   filterBy?: object;
@@ -67,9 +68,10 @@ export abstract class BaseRepository<T> implements Write<T>, Read<T> {
 
   public update(uid: string, data: any): Result<T> {
     try {
-      const user = this.model.findOneAndUpdate({ uid }, { $set: { data } }, { new: true }, (err: any, doc: T) => {
+      const user = this.model.findOneAndUpdate({ uid }, { $set:  data}, { new: true }, (err: any, doc: T) => {
         return doc;
       });
+      Logger.info("User updated: ", user);
       return Result.ok(user);
     } catch (error) {
       return Result.fail('Noope');
