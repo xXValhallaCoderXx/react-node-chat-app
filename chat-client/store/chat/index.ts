@@ -90,7 +90,6 @@ export const reducer: Reducer<ChatState> = (state = initialState, action): ChatS
   return produce(state, draftState => {
     switch (action.type) {
       case PROTOCOLS.SERVER_TO_CLIENT_MSG: {
-        console.log("PAYLOAAAAAD: ", action.payload);
         const { roomUid, uid, message, createdAt, username } = action.payload;
         const newMessage = { uid, message, createdAt, author: username };
         draftState.rooms[roomUid].messages.push(newMessage);
