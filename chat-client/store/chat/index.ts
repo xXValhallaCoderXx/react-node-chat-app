@@ -90,6 +90,7 @@ export const reducer: Reducer<ChatState> = (state = initialState, action): ChatS
   return produce(state, draftState => {
     switch (action.type) {
       case PROTOCOLS.SERVER_TO_CLIENT_MSG: {
+        console.log("PAYLOAAAAAD: ", action.payload);
         const { roomUid, uid, message, createdAt, username } = action.payload;
         const newMessage = { uid, message, createdAt, author: username };
         draftState.rooms[roomUid].messages.push(newMessage);
@@ -103,7 +104,7 @@ export const reducer: Reducer<ChatState> = (state = initialState, action): ChatS
         const { uid, messages, members } = action.payload.data;
         draftState.fetchRoomStatus = { loading: false, success: true, error: false };
         draftState.rooms[uid].members = members;
-        draftState.rooms[uid].messages = messages;
+        draftState.rooms[uid].messages.concat(messages);
         break;
       }
       case ChatActionTypes.ROOM_INFO_ERROR: {
