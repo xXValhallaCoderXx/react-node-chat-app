@@ -1,4 +1,5 @@
 import Logger from 'chat-server/loaders/logger-config';
+import capitalize from "lodash/capitalize";
 import PROTOCOLS from 'chat-shared/socket-types';
 import { Result } from 'chat-server/shared/classes';
 import { UserServices, UserType } from 'chat-server/src/user';
@@ -57,10 +58,15 @@ class ChatSocketController {
           socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error occured trying to join this room');
         }
         socket.join(roomUid);
+        const userOrError: Result<UserType> = await this.userServices.fetchUser(socket.userUid);
+        if (userOrError.isFailure) {
+          socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error user not found');
+        }
+        const {username} = userOrError.getValue();
         const welcomeMessage = generateMessage({username: "Admin", message: "Welcome to Valhalla!", roomUid});
-        const announceMessage = generateMessage({username: "Admin", message: "This user has joined Valhalla!", roomUid});
+        const announceMessage = generateMessage({username: "Admin", message: `${capitalize(username)} has joined Valhalla!`, roomUid});
         socket.emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, welcomeMessage);
-        socket.broadcast.to(roomUid).emit(PROTOCOLS.CLIENT_TO_SERVER_MSG, announceMessage);
+        socket.broadcast.to(roomUid).emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, announceMessage);
       });
 
       /*****************************
