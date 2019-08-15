@@ -66,13 +66,16 @@ export abstract class BaseRepository<T> implements Write<T>, Read<T> {
   }
 
   public update(uid: string, data: any): Result<T> {
-    return this.model.updateOne({ uid }, { $set: data }, function(err: any, raw: any) {
-      if (err) {
-        return Result.fail(err);
-      }
-      return Result.ok<T>(raw);
-    });
+    try {
+      const user = this.model.findOneAndUpdate({ uid }, { $set: { data } }, { new: true }, (err: any, doc: T) => {
+        return doc;
+      });
+      return Result.ok(user);
+    } catch (error) {
+      return Result.fail('Noope');
+    }
   }
+
   public delete(id: string): Promise<boolean> {
     throw new Error('Method not implemented.');
   }

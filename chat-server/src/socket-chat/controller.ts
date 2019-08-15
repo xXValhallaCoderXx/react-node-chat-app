@@ -107,11 +107,6 @@ class ChatSocketController {
       socket.on(PROTOCOLS.DISCONNECT, async () => {
         const { userUid } = socket;
         Logger.info('Disconnecting user: ' + userUid);
-        const userOrError: Result<UserType> = await this.userServices.fetchUser(userUid);
-        if (userOrError.isFailure) {
-          Logger.error("Disconnect - User not found")
-        }
-
         const updateUserOrError: Result<UserType> = await this.userServices.updateUser(userUid, {online: false});
         if (updateUserOrError.isFailure) {
           Logger.error("Disconnect - Error updating user")
