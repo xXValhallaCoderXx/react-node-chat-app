@@ -9,7 +9,7 @@ interface State {
 
 interface Props {
   status: any;
-  registerApi: any;
+  submitRegistration: any;
 }
 
 export interface FormValues {
@@ -53,7 +53,7 @@ export default class FormController extends Component<Props, State> {
     this.setState({ errors: result });
     if (isEmpty(result)) {
       const { email, username, password } = this.state.values;
-      this.props.registerApi({ email, password, username });
+      this.props.submitRegistration({ email, password, username });
     }
   };
 
@@ -73,6 +73,7 @@ export default class FormController extends Component<Props, State> {
   render() {
     const { values, errors } = this.state;
     const { status } = this.props;
+    console.log("STAT: ", status);
     return <Form status={status} onChange={this.onChange} values={values} onSubmit={this.onSubmit} errors={errors} />;
   }
 }
