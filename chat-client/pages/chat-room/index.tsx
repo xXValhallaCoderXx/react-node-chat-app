@@ -12,10 +12,8 @@ import {Main} from "chat-client/shared/components/template";
 
 import { RouteComponentProps } from 'react-router-dom';
 import { User, Room } from 'chat-client/shared/types';
-import socket from '../../middleware/socket';
 
 const getChatState = state => state.chat.fetchRoomStatus;
-const getRoomInfo = (state, ownProps) => state.chat.rooms[ownProps.match.params.uid];
 const getCurrentUser = state => state.user;
 
 interface LocalProps {
@@ -39,10 +37,15 @@ const links = [{ label: 'Logout', path: '/' }];
 
 class LoginContainer extends Component<Props, {}> {
   componentDidMount() {
-    this.props.socketConnect(this.props.user.token);
-    this.props.subscribeMessages();
-    this.props.subscribeRoomUpdates();
-    this.props.roomInfoApi({ uid: this.props.match.params.uid });
+    if(this.props.user.token){
+      this.props.socketConnect(this.props.user.token);
+      this.props.subscribeMessages();
+      this.props.subscribeRoomUpdates();
+      this.props.roomInfoApi({ uid: this.props.match.params.uid });
+    }else {
+      this.props.history.push("/")
+    }
+
   }
   render() {
     return <Main sidebar={this.handleSidebar()} header={<Navbar links={links} />} content={this.handleContent()} />;
