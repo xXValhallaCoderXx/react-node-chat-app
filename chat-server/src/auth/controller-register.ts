@@ -10,11 +10,11 @@ export default class RegisterController extends BaseController {
     const { email, username, password } = this.req.body;
     const userOrError: Result<UserType> = await this.userService.createUser({ email, username, password });
     if (userOrError.isFailure) {
-      return this.fail(userOrError.error);
+      return this.fail({title: "Registration - Create user error", message: userOrError.error});
     }
     const roomsOrError: Result<RoomType[]> = await this.roomService.fetchRoomsList();
     if (roomsOrError.isFailure) {
-      return this.fail(roomsOrError.error);
+      return this.fail({title: "Registration - Fetch Rooms List Error", message: roomsOrError.error});
     }
     const { online, token } = userOrError.getValue();
     return this.ok({
