@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { chatActions } from 'chat-client/store';
+import { chatActions, socketActions } from 'chat-client/store';
 import {parseRoomData} from "./selectors";
 
 import View from './page';
@@ -12,12 +12,16 @@ import {Main} from "chat-client/shared/components/template";
 
 import { RouteComponentProps } from 'react-router-dom';
 import { User, Room } from 'chat-client/shared/types';
+import socket from '../../middleware/socket';
 
 const getChatState = state => state.chat.fetchRoomStatus;
 const getRoomInfo = (state, ownProps) => state.chat.rooms[ownProps.match.params.uid];
 const getCurrentUser = state => state.user;
 
 interface LocalProps {
+  subscribeMessages: () => void;
+  subscribeRoomUpdates: () => void;
+  socketConnect: (token: string) => void;
   roomInfoApi: any;
   sendMessage: any;
   status: any;
@@ -35,10 +39,12 @@ const links = [{ label: 'Logout', path: '/' }];
 
 class LoginContainer extends Component<Props, {}> {
   componentDidMount() {
+    this.props.socketConnect(this.props.user.token);
+    this.props.subscribeMessages();
+    this.props.subscribeRoomUpdates();
     this.props.roomInfoApi({ uid: this.props.match.params.uid });
   }
   render() {
-    console.log("WHAT IS THIS: ", this.props);
     return <Main sidebar={this.handleSidebar()} header={<Navbar links={links} />} content={this.handleContent()} />;
   }
 
@@ -66,5 +72,8 @@ export default connect(
   {
     sendMessage: chatActions.sendMessage,
     roomInfoApi: chatActions.fetchRoomInfo,
+    socketConnect: socketActions.connectSocket,
+    subscribeMessages: chatActions.subcribeMessages,
+    subscribeRoomUpdates: chatActions.subscribeRoomUpdates
   },
 )(LoginContainer);

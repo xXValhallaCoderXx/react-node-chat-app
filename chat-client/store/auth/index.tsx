@@ -4,7 +4,7 @@ import { history } from 'chat-client/routes';
 import { actionCreator } from 'chat-client/shared/utils/redux-helpers';
 import { userActions, chatActions, socketActions } from 'chat-client/store';
 import { authServices, chatRoomServices } from 'chat-client/services';
-import { Reducer, Dispatch } from 'redux';
+import { Reducer } from 'redux';
 
 export enum AuthActionTypes {
   LOGIN_REQUEST = '@@auth/LOGIN_REQUEST',
