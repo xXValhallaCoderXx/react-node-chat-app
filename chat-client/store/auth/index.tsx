@@ -70,7 +70,7 @@ export const actions = {
       dispatch(chatActions.initRooms(parsedRooms));
       history.push(`/chat/${rooms[0].uid}`);
     } catch (error) {
-      dispatch(registerError(error.response.data.message));
+      dispatch(registerError(error.response.data));
     }
   },
   logout: () => actionCreator(AuthActionTypes.RESET)
@@ -118,7 +118,7 @@ export const reducer: Reducer<AuthState> = (state = initialState, action): AuthS
         break;
       }
       case AuthActionTypes.REGISTER_ERROR: {
-        draftState.registration = { loading: false, error: true, success: false, data: null };
+        draftState.registration = { loading: false, error: true, success: false, data: action.payload };
         break;
       }
       case AuthActionTypes.REGISTER_SUCCESS: {

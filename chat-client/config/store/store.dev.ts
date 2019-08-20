@@ -12,7 +12,7 @@ import { history } from '../../routes';
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['router'] 
+  blacklist: ['router', 'auth'] 
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer(history))

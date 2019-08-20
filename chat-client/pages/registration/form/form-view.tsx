@@ -1,10 +1,11 @@
 import React from 'react';
+import {Status} from "../index";
 import { BtnSpinner } from 'chat-client/shared/components';
 import { Form, FormGroup, Label, Input, FormText, FormFeedback } from 'reactstrap';
 import { FormValues } from './form-controller';
 
 interface Props {
-  status: any;
+  status: Status;
   values: FormValues;
   errors: FormValues;
   onSubmit: any;
@@ -68,7 +69,7 @@ const RegisterForm = ({ onChange, onSubmit, values, errors, status }: Props) => 
           SIGN UP
         </BtnSpinner>
       </FormGroup>
-      {status.error && <p className="text-danger text-center">{status.data}</p>}
+      {status.error && <p className="text-danger text-center">{status.data.message}</p>}
     </Form>
   );
 };

@@ -1,5 +1,4 @@
-export { default as LoadingScreen } from './loading-screen';
-export { default as ErrorBoundary } from './error-boundary';
+export { ErrorBoundary, Main, LoadingScreen } from './template';
 
 // Layout
 export { default as Layout } from './layout-template';
