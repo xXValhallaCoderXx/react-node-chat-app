@@ -11,12 +11,12 @@ export default class LoginController extends BaseController {
 
     const userOrError: Result<UserType> = await this.userService.handleLogin(inputEmail, inputPassword);
     if (userOrError.isFailure) {
-      return this.fail(userOrError.error);
+      return this.fail({title: "Login - Error", message: userOrError.error});
     }
 
     const roomsOrError: Result<RoomType[]> = await this.roomService.fetchRoomsList();
     if (roomsOrError.isFailure) {
-      return this.fail(roomsOrError.error);
+      return this.fail({title: "Login - Fetch Rooms Error", message: roomsOrError.error});
     }
 
     const { online, token, email, username } = userOrError.getValue();

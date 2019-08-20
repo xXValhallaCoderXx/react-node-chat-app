@@ -6,7 +6,7 @@ const mockLoginApi = jest.fn();
 const mockStatus = {};
 
 describe('Register Form', () => {
-  const wrapper = shallow<FormController>(<FormController status={mockStatus} registerApi={mockLoginApi} />);
+  const wrapper = shallow<FormController>(<FormController status={mockStatus} submitRegistration={mockLoginApi} />);
 
   it('should have validation errors', () => {
     const instance = wrapper.instance();

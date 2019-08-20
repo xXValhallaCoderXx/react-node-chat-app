@@ -1,5 +1,11 @@
 import express from 'express';
 
+interface ErrorResponse {
+  title: string; // Short description of error
+  message: string; // Human readable error
+  status?: number; // So all info is in 1 place
+}
+
 export default abstract class BaseController {
   // or even private
   protected req: express.Request;
@@ -46,7 +52,7 @@ export default abstract class BaseController {
     return this.jsonResponse(404, data ? data : 'Not found');
   }
 
-  protected fail(error: Error | string) {
-    return this.res.status(500).send(error.toString(),);
+  protected fail({message, title, status = 500}: ErrorResponse) {
+    return this.res.status(500).json({message, title, status});
   }
 }

@@ -1,23 +1,30 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { userActions } from 'chat-client/store';
-import { Layout } from 'chat-client/shared/components';
+import { useDispatch, useSelector } from 'react-redux';
+import { authActions } from 'chat-client/store';
+import { Main } from 'chat-client/shared/components';
 import View from './view';
 
-export interface InitUser {
-  isOnline: boolean;
+export interface SubmitRegistration {
   email: string;
-  token: string;
+  password: string;
   username: string;
+}
+
+export interface Status {
+  loading: boolean;
+  success: boolean;
+  error: boolean;
+  data: any;
 }
 
 const RegisterContainer = () => {
   const dispatch = useDispatch();
+  const status = useSelector((state: any) => state.auth.registration);
 
-  const initializeUser = ({ isOnline, email, token, username }: InitUser) => {
-    dispatch(userActions.userInit({ isOnline, email, token, username }));
+  const submitRegistration = ({ email, password, username }: SubmitRegistration) => {
+    dispatch(authActions.registerApi({ email, password, username }));
   };
-  return <Layout content={<View initUser={initializeUser} />} />;
+  return <Main content={<View submitRegistration={submitRegistration} status={status} />} />;
 };
 
 export default RegisterContainer;

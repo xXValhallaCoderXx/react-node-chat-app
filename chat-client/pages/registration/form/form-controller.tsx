@@ -9,7 +9,7 @@ interface State {
 
 interface Props {
   status: any;
-  registerApi: any;
+  submitRegistration: any;
 }
 
 export interface FormValues {
@@ -19,7 +19,7 @@ export interface FormValues {
   confirmPassword?: string;
 }
 
-function validate(values) {
+function validate(values: FormValues) {
   const errors: any = {};
   if (!values.username) {
     errors.username = 'Warrior! We must know your name for the battle field!';
@@ -53,7 +53,7 @@ export default class FormController extends Component<Props, State> {
     this.setState({ errors: result });
     if (isEmpty(result)) {
       const { email, username, password } = this.state.values;
-      this.props.registerApi({ email, password, username });
+      this.props.submitRegistration({ email, password, username });
     }
   };
 

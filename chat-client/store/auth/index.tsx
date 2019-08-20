@@ -4,7 +4,7 @@ import { history } from 'chat-client/routes';
 import { actionCreator } from 'chat-client/shared/utils/redux-helpers';
 import { userActions, chatActions, socketActions } from 'chat-client/store';
 import { authServices, chatRoomServices } from 'chat-client/services';
-import { Reducer, Dispatch } from 'redux';
+import { Reducer } from 'redux';
 
 export enum AuthActionTypes {
   LOGIN_REQUEST = '@@auth/LOGIN_REQUEST',
@@ -58,7 +58,7 @@ export const actions = {
       dispatch(loginError(error));
     }
   },
-  registerApi: ({ email, password, username }: RegisterRequest) => async (dispatch: Dispatch) => {
+  registerApi: ({ email, password, username }: RegisterRequest) => async (dispatch: any) => {
     dispatch(registerRequest());
     try {
       const response = await axios.post('/api/auth/register', { email, password, username }, { withCredentials: true });
@@ -68,9 +68,12 @@ export const actions = {
       const parsedRooms = chatRoomServices.parseRooms(rooms);
       dispatch(userActions.userInit({ email, token, username, isOnline: online }));
       dispatch(chatActions.initRooms(parsedRooms));
+      dispatch(socketActions.connectSocket(token));
+      dispatch(chatActions.subcribeMessages());
+      dispatch(chatActions.subscribeRoomUpdates());
       history.push(`/chat/${rooms[0].uid}`);
     } catch (error) {
-      dispatch(registerError(error.response.data.message));
+      dispatch(registerError(error.response.data));
     }
   },
   logout: () => actionCreator(AuthActionTypes.RESET)
@@ -118,7 +121,7 @@ export const reducer: Reducer<AuthState> = (state = initialState, action): AuthS
         break;
       }
       case AuthActionTypes.REGISTER_ERROR: {
-        draftState.registration = { loading: false, error: true, success: false, data: null };
+        draftState.registration = { loading: false, error: true, success: false, data: action.payload };
         break;
       }
       case AuthActionTypes.REGISTER_SUCCESS: {
