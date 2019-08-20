@@ -38,6 +38,7 @@ class LoginContainer extends Component<Props, {}> {
     this.props.roomInfoApi({ uid: this.props.match.params.uid });
   }
   render() {
+    console.log("WHAT IS THIS: ", this.props);
     return <Main sidebar={this.handleSidebar()} header={<Navbar links={links} />} content={this.handleContent()} />;
   }
 

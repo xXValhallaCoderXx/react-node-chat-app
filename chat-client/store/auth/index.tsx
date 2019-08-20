@@ -58,7 +58,7 @@ export const actions = {
       dispatch(loginError(error));
     }
   },
-  registerApi: ({ email, password, username }: RegisterRequest) => async (dispatch: Dispatch) => {
+  registerApi: ({ email, password, username }: RegisterRequest) => async (dispatch: any) => {
     dispatch(registerRequest());
     try {
       const response = await axios.post('/api/auth/register', { email, password, username }, { withCredentials: true });
@@ -68,6 +68,9 @@ export const actions = {
       const parsedRooms = chatRoomServices.parseRooms(rooms);
       dispatch(userActions.userInit({ email, token, username, isOnline: online }));
       dispatch(chatActions.initRooms(parsedRooms));
+      dispatch(socketActions.connectSocket(token));
+      dispatch(chatActions.subcribeMessages());
+      dispatch(chatActions.subscribeRoomUpdates());
       history.push(`/chat/${rooms[0].uid}`);
     } catch (error) {
       dispatch(registerError(error.response.data));

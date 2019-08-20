@@ -19,7 +19,7 @@ export interface FormValues {
   confirmPassword?: string;
 }
 
-function validate(values) {
+function validate(values: FormValues) {
   const errors: any = {};
   if (!values.username) {
     errors.username = 'Warrior! We must know your name for the battle field!';
@@ -73,7 +73,6 @@ export default class FormController extends Component<Props, State> {
   render() {
     const { values, errors } = this.state;
     const { status } = this.props;
-    console.log("STAT: ", status);
     return <Form status={status} onChange={this.onChange} values={values} onSubmit={this.onSubmit} errors={errors} />;
   }
 }
