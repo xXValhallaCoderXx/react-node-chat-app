@@ -13,7 +13,7 @@ export default class RoomServices {
   public async create(name: string): Promise<Result<RoomType>> {
     const roomOrError = await RoomEntity.create(name);
     if (roomOrError.isFailure) {
-      Logger.error('Room Services - Create Enitiy: ', roomOrError.error);
+      Logger.error(`Room Services - Create Enitiy:  ${roomOrError.error}`);
       return Result.fail(roomOrError.error);
     }
     const room = roomOrError.getValue();
@@ -63,7 +63,10 @@ export default class RoomServices {
     if (userOrError.isFailure) {
       return Result.fail('User not found');
     }
-    const result = await this.repo.addUserToRoom(userOrError.getValue(), roomUid);
-    return Result.ok(result);
+    const resultOrError = await this.repo.addUserToRoom(userOrError.getValue(), roomUid);
+    if(resultOrError.isFailure){
+      Result.fail("Error adding user to room")
+    }
+    return Result.ok(resultOrError.getValue());
   }
 }

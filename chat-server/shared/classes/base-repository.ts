@@ -37,18 +37,19 @@ export abstract class BaseRepository<T> implements Write<T>, Read<T> {
   }
 
   public findOne({ filterBy, filterFields }: Find): Result<T> {
-    return this.model
-      .findOne(filterBy)
-      .select(filterFields)
-      .then((res: T) => {
-        if (res === null) {
-          return Result.fail('No result');
-        }
-        return Result.ok<T>(res);
-      })
-      .catch((err: any) => {
-        return Result.fail(err);
-      });
+    try {
+      return this.model
+        .findOne(filterBy)
+        .select(filterFields)
+        .then((res: T) => {
+          if (res === null) {
+            return Result.fail('No result');
+          }
+          return Result.ok<T>(res);
+        });
+    } catch (error) {
+      return Result.fail(error);
+    }
   }
 
   public find({ filterBy, filterFields }: Find): Result<T[]> {
@@ -68,10 +69,10 @@ export abstract class BaseRepository<T> implements Write<T>, Read<T> {
 
   public update(uid: string, data: any): Result<T> {
     try {
-      const user = this.model.findOneAndUpdate({ uid }, { $set:  data}, { new: true }, (err: any, doc: T) => {
+      const user = this.model.findOneAndUpdate({ uid }, { $set: data }, { new: true }, (err: any, doc: T) => {
         return doc;
       });
-      Logger.info("User updated: ", user);
+      Logger.info('User updated: ', user);
       return Result.ok(user);
     } catch (error) {
       return Result.fail('Noope');
