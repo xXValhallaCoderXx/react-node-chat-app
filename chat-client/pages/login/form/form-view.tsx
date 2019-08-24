@@ -43,7 +43,7 @@ const LoginForm = ({ onChange, values, errors, onSubmit, status }: Props) => {
           ENTER
         </BtnSpinner>
       </FormGroup>
-      {status.error && <p className="text-danger text-center">{status.data}</p>}
+      {status.error && <p className="text-danger text-center">{status.data.message}</p>}
     </Form>
   );
 };

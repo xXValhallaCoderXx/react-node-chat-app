@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import FormController from './form-controller';
 import { authActions } from 'chat-client/store';
 
-const getLoginStatus = state => state.auth.login;
+const getLoginStatus = (state: any) => state.auth.login;
 
 interface FormContainerProps {
   status: any;
