@@ -1,13 +1,13 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import FormController from "chat-client/pages/login/form/form-controller";
+import FormController from "chat-client/pages/login/form";
 
 const mockLoginApi = jest.fn();
 const mockPush = jest.fn();
 const mockStatus = {};
 
 describe('Login Form', () => {
-  const wrapper = shallow<FormController>(<FormController status={mockStatus} loginApi={mockLoginApi} />);
+  const wrapper = shallow<FormController>(<FormController status={mockStatus} onSubmit={mockLoginApi} />);
 
   it('should have validation errors', () => {
     const instance = wrapper.instance();
