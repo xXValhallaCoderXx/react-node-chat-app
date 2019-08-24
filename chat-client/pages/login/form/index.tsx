@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import isEmpty from 'lodash/isEmpty';
+import {OnSubmit, Status} from "../index";
 import Form from './form-view';
 
 export interface FormValues {
@@ -13,8 +14,8 @@ interface State {
 }
 
 interface Props {
-  status: any;
-  onSubmit: any;
+  status: Status;
+  onSubmit: ({email, password}: OnSubmit) => void;
 }
 
 function validate(values: FormValues) {
@@ -43,7 +44,7 @@ export default class FormController extends Component<Props, State> {
     this.setState({ errors });
     if (isEmpty(errors)) {
       const { email, password } = this.state.values;
-      this.props.onSubmit({ isOnline: true, email, password });
+      this.props.onSubmit({ email, password });
     }
   };
 

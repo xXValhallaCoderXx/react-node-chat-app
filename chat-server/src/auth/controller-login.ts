@@ -8,7 +8,6 @@ export default class LoginController extends BaseController {
 
   protected async executeImpl(): Promise<any> {
     const { email: inputEmail, password: inputPassword } = this.req.body;
-
     const userOrError: Result<UserType> = await this.userService.handleLogin(inputEmail, inputPassword);
     if (userOrError.isFailure) {
       return this.fail({title: "Login - Error", message: userOrError.error});
