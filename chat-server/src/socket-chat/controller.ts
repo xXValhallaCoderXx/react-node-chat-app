@@ -10,6 +10,7 @@ import { Socket } from 'socket.io';
 
 interface SocketProps {
   userUid: string;
+  roomUid: string;
 }
 
 type IOSocket = Socket & SocketProps;
@@ -128,21 +129,27 @@ class ChatSocketController {
       // });
 
       // TODO -Fix Being called twice on browser close
+      // Todo - Fix Update user repo
+      // Should not use broadcast also if multi room socket.to is better
       socket.on(PROTOCOLS.DISCONNECT, async () => {
-        const { userUid } = socket;
-        // @ts-ignore
-        if (userUid && socket.roomUid) {
+        const { userUid, roomUid } = socket;
+
+        if (userUid && roomUid) {
           const updateUserOrError: Result<UserType> = await this.userServices.updateUser(userUid, { online: false });
           if (updateUserOrError.isFailure) {
             Logger.error('Disconnect - Error updating user');
           }
+          Logger.error(`Whjat :`, updateUserOrError.getValue())
           // @ts-ignore
-          const roomInfoOrError: Result<RoomType> = await this.roomServices.fetchRoomInfo(socket.roomUid);
+          const roomInfoOrError: Result<RoomType> = await this.roomServices.fetchRoomInfo(roomUid);
           if (roomInfoOrError.isFailure) {
             socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error room not found');
           }
           // @ts-ignore
           socket.broadcast.to(socket.roomUid).emit(PROTOCOLS.UPDATE_ROOM_USER, roomInfoOrError.getValue());
+          // const { username } = updateUserOrError.getValue();
+          const exitMessage = generateMessage({ username: 'Admin', message: `User has left!`, roomUid });
+          socket.broadcast.emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, exitMessage);
         } else {
           socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error room not found');
         }
