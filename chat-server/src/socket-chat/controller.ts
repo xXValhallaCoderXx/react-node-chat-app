@@ -77,7 +77,7 @@ class ChatSocketController {
 
       
         socket.broadcast.to(roomUid).emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, announceMessage);
-        socket.broadcast.to(roomUid).emit(PROTOCOLS.UPDATE_ROOM_USER, roomInfoOrError.getValue());
+        socket.emit(PROTOCOLS.UPDATE_ROOM_USER, roomInfoOrError.getValue());
         socket.emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, welcomeMessage);
       });
 
