@@ -1,22 +1,22 @@
-## Redux State Management
+# Valhalla Chat
 
-### Selectors
+## Description
+Real time chat application to allow fellow warriors to stay in touch!
 
-#### Why use Selectors rather than directly get the state in the connect function?
-- Think of State as a `DB`
-- Selectors can be seen as `SELECT` queries
+## Tech Stack
+- **Client:** Typescript, React, Redux, Jest
+- **Server:** Typescript, Node, Epxress JS, MongoDB (Mongoose), SocketIO, Jest
 
-E.g
-- A list of items in state, but we want to show a filtered list of some kind
-- Filtering the list store and saving it in Redux is no good
-- You can do this filtering in the Selector
+## Features
+- User Registration / Login
+- JWT Authentication
+- Real time chat application
+- Message history is stored
 
-**Why not just do data transform in component?**
-- This makes component more coupled to Redux and less generic / useable
-- Nicer to keep selectors closer to reducer as they operate on same state
-- If state schema changes, easier to change the relevant selector
 
-**Peformance**
-- mapStateToProps is used often, so this is where `reselect` library can be useful
-- The selectors made with `createSelector` will be memoized and avoid recalculations
-- Couple this with `memoizing` the components for Speeeeed
+## Development Setup
+- In the root run `yarn`
+- Once packages installed
+- `yarn client:dev`
+- `yarn server:dev`
+- Open `localhost:8080` in the browser
