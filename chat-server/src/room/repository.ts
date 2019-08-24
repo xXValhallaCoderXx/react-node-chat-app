@@ -12,7 +12,8 @@ export default class RoomRepository extends BaseRepository<Entity> {
         .exec();
       return Result.ok(result);
     } catch (error) {
-      return Result.fail(error);
+      Logger.error(`Room Repo - Add User To Room: ${error}`);
+      return Result.fail("Error adding user to room");
     }
   };
 

@@ -1,4 +1,4 @@
-import { RoomEntity } from 'chat-server/src/room';
+import { Entity as RoomEntity } from 'chat-server/src/room';
 
 describe("the creation of room entity", () => {
   it("should throw error if name is incorrect", async () => {
