@@ -22,7 +22,6 @@ class ErrorBoundary extends Component<Props, State> {
     // You can also log the error to an error reporting service
   }
   public render() {
-    console.log("LALALAL")
     if (this.state.hasError) {
       // You can render any custom fallback UI
       return <h1>Something went wrong.</h1>;
