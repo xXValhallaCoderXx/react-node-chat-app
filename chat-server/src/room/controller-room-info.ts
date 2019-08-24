@@ -10,16 +10,17 @@ export default class RoomInfo extends BaseController {
   private messageServices = new MessageServices();
   protected async executeImpl(): Promise<any> {
     const { uid } = this.req.params;
-    Logger.info(`Fetching room info for: ${uid}`)
+    Logger.info(`Fetching room info for: ${uid}`);
     const roomOrError: Result<RoomType> = await this.repo.fetchRoomInfo(uid);
-    if(roomOrError.isFailure){
+    if (roomOrError.isFailure) {
+      Logger.error('Controller - Room Info: ', roomOrError.error);
       return this.notFound(roomOrError.error);
     }
     const room = roomOrError.getValue();
     const messagesOrError: any = await this.messageServices.fetchRoomMessages(room);
     if (messagesOrError.isFailure) {
       Logger.error('Controller - Room Info: ', messagesOrError.error);
-      return this.fail('Error getting messages');
+      return this.fail({ title: "Room Controller - RoomInfo", message: messagesOrError.error });
     }
     const messages: any = messagesOrError.getValue().map((item: any) => {
       return {
@@ -36,7 +37,6 @@ export default class RoomInfo extends BaseController {
       members: room.members,
       messages,
     };
-    
 
     return this.ok(response);
   }

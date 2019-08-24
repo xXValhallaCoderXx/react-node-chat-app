@@ -1,7 +1,6 @@
 import { Result } from 'chat-server/shared/classes';
 import { Room as RoomType } from './interface';
 import uuidv4 from 'uuid/v4';
-import bcrypt from 'bcryptjs';
 
 export default class Room implements RoomType {
   public uid: string;

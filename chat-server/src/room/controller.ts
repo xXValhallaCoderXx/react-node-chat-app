@@ -15,7 +15,7 @@ export default class AuthController {
   private initializeRoutes() {
     const { path } = this;
     this.router.get(`${path}`, (req, res) => new AllRooms().execute(req, res));
-    this.router.post(`${path}/create`, (req, res) => new Create().execute(req, res));
+    this.router.post(`${path}`, (req, res) => new Create().execute(req, res));
     this.router.post(`${path}/join/:uid`, (req, res) => new JoinRoom().execute(req, res));
     this.router.get(`${path}/:uid`, (req, res) => new RoomInfo().execute(req, res));
   }
