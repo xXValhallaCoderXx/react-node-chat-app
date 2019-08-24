@@ -1,14 +1,10 @@
 @import "chat-client/shared/styles/_custom-variables.scss";
 
 .main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
   height: 100%;
-  padding: 0px;
   background-color: $brand-primary;
-  overflow: hidden;
-}
-
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
 }

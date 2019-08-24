@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from 'chat-client/store';
-import { Main } from 'chat-client/shared/components';
+import { Layout } from 'chat-client/shared/components';
 import View from './view';
 
 export interface SubmitRegistration {
@@ -24,7 +24,7 @@ const RegisterContainer = () => {
   const onSubmit = ({ email, password, username }: SubmitRegistration) => {
     dispatch(authActions.registerApi({ email, password, username }));
   };
-  return <Main content={<View onSubmit={onSubmit} status={status} />} />;
+  return <Layout content={<View onSubmit={onSubmit} status={status} />} />;
 };
 
 export default RegisterContainer;

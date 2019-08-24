@@ -1,5 +1,4 @@
 import React, { memo, useRef, useEffect } from 'react';
-import { Container, Col } from 'reactstrap';
 import { ChatBubble } from './atoms';
 import { MessageInput } from './organisms';
 

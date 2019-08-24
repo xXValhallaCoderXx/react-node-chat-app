@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { chatActions, socketActions } from 'chat-client/store';
-import {parseRoomData} from "./selectors";
+import { parseRoomData } from './selectors';
 
 import View from './page';
 import { NoRoom } from './atoms';
-import { Navbar } from 'chat-client/shared/components';
-import { Sidebar } from "chat-client/shared/components/organisms";
-import {Main} from "chat-client/shared/components/template";
+import { Navbar, Layout, Sidebar } from 'chat-client/shared/components';
 
 import { RouteComponentProps } from 'react-router-dom';
 import { User, Room } from 'chat-client/shared/types';
@@ -37,18 +35,17 @@ const links = [{ label: 'Logout', path: '/' }];
 
 class LoginContainer extends Component<Props, {}> {
   componentDidMount() {
-    if(this.props.user.token){
+    if (this.props.user.token) {
       this.props.socketConnect(this.props.user.token);
       this.props.subscribeMessages();
       this.props.subscribeRoomUpdates();
       this.props.roomInfoApi({ uid: this.props.match.params.uid });
-    }else {
-      this.props.history.push("/")
+    } else {
+      this.props.history.push('/');
     }
-
   }
   render() {
-    return <Main sidebar={this.handleSidebar()} header={<Navbar links={links} />} content={this.handleContent()} />;
+    return <Layout sidebar={this.handleSidebar()} header={<Navbar links={links} />} content={this.handleContent()} />;
   }
 
   handleSidebar = () => {
@@ -70,13 +67,13 @@ export default connect(
   (state, ownProps) => ({
     status: getChatState(state),
     user: getCurrentUser(state),
-    room: parseRoomData(state, ownProps)
+    room: parseRoomData(state, ownProps),
   }),
   {
     sendMessage: chatActions.sendMessage,
     roomInfoApi: chatActions.fetchRoomInfo,
     socketConnect: socketActions.connectSocket,
     subscribeMessages: chatActions.subcribeMessages,
-    subscribeRoomUpdates: chatActions.subscribeRoomUpdates
+    subscribeRoomUpdates: chatActions.subscribeRoomUpdates,
   },
 )(LoginContainer);
