@@ -1,8 +1,6 @@
-const env = "test";
 // Depending on the enviroment, this will pull the values from the respective .json file and add the values as process.env variables
-
 const config = require('chat-shared/env-keys.json');
-const envConfig = config[env];
+const envConfig = config[process.env.NODE_ENV];
 
 // Makes all object keys into an array
 Object.keys(envConfig).forEach(key => {

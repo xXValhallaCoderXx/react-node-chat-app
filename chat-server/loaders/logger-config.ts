@@ -1,5 +1,4 @@
 import winston from 'winston';
-
 const transports = [];
 if (process.env.NODE_ENV !== 'development') {
   transports.push(new winston.transports.Console());
@@ -14,6 +13,7 @@ if (process.env.NODE_ENV !== 'development') {
 const Logger = winston.createLogger({
   level: process.env.LOG_LEVEL,
   levels: winston.config.npm.levels,
+  silent: process.env.NODE_ENV === "test",
   format: winston.format.combine(
     winston.format.timestamp({
       format: 'YYYY-MM-DD HH:mm:ss',
