@@ -12,6 +12,7 @@ Real time chat application to allow fellow warriors to stay in touch!
 - JWT Authentication
 - Real time chat application
 - Message history is stored
+- Display online / offline members
 
 
 ## Development Setup
