@@ -1,5 +1,5 @@
 import Logger from 'chat-server/loaders/logger-config';
-import capitalize from "lodash/capitalize";
+import capitalize from 'lodash/capitalize';
 import PROTOCOLS from 'chat-shared/socket-types';
 import { Result } from 'chat-server/shared/classes';
 import { UserServices, UserType } from 'chat-server/src/user';
@@ -36,11 +36,11 @@ class ChatSocketController {
           if (userOrError.isFailure) {
             throw new Error(userOrError.error);
           }
-          const {uid} = userOrError.getValue()
+          const { uid } = userOrError.getValue();
           socket.userUid = uid;
-          const updateUserOrError: Result<UserType> = await this.userServices.updateUser(uid, {online: true});
+          const updateUserOrError: Result<UserType> = await this.userServices.updateUser(uid, { online: true });
           if (updateUserOrError.isFailure) {
-            Logger.error("Disconnect - Error updating user")
+            Logger.error('Disconnect - Error updating user');
             throw new Error(updateUserOrError.error);
           }
           next();
@@ -51,7 +51,7 @@ class ChatSocketController {
         USER JOINS CHAT ROOM
       *************************/
       socket.on(PROTOCOLS.JOIN_ROOM, async (roomUid: string) => {
-        Logger.info("Store Room UID");
+        Logger.info('Store Room UID');
         // @ts-ignore
         socket.roomUid = roomUid;
         Logger.info('Attempting to join room: ' + roomUid);
@@ -71,13 +71,18 @@ class ChatSocketController {
           socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error room not found');
         }
 
-        const {username} = userOrError.getValue();
-        const welcomeMessage = generateMessage({username: "Admin", message: "Welcome to Valhalla!", roomUid});
-        const announceMessage = generateMessage({username: "Admin", message: `${capitalize(username)} has joined Valhalla!`, roomUid});
+        const { username } = userOrError.getValue();
+        const welcomeMessage = generateMessage({ username: 'Admin', message: 'Welcome to Valhalla!', roomUid });
+        const announceMessage = generateMessage({
+          username: 'Admin',
+          message: `${capitalize(username)} has joined Valhalla!`,
+          roomUid,
+        });
 
-      
+        // Check for better way to handle this
         socket.broadcast.to(roomUid).emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, announceMessage);
         socket.broadcast.to(roomUid).emit(PROTOCOLS.UPDATE_ROOM_USER, roomInfoOrError.getValue());
+        socket.emit(PROTOCOLS.UPDATE_ROOM_USER, roomInfoOrError.getValue());
         socket.emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, welcomeMessage);
       });
 
@@ -103,8 +108,8 @@ class ChatSocketController {
         if (messageOrError.isFailure) {
           socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error room not found');
         }
-        const {username} = userOrError.getValue();
-        const newMessage = generateMessage({username, message, roomUid});
+        const { username } = userOrError.getValue();
+        const newMessage = generateMessage({ username, message, roomUid });
         this.io.to(roomUid).emit(PROTOCOLS.SERVER_TO_CLIENT_MSG, newMessage);
       });
 
@@ -122,21 +127,26 @@ class ChatSocketController {
       //   socket.broadcast.to(roomUid).emit(PROTOCOLS.SERVER_TO_CLIENT_DRAW, line);
       // });
 
+      // TODO -Fix Being called twice on browser close
       socket.on(PROTOCOLS.DISCONNECT, async () => {
         const { userUid } = socket;
-        Logger.info('Disconnecting user: ' + userUid);
-        const updateUserOrError: Result<UserType> = await this.userServices.updateUser(userUid, {online: false});
-        if (updateUserOrError.isFailure) {
-          Logger.error("Disconnect - Error updating user")
-        }
         // @ts-ignore
-        const roomInfoOrError: Result<RoomType> = await this.roomServices.fetchRoomInfo(socket.roomUid);
-        if (roomInfoOrError.isFailure) {
+        if (userUid && socket.roomUid) {
+          const updateUserOrError: Result<UserType> = await this.userServices.updateUser(userUid, { online: false });
+          if (updateUserOrError.isFailure) {
+            Logger.error('Disconnect - Error updating user');
+          }
+          // @ts-ignore
+          const roomInfoOrError: Result<RoomType> = await this.roomServices.fetchRoomInfo(socket.roomUid);
+          if (roomInfoOrError.isFailure) {
+            socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error room not found');
+          }
+          // @ts-ignore
+          socket.broadcast.to(socket.roomUid).emit(PROTOCOLS.UPDATE_ROOM_USER, roomInfoOrError.getValue());
+        } else {
           socket.emit(PROTOCOLS.SOCKET_SERVER_ERROR, 'Error room not found');
         }
-        // @ts-ignore
-        socket.broadcast.to(socket.roomUid).emit(PROTOCOLS.UPDATE_ROOM_USER, roomInfoOrError.getValue());
-      })
+      });
     });
   }
 }

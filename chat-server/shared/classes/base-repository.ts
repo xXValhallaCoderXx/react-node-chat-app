@@ -70,11 +70,11 @@ export abstract class BaseRepository<T> implements Write<T>, Read<T> {
 
   public update(uid: string, data: any): Result<T> {
     try {
-      const user = this.model.findOneAndUpdate({ uid }, { $set: data }, { new: true }, (err: any, doc: T) => {
+      const result = this.model.findOneAndUpdate({ uid }, { $set: data }, { new: true }, (err: any, doc: T) => {
         return doc;
       });
-      Logger.info('User updated: ', user);
-      return Result.ok(user);
+      Logger.info(`Base Repo - Update: ${result}`);
+      return Result.ok(result);
     } catch (error) {
       return Result.fail('Noope');
     }

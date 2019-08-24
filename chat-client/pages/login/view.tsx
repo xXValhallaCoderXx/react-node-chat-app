@@ -1,11 +1,12 @@
 import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Card } from 'reactstrap';
+import {OnSubmit, Status} from "./index";
 import Form from './form';
 
 interface Props {
-  onSubmit: (email: string, password: string) => void;
-  status: any;
+  onSubmit: ({email, password}: OnSubmit) => void;
+  status: Status;
 }
 
 const imageSrc = require('chat-client/shared/images/viking-icon.png');

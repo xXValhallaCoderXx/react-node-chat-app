@@ -42,6 +42,7 @@
     "@types/react-router-dom": "^4.3.3",
     "@types/reactstrap": "^8.0.1",
     "@types/redux-logger": "^3.0.7",
+    "@types/socket.io-client": "^1.4.32",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.3.5",

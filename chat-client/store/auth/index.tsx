@@ -45,10 +45,10 @@ export const actions = {
     try {
       const response: any = await authServices.loginApi({ email, password });
       dispatch(loginSuccess(response));
-      const { online, token, username } = response.data.user;
-      const { rooms } = response.data;
+      const { rooms, user } = response.data;
+      const { token, username } = user;
       const parsedRooms = chatRoomServices.parseRooms(rooms);
-      dispatch(userActions.userInit({ email, token, username, isOnline: online }));
+      dispatch(userActions.userInit({ email, token, username, isOnline: true }));
       dispatch(chatActions.initRooms(parsedRooms));
       dispatch(socketActions.connectSocket(token));
       dispatch(chatActions.subcribeMessages());
