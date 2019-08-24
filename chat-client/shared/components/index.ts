@@ -1,10 +1,4 @@
-export { ErrorBoundary, Main, LoadingScreen } from './template';
-
-// Layout
-export { default as Layout } from './layout-template';
-export { default as Navbar } from './nav-bar';
-export { default as Footer } from './footer';
-
-// Components
-export {default as BtnSpinner} from "./btn-spinner";
-export {default as InvalidUrlPage} from "./no-route";
+export { ErrorBoundary, Layout, LoadingScreen, InvalidUrl } from './template';
+export { Navbar, Sidebar, Footer } from './organisms';
+export { BtnSpinner } from './molecules';
+export { Button, Input } from './atoms';
