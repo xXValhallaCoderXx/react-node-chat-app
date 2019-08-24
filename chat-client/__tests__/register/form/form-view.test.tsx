@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Form from './form-view';
+import Form from "chat-client/pages/registration/form/form-view";
 
 const emptyProps = {
   username: '',
@@ -9,7 +9,12 @@ const emptyProps = {
   confirmPassword: '',
 };
 
-const status = {};
+const status = {
+  loading: false,
+  error: false,
+  success: false,
+  data: null
+};
 
 describe('Register Form Without Props', () => {
   const wrapper = shallow(

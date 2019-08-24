@@ -2,7 +2,7 @@ import React from 'react';
 import {Status} from "../index";
 import { BtnSpinner } from 'chat-client/shared/components';
 import { Form, FormGroup, Label, Input, FormText, FormFeedback } from 'reactstrap';
-import { FormValues } from './form-controller';
+import { FormValues } from './index';
 
 interface Props {
   status: Status;
