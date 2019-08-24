@@ -32,7 +32,8 @@ export abstract class BaseRepository<T> implements Write<T>, Read<T> {
       const result = await new this.model(item).save();
       return Result.ok(result);
     } catch (error) {
-      return Result.fail(error);
+      Logger.error(`Base Repo - Create: ${error}`)
+      return Result.fail("Error creating item");
     }
   }
 
