@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 
 export default () => {
   const socket = new SocketInstance();
-  return () => next => action => {
+  return () => (next: any) => (action: any) => {
     if (typeof action === 'function') {
       return next(action);
     }
@@ -42,7 +42,7 @@ class SocketInstance {
   public constructor() {
     this.socket = null;
   }
-  public connect = token => {
+  public connect = (token: string) => {
     if (process.env.NODE_ENV === 'development') {
       const { LOCALHOST, PORT } = process.env;
       const host = `${LOCALHOST}:${PORT}`;
@@ -56,7 +56,7 @@ class SocketInstance {
     this.socket.close();
   };
 
-  public remove = event => {
+  public remove = (event: any) => {
     this.socket.removeListener(event);
   };
 
