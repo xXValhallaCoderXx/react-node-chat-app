@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Form from './form-view';
+import Form from "chat-client/pages/login/form/form-view";
 
 const emptyProps = {
   email: '',

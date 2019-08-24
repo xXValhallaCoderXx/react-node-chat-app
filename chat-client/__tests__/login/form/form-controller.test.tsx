@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import FormController from './form-controller';
+import FormController from "chat-client/pages/login/form/form-controller";
 
 const mockLoginApi = jest.fn();
 const mockPush = jest.fn();
