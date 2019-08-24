@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { Form, FormGroup, Input, FormFeedback, Label } from 'reactstrap';
-import { BtnSpinner } from 'chat-client/shared/components';
+import { BtnSpinner, Input as Input2 } from 'chat-client/shared/components';
 import { FormValues } from './index';
 
 interface Props {
@@ -24,6 +24,7 @@ const LoginForm = ({ onChange, values, errors, onSubmit, status }: Props) => {
           value={values.email || ''}
           onChange={onChange}
         />
+        <Input2 />
         <FormFeedback id="email-error">{errors.email}</FormFeedback>
       </FormGroup>
       <FormGroup>
