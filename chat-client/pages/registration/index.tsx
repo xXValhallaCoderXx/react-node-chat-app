@@ -21,10 +21,10 @@ const RegisterContainer = () => {
   const dispatch = useDispatch();
   const status = useSelector((state: any) => state.auth.registration);
 
-  const submitRegistration = ({ email, password, username }: SubmitRegistration) => {
+  const onSubmit = ({ email, password, username }: SubmitRegistration) => {
     dispatch(authActions.registerApi({ email, password, username }));
   };
-  return <Main content={<View submitRegistration={submitRegistration} status={status} />} />;
+  return <Main content={<View onSubmit={onSubmit} status={status} />} />;
 };
 
 export default RegisterContainer;
