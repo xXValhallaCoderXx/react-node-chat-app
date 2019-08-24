@@ -1,6 +1,7 @@
-import App from './express-server';
-import {createServer, Server} from 'http';
 import './config';
+import App from './express-server';
+import {createServer} from 'http';
+
 
 // Controllers
 import { AuthController } from 'chat-server/src/auth';

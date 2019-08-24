@@ -24,10 +24,6 @@
     "start": "node ./dist/server.js",
     "test": "yarn client:test && yarn server:test"
   },
-  "dependencies": {
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
-  },
   "devDependencies": {
     "@types/jest": "^24.0.16",
     "jest": "^24.8.0",
