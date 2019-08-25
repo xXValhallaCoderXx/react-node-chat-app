@@ -21,3 +21,16 @@ Real time chat application to allow fellow warriors to stay in touch!
 - `yarn client:dev`
 - `yarn server:dev`
 - Open `localhost:8080` in the browser
+
+
+## Heroku
+
+### Initial Setup
+
+#### Procfile
+- This will have the file to run once built to start the application
+
+#### Create Heroku App
+- In CLI run `heroku login` to login
+- Then `heroku create node-react-valhalla-chat`
+- To start deployment `git push heroku master`
