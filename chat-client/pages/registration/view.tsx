@@ -14,7 +14,7 @@ const imageSrc = require('chat-client/shared/images/viking-icon.png');
 const RegisterView = ({ onSubmit, status }: Props) => {
   return (
     <div style={{overflowY: "auto"}} className="d-flex h-100 justify-content-center align-items-center p-3">
-      <Card className="p-5" style={{ width: 500 }}>
+      <Card className="p-5">
         <img className="mx-auto" src={imageSrc} height="60" width="55" />
         <h3 className="text-center mt-2 mb-2">Valhalla Chat</h3>
         <p className="text-center font-weight-bold">Join us and be part of the shield wall!</p>

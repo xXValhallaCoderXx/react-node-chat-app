@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import isEmpty from 'lodash/isEmpty';
-import {OnSubmit, Status} from "../index";
+import { OnSubmit, Status } from '../index';
 import Form from './form-view';
 
 export interface FormValues {
@@ -15,16 +15,16 @@ interface State {
 
 interface Props {
   status: Status;
-  onSubmit: ({email, password}: OnSubmit) => void;
+  onSubmit: ({ email, password }: OnSubmit) => void;
 }
 
 function validate(values: FormValues) {
   const errors: FormValues = {};
   if (!values.email) {
-    errors.email = 'Warrior! We must know your name for the battle field!';
+    errors.email = 'Your email is required, for passage!';
   }
   if (!values.password) {
-    errors.password = 'You must provide this, for passage!';
+    errors.password = 'Your password is required, for passage!';
   }
   return errors;
 }

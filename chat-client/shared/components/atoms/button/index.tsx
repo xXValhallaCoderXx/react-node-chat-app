@@ -1,20 +1,27 @@
-import React, { ReactNode } from 'react';
-import { Button, Spinner } from 'reactstrap';
+import React from 'react';
+import classNames from 'classnames/bind';
+import { Button as RsButton, Spinner, ButtonProps } from 'reactstrap';
+const styles = require('./styles.module.scss');
+const cx = classNames.bind(styles);
 
-interface Props {
-  type: 'button' | 'submit' | 'reset' | undefined;
-  block?: boolean;
-  children?: ReactNode;
-  onClick: any;
+interface CustomProps {
+  rounded?: boolean;
   loading?: boolean;
 }
 
-const ButtonSpinner = ({ children, onClick, type, block, loading }: Props) => {
+type Props = ButtonProps & CustomProps;
+
+const Button = (props: Props) => {
+  const { loading, rounded, children } = props;
+  const btnClass = cx({
+    btnRounded: rounded,
+  });
+
   return (
-    <Button block={block} type={type} onClick={onClick}>
+    <RsButton className={btnClass} {...props}>
       {loading ? <Spinner /> : children}
-    </Button>
+    </RsButton>
   );
 };
 
-export default ButtonSpinner;
+export default Button;
