@@ -25,9 +25,9 @@ productionConfig = app =>
         chunkFilename: "static/js/[name].[chunkhash:8].js",
         path: PATHS.build
       },
-      plugins: [
-        new BundleAnalyzerPlugin()
-      ],  
+      // plugins: [
+      //   new BundleAnalyzerPlugin()
+      // ],  
       optimization: {
         splitChunks: {
           chunks: "all"
