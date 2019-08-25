@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpileOnly ./index.ts",
     "start": "node ../dist-server/chat-server/index.js",
-    "build": "NODE_ENV=production webpack --config ../chat-webpack/server/index.js",
+    "build": "webpack --config ../chat-build/server/index.js",
     "build:tsc": "tsc",
     "test": "jest"
   },

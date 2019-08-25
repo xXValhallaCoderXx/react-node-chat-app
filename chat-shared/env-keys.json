@@ -4,8 +4,6 @@
     "MONGODB_URI": "mongodb://main-user:password2000@ds243317.mlab.com:43317/node-react-chat",
     "NODE_ENV": "production",
     "DEFAULT_ROOM": "Asgard",
-    "DEFAULT_PAINT_ROOM": "Valhalla",
-    "PORT": 5000,
     "LOG_LEVEL": "silly"
   },
   "development": {
@@ -16,8 +14,7 @@
     "PORT": 5000,
     "LOG_LEVEL": "silly",
     "NODE_ENV": "development",
-    "DEFAULT_ROOM": "Asgard",
-    "DEFAULT_PAINT_ROOM": "Valhalla"
+    "DEFAULT_ROOM": "Asgard"
   },
   "test": {
     "LOCALHOST": "http://localhost",
@@ -27,7 +24,6 @@
     "PORT": 5000,
     "LOG_LEVEL": "silly",
     "NODE_ENV": "test",
-    "DEFAULT_ROOM": "Asgard",
-    "DEFAULT_PAINT_ROOM": "Valhalla2"
+    "DEFAULT_ROOM": "Asgard"
   }
 }

@@ -1,7 +1,11 @@
 import express, { Application } from 'express';
 import loaders from './loaders';
 import bodyParser from 'body-parser';
-import cors from "cors";
+import { join } from 'path';
+import cors from 'cors';
+
+const cwd = process.cwd();
+const directoryPath = join(cwd, './dist');
 
 class App {
   public app: Application;
@@ -11,6 +15,7 @@ class App {
     this.initializeMiddlewares();
     this.initializeControllers(controllers || []);
     this.initalizeLoaders();
+    this.initailizeStaticLoaders();
   }
 
   public getServer() {
@@ -41,6 +46,13 @@ class App {
 
   private async initalizeLoaders() {
     await loaders();
+  }
+
+  private initailizeStaticLoaders() {
+    this.app.use(express.static(directoryPath));
+    this.app.get('*', (req, res) => {
+      res.sendFile(join(directoryPath, 'index.html'));
+    });
   }
 }
 

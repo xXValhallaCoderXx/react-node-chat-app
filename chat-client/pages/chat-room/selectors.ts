@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { Room, Messages } from 'chat-client/shared/types';
-import {format} from "date-fns";
+import {format, parseISO} from "date-fns";
 
 const getRoom = (state, ownProps) => state.chat.rooms[ownProps.match.params.uid];
 
@@ -12,7 +12,7 @@ export const parseRoomData = createSelector(
         uid: message.uid,
         message: message.message,
         author: message.author,
-        createdAt: format(message.createdAt, "Do MMM YYYY - HH:mm A")
+        createdAt: format(parseISO(message.createdAt), "do MMM yyyy - HH:mm")
       }
     })
     return {
