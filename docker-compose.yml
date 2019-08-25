@@ -1,0 +1,9 @@
+version: '3'
+services:
+  db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGODB_USER="dev-user" 
+      - MONGODB_PASS="dev-pass"

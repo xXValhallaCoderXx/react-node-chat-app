@@ -1,0 +1,17 @@
+@import "chat-client/shared/styles/_custom-variables.scss";
+
+.main {
+  height: 100%;
+  background-color: $brand-primary;
+}
+
+.content {
+  background-color: $brand-primary;
+  height: 100%;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}

@@ -1,0 +1,11 @@
+@import "chat-client/shared/styles/_custom-variables.scss";
+
+.sidebar {
+  color: $brand-accent;
+  background-color: $brand-secondary;
+}
+
+.divider {
+  height: 3px;
+  background-color: $brand-accent;
+}
