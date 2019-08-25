@@ -1,11 +1,13 @@
 {
   "name": "react-node-chat-app",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.1.0",
   "repository": "git@github.com:xXValhallaCoderXx/react-node-chat-app.git",
   "author": "xXValhallaCoderXx <renate.gouveia@gmail.com>",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": "10.x"
+  },
   "workspaces": [
     "chat-client",
     "chat-server",
