@@ -15,10 +15,10 @@ describe('Register Form', () => {
     };
     instance.onSubmit(mockEvent);
     expect(wrapper.state().errors).toEqual({
-      username: "Warrior! We must know your name for the battle field!",
-      email: 'You must provide this, for passage!',
-      password: 'You must provide this, for passage!',
-      confirmPassword: "You must provide this, for passage!"
+      username: "Your name is required for the battle field!",
+      email: 'Your email is required, for passage!',
+      password: 'Your password is required, for passage!',
+      confirmPassword: "Your password is required, for passage!"
     });
   });
 
