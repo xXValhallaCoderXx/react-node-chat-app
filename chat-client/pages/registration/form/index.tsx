@@ -22,16 +22,16 @@ export interface FormValues {
 function validate(values: FormValues) {
   const errors: any = {};
   if (!values.username) {
-    errors.username = 'Warrior! We must know your name for the battle field!';
+    errors.username = 'Your name is required for the battle field!';
   }
   if (!values.email) {
-    errors.email = 'You must provide this, for passage!';
+    errors.email = 'Your email is required, for passage!';
   }
   if (!values.password) {
-    errors.password = 'You must provide this, for passage!';
+    errors.password = 'Your password is required, for passage!';
   }
   if (!values.confirmPassword) {
-    errors.confirmPassword = 'You must provide this, for passage!';
+    errors.confirmPassword = 'Your password is required, for passage!';
   }
   return errors;
 }

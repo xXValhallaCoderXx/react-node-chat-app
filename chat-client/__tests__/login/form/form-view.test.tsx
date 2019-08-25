@@ -27,8 +27,9 @@ describe('Login Form Without Props', () => {
       id: 'email',
       invalid: false,
       value: '',
+      rounded: true,
       onChange: expect.any(Function),
-      placeholder: 'What do you hail as warrior?',
+      placeholder: 'Email',
       type: 'email',
     });
   });
@@ -38,8 +39,9 @@ describe('Login Form Without Props', () => {
       id: 'password',
       invalid: false,
       value: '',
+      rounded: true,
       onChange: expect.any(Function),
-      placeholder: 'Speak friend, and enter...',
+      placeholder: 'Password',
       type: 'password',
     });
   });

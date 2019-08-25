@@ -1,15 +1,21 @@
-import React, { Component } from 'react';
-import { Input } from 'reactstrap';
+import React from 'react';
+import classNames from 'classnames/bind';
+import { Input, InputProps } from 'reactstrap';
+const styles = require('./styles.module.scss');
+const cx = classNames.bind(styles);
 
-interface Props {
-  value: string;
-  onChange?: any;
-  placeholder?: string;
-  id?: string;
+interface CustomProps {
+  rounded?: boolean;
 }
 
-const MessageInput = ({ value, placeholder, id, onChange }: Props) => (
-  <Input onChange={onChange} value={value} placeholder={placeholder} id={id} />
-);
+type Props = InputProps & CustomProps;
+
+const MessageInput = (props: Props) => {
+  const { rounded } = props;
+  const inputClass = cx({
+    formRounded: rounded,
+  });
+  return <Input {...props} className={inputClass} {...props} />;
+};
 
 export default MessageInput;

@@ -42,8 +42,9 @@ describe('Register Form Without Props', () => {
       id: 'username',
       invalid: false,
       value: '',
+      rounded: true,
       onChange: expect.any(Function),
-      placeholder: 'What do you hail as warrior?',
+      placeholder: 'Username',
       type: 'text',
     });
   });
@@ -53,8 +54,9 @@ describe('Register Form Without Props', () => {
       id: 'email',
       invalid: false,
       value: '',
+      rounded: true,
       onChange: expect.any(Function),
-      placeholder: 'Enter your email...',
+      placeholder: 'Email',
       type: 'email',
     });
   });
@@ -64,8 +66,9 @@ describe('Register Form Without Props', () => {
       id: 'password',
       invalid: false,
       value: '',
+      rounded: true,
       onChange: expect.any(Function),
-      placeholder: 'Speak friend, and enter...',
+      placeholder: 'Password',
       type: 'password',
     });
   });
@@ -75,8 +78,9 @@ describe('Register Form Without Props', () => {
       id: 'confirmPassword',
       invalid: false,
       value: '',
+      rounded: true,
       onChange: expect.any(Function),
-      placeholder: 'Speak friend, and enter...',
+      placeholder: 'Confirm password',
       type: 'password',
     });
   });

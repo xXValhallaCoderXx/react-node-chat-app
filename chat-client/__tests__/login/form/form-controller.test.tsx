@@ -4,7 +4,12 @@ import FormController from "chat-client/pages/login/form";
 
 const mockLoginApi = jest.fn();
 const mockPush = jest.fn();
-const mockStatus = {};
+const mockStatus = {
+  loading: false,
+  success: false,
+  error: false,
+  data: null
+};
 
 describe('Login Form', () => {
   const wrapper = shallow<FormController>(<FormController status={mockStatus} onSubmit={mockLoginApi} />);
@@ -16,8 +21,8 @@ describe('Login Form', () => {
     };
     instance.onSubmit(mockEvent);
     expect(wrapper.state().errors).toEqual({
-      email: 'Warrior! We must know your name for the battle field!',
-      password: 'You must provide this, for passage!',
+      email: 'Your email is required, for passage!',
+      password: 'Your password is required, for passage!',
     });
   });
 
