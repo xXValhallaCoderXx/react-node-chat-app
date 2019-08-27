@@ -9,7 +9,6 @@ export const parseRoomData = createSelector(
   [getRoom, getUid],
   (room: Room, urlPath: any) => {
     var uid = urlPath.split("/chat/")
-    console.log("UID: ", uid);
     const messages: Messages[] = get(room, 'messages', []);
     const members = get(room, 'members', []);
     const name = get(room, 'name', '');
